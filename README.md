@@ -96,6 +96,7 @@
 - データベース（PostgreSQL）
 - デプロイ先・インフラ（Render/cloudinary）
 - 使用予定のライブラリ
+
 | ライブラリ名 | 役割 |
 |--------------|------|
 | Devise | ユーザー認証(ログイン・ログアウト) |
@@ -104,3 +105,6 @@
 | ransack | 検索機能 |
 | LINE Messaging API | LINEへの通知送信 |
 | omniauth-google-oauth2 | Googleアカウントでのログイン認証 |
+
+## 画面遷移図
+[Figma画面遷移図](https://www.figma.com/design/N8VHxmnIi2kBpGhmM9WKu3/%E7%84%A1%E9%A1%8C?node-id=11-844&t=pDvVecHzhVoq4lvQ-1)
