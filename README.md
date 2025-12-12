@@ -108,3 +108,6 @@
 
 ## 画面遷移図
 [Figma画面遷移図](https://www.figma.com/design/N8VHxmnIi2kBpGhmM9WKu3/%E7%84%A1%E9%A1%8C?node-id=11-844&t=pDvVecHzhVoq4lvQ-1)
+
+## ER図
+![ER図](jisui_save_ER.png)
