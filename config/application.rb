@@ -30,6 +30,5 @@ module Myapp
       g.helper false
       g.test_framework nil
     end
-
   end
 end
