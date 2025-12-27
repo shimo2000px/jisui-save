@@ -9,17 +9,20 @@
   <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
     <div class="bg-white py-10 px-8 shadow-xl shadow-orange-100/50 rounded-[2rem] border border-orange-100 space-y-4">
 
-      <a href="/auth/google_oauth2" class="flex items-center justify-center gap-3 w-full py-3 px-4 border border-gray-300 rounded-xl bg-white hover:bg-gray-50 text-gray-700 font-bold shadow-sm transition-all">
+      <%= button_to '/auth/google_oauth2', 
+          method: :post, 
+          data: { turbo: false }, 
+          class: "flex items-center justify-center gap-3 w-full py-3 px-4 border border-gray-300 rounded-xl bg-white hover:bg-gray-50 text-gray-700 font-bold shadow-sm transition-all" do %>
         <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-5 h-5" alt="Google">
         Googleでログイン
-      </a>
+      <% end %>
 
       <div class="relative py-4">
         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-gray-200"></div></div>
         <div class="relative flex justify-center text-xs uppercase"><span class="bg-white px-2 text-gray-400">または</span></div>
       </div>
 
-      <%= link_to recipes_path, class:"flex items-center justify-center gap-3 w-full py-3 px-4 rounded-xl bg-orange-400 hover:bg-orange-500 text-white font-bold shadow-sm transition-all" do %>
+      <%= link_to recipes_path, class: "flex items-center justify-center gap-3 w-full py-3 px-4 rounded-xl bg-orange-400 hover:bg-orange-500 text-white font-bold shadow-sm transition-all" do %>
         <span class="text-xl">🍳</span>
         ゲストログイン（レシピのみ閲覧）
       <% end %>
