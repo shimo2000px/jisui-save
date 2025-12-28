@@ -1,5 +1,15 @@
 Rails.application.routes.draw do
-  resources :recipes, only: [ :index ]
+  resources :recipes
+  get    "login",   to: "sessions#new"
+  post   "login",   to: "sessions#create"
+  delete "logout",  to: "sessions#destroy"
+
+  post "guest_login", to: "sessions#guest_login"
+
+  post "/auth/:provider", to: ->(env) { [ 404, {}, [ "Not Found" ] ] }, as: :auth_at_provider
+  match "auth/:provider/callback", to: "sessions#create", via: [ :get, :post ]
+  get "auth/failure", to: redirect("/")
+
   root "recipes#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
