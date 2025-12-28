@@ -1,0 +1,27 @@
+<header class="bg-white border-b border-orange-100 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
+      
+      <div class="flex-shrink-0 flex items-center">
+        <%= link_to root_path, class: "text-2xl font-bold text-orange-600 flex items-center gap-2" do %>
+          <span>🍳</span>
+          <span class="tracking-tight">自炊save</span>
+        <% end %>
+      </div>
+
+      <nav class="flex items-center gap-4">
+        <% if logged_in? %>
+          <%= link_to "使い方", "#", class: "bg-emerald-400 text-white  hover:bg-emerald-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>
+          <%= link_to "レシピ投稿", "#", class: "bg-orange-300 text-white  hover:bg-orange-400 px-4 py-2 rounded-lg text-sm font-medium transition" %>
+          <%= link_to "プロフィール", "#", class: "bg-pink-300 text-white hover:bg-pink-400 px-3 py-2 rounded-lg text-sm font-medium transition" %>
+          <button class="text-white bg-red-400 hover:bg-red-600 px-3 py-2 text-sm font-medium transition">
+            ログアウト
+          </button>
+        <% else %>
+          <%= link_to "ログイン", login_path, class: "bg-blue-300 text-white hover:bg-blue-600 rounded-full text-sm font-bold shadow-sm transition" %>
+        <% end %>
+      </nav>
+
+    </div>
+  </div>
+</header>
