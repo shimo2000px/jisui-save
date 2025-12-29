@@ -22,7 +22,7 @@
         <div class="relative flex justify-center text-xs uppercase"><span class="bg-white px-2 text-gray-400">または</span></div>
       </div>
 
-      <%= link_to recipes_path, class: "flex items-center justify-center gap-3 w-full py-3 px-4 rounded-xl bg-orange-400 hover:bg-orange-500 text-white font-bold shadow-sm transition-all" do %>
+      <%= button_to guest_login_path, method: :post, class: "flex items-center justify-center gap-3 w-full py-3 px-4 rounded-xl bg-orange-400 hover:bg-orange-500 text-white font-bold shadow-sm transition-all" do %>
         <span class="text-xl">🍳</span>
         ゲストログイン（レシピのみ閲覧）
       <% end %>
