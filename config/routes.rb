@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   post "/auth/:provider", to: ->(env) { [ 404, {}, [ "Not Found" ] ] }, as: :auth_at_provider
   match "auth/:provider/callback", to: "sessions#create", via: [ :get, :post ]
-  get "auth/failure", to: redirect("/")
+  get "auth/failure", to: redirect("/login")
 
   root "recipes#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

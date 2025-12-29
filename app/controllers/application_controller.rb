@@ -5,8 +5,16 @@ class ApplicationController < ActionController::Base
 
   before_action :require_login
   helper_method :current_user, :logged_in?
-
+  helper_method :guest_user?
   private
+
+
+  def require_login
+    unless logged_in?
+      flash[:danger] = "ログインが必要です"
+      redirect_to login_path
+    end
+  end
 
   def current_user
     return @current_user if @current_user
@@ -26,10 +34,8 @@ class ApplicationController < ActionController::Base
     current_user.present?
   end
 
-  def require_login
-    unless logged_in?
-      flash[:danger] = "ログインが必要です"
-      redirect_to login_path
-    end
+
+  def guest_user?
+    current_user&.email == "guest@example.com"
   end
 end
