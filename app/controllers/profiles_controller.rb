@@ -5,7 +5,6 @@ class ProfilesController < ApplicationController
 
   def edit
     @user = current_user
-    
   end
 
   def update
@@ -19,8 +18,12 @@ class ProfilesController < ApplicationController
 
   private
 
+  def set_user
+      @current_user ||= User.find_by(id: session[:user_id])
+      @user = @current_user
+  end
+
   def user_params
-    # 名前とアイコン画像のみ許可
     params.require(:user).permit(:name, :avatar)
   end
 end
