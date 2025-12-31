@@ -12,13 +12,14 @@
         <% if logged_in? && !guest_user? %>
           <%= link_to "使い方", "#", class: "bg-emerald-400 text-white hover:bg-emerald-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>
           <%= link_to "レシピ投稿", "#", class: "bg-orange-300 text-white hover:bg-orange-400 px-4 py-2 rounded-lg text-sm font-medium transition" %>
-          <%= link_to "プロフィール", "#", class: "bg-pink-300 text-white hover:bg-pink-400 px-3 py-2 rounded-lg text-sm font-medium transition" %>
+          <%= link_to "プロフィール", profile_path, class: "bg-pink-300 text-white hover:bg-pink-400 px-3 py-2 rounded-lg text-sm font-medium transition" %>
           <%= button_to "ログアウト", logout_path, 
               method: :delete, 
               data: { 
                 turbo_confirm: "ログアウトしてもよろしいですか？" 
               }, 
-              class: "text-white bg-red-400 hover:bg-red-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>        <% else %>
+              class: "text-white bg-red-400 hover:bg-red-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>       
+        <% else %>
           <%= link_to "ログイン", login_path, class: "bg-blue-300 text-white hover:bg-blue-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>
         <% end %>
       </nav>

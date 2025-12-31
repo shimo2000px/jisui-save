@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   match "auth/:provider/callback", to: "sessions#create", via: [ :get, :post ]
   get "auth/failure", to: redirect("/login")
 
+  resource :profile, only: [:show, :edit, :update]
+
   root "recipes#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
