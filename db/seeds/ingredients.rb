@@ -33,7 +33,7 @@ ingredients = [
   { name: "白菜", price_per_gram: 0.15 },
   { name: "大根", price_per_gram: 0.18 },
   { name: "もやし", price_per_gram: 0.15 },
-  { name: "ブロッコリー", price_per_gram: 0.80 }, 
+  { name: "ブロッコリー", price_per_gram: 0.80 },
   { name: "ピーマン", price_per_gram: 0.65 },
   { name: "長ねぎ", price_per_gram: 0.55 },
   { name: "ほうれん草", price_per_gram: 0.75 },
@@ -201,7 +201,7 @@ ingredients = [
   { name: "オリーブオイル", price_per_gram: 1.85 },
   { name: "白いりごま", price_per_gram: 1.50 },
   { name: "わさび(チューブ)", price_per_gram: 2.20 },
-  { name: "からし(チューブ)", price_per_gram: 2.20 },
+  { name: "からし(チューブ)", price_per_gram: 2.20 }
 ]
 
 ingredients.each do |data|
