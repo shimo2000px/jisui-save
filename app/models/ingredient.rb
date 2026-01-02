@@ -1,12 +1,6 @@
-class RecipeIngredient < ApplicationRecord
-  belongs_to :recipe
-  belongs_to :ingredient
+class Ingredient < ApplicationRecord
+  has_many :recipe_ingredients
+    has_many :recipes, through: :recipe_ingredients
 
-  def total_price
-    if custom_price.present?
-      custom_price
-    else
-      (ingredient.price_per_gram * amount_gram).round
-    end
-  end
+    validates :name, presence: true, uniqueness: true
 end
