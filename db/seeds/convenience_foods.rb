@@ -108,7 +108,7 @@ convenience_foods = [
   { name: "ミネストローネ", price: 180 },
   { name: "コーンポタージュ", price: 180 },
   { name: "カップヌードル", price: 240 },
-  { name: "カップ焼きそば", price: 240 },
+  { name: "カップ焼きそば", price: 240 }
 ]
 
 convenience_foods.each do |data|
