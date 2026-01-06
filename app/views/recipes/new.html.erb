@@ -1,0 +1,73 @@
+<div class="max-w-4xl mx-auto my-10 px-4 font-sans text-gray-800">
+  <h1 class="text-3xl font-bold text-center mb-8">MYレシピ新規作成</h1>
+
+  <%= form_with(model: @recipe, class: "space-y-6") do |f| %>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <%# 左側：写真アップロードエリア %>
+      <div class="bg-gray-200 aspect-square flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-400 relative group cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        <span class="text-lg font-bold text-gray-600">写真をのせる</span>
+        <%# 実際の実装ではここに f.file_field を入れます %>
+      </div>
+
+      <div class="space-y-6 text-xl">
+        <div class="relative border-b-2 border-gray-400 pb-2">
+          <%= f.text_field :title, placeholder: "料理名", class: "w-full bg-transparent border-none focus:ring-0 text-2xl font-bold placeholder-gray-400" %>
+        </div>
+        <div class="bg-gray-200 p-4 rounded-sm min-h-[150px]">
+          <%= f.text_area :description, placeholder: "商品説明", class: "w-full bg-transparent border-none focus:ring-0 text-lg placeholder-gray-500 h-full resize-none" %>
+        </div>
+        <div class="text-sm">
+          <%= f.label :convenience_food_id, "比較するコンビニ商品" %>
+          <%= f.collection_select :convenience_food_id, ConvenienceFood.all, :id, :name, {}, { class: "w-full rounded border-gray-300" } %>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-200 p-6 rounded-sm">
+      <h3 class="text-2xl font-bold text-center mb-4">作り方</h3>
+      <%= f.text_area :steps, placeholder: "作り方の手順を入力してください", class: "w-full bg-white border-none rounded p-4 h-48 focus:ring-2 focus:ring-green-400" %>
+    </div>
+
+    <%# 下段：材料/グラム数 エリア %>
+    <div class="bg-gray-200 p-8 rounded-sm relative">
+      <h3 class="text-2xl font-bold text-center mb-8">材料/グラム数</h3>
+      
+      <div class="flex flex-col md:flex-row gap-8 items-start">
+        <div class="flex-grow grid grid-cols-3 gap-4">
+          <div class="text-center font-bold text-lg">材料名</div>
+          <div class="text-center font-bold text-lg">グラム</div>
+          <div class="text-center font-bold text-sm">手動金額<br>(より細かく計算したい方)</div>
+
+          <%= f.fields_for :recipe_ingredients do |ri_form| %>
+            <div class="bg-white rounded p-1 shadow-sm">
+              <%= ri_form.collection_select :ingredient_id, Ingredient.all, :id, :name, { include_blank: "" }, { class: "w-full border-none focus:ring-0" } %>
+            </div>
+            <div class="bg-white rounded p-1 shadow-sm flex items-center">
+              <%= ri_form.number_field :amount_gram, class: "w-full border-none focus:ring-0" %>
+            </div>
+            <div class="bg-white rounded p-1 shadow-sm">
+              <%= ri_form.number_field :custom_price, class: "w-full border-none focus:ring-0", placeholder: "特売価格など" %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="w-full md:w-64 bg-white p-6 shadow-md flex flex-col items-center justify-center min-h-[150px]">
+          <span class="text-xl font-bold mb-2 border-b-2 border-gray-800 w-full text-center">合計金額</span>
+          <div class="text-3xl font-black mt-4">
+            <span id="total-price-display">-</span> <span class="text-xl">円</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-center pt-8">
+      <%= f.submit "登録する", class: "bg-green-400 hover:bg-green-500 text-white font-bold text-2xl py-3 px-20 rounded-sm shadow-lg transition-all active:transform active:scale-95" %>
+    </div>
+
+  <% end %>
+</div>
