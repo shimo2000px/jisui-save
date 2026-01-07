@@ -1,20 +1,42 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  // totalDisplay だけを staticTargets に残し、他は各行の中で探します
-  static targets = ["totalDisplay", "row"]
+  static targets = ["row", "totalDisplay", "container", "template"]
 
   connect() {
     this.calculate()
   }
 
-  calculate() {
-    console.log("計算関数が呼ばれました！")
-    let total = 0
+  // --- 追加機能 ---
+  add(event) {
+    event.preventDefault()
+    // テンプレートから新しい行を作成
+    const content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime())
+    this.containerTarget.insertAdjacentHTML('beforeend', content)
+    this.calculate()
+  }
 
-    // 各行（data-recipe-calculation-target="row"）をループ
-    this.rowTargets.forEach((row) => {
-      // row(行)の中から、セレクトボックス・分量・手動金額の要素を直接探す
+  // --- 削除機能 ---
+  remove(event) {
+    event.preventDefault()
+    const row = event.target.closest(".ingredient-row")
+    // railsのnested_formでよく使う削除フラグ（_destroy）があれば値を1にする
+    const destroyField = row.querySelector('input[name*="_destroy"]')
+    if (destroyField) {
+      destroyField.value = "1"
+      row.style.display = "none" // 見た目上消す
+      row.classList.remove("ingredient-row") // 計算対象から外すためのクラス除去
+    } else {
+      row.remove() 
+    }
+    this.calculate()
+  }
+
+  calculate() {
+    let total = 0
+    const activeRows = this.containerTarget.querySelectorAll(".ingredient-row")
+    
+    activeRows.forEach((row) => {
       const select = row.querySelector('select')
       const amountInput = row.querySelector('input[name*="amount_gram"]')
       const customPriceInput = row.querySelector('input[name*="custom_price"]')
@@ -23,17 +45,14 @@ export default class extends Controller {
       const customPrice = customPriceInput.value.trim()
 
       if (customPrice !== "") {
-        // 手動入力があれば優先
         total += parseFloat(customPrice) || 0
       } else if (select && select.selectedIndex > 0) {
-        // 材料の単価を取得
         const selectedOption = select.options[select.selectedIndex]
         const pricePerGram = parseFloat(selectedOption.dataset.pricePerGram) || 0
         total += pricePerGram * amount
       }
     })
 
-    // 合計金額を画面に反映
     if (this.hasTotalDisplayTarget) {
       this.totalDisplayTarget.textContent = Math.round(total).toLocaleString()
     }

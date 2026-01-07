@@ -62,56 +62,46 @@
       </template>
     </div>
 
-  <%# 材料エリア全体を計算コントローラーで囲む %>
-  <div class="bg-gray-200 p-8 rounded-sm relative" data-controller="recipe-calculation">
-    <h3 class="text-2xl font-bold text-center mb-8">材料/グラム数</h3>
-    
-    <div class="flex flex-col md:flex-row gap-8 items-start">
-      <div class="flex-grow grid grid-cols-3 gap-4">
-        <div class="text-center font-bold text-lg">材料名</div>
-        <div class="text-center font-bold text-lg">グラム</div>
-        <div class="text-center font-bold text-sm">手動金額</div>
+<div class="bg-gray-200 p-8 rounded-sm relative" data-controller="recipe-calculation">
+  <h3 class="text-2xl font-bold text-center mb-8">材料/グラム数</h3>
+  
+  <div class="flex flex-col md:flex-row gap-8 items-start">
+    <div class="flex-grow space-y-4">
+      <%# ヘッダー %>
+      <div class="grid grid-cols-10 gap-2 px-2 font-bold text-sm text-center">
+        <div class="col-span-4">材料名</div>
+        <div class="col-span-2">グラム</div>
+        <div class="col-span-3">手動金額<br>(細かく金額を知りたい方向け)</div>
+        <div class="col-span-1"></div>
+      </div>
 
-            <%= f.fields_for :recipe_ingredients do |ri_form| %>
-              <%# 各行を 'row' ターゲットとして認識させる %>
-              <div class="contents" data-recipe-calculation-target="row">
-    <div class="bg-white rounded p-1 shadow-sm">
-      <%# 1. Ingredientの選択肢を事前に作成する %>
-      <% options = Ingredient.all.map { |i| [i.name, i.id, { data: { price_per_gram: i.price_per_gram } }] } %>
-
-      <%# 2. f.select を使用する %>
-      <%= ri_form.select :ingredient_id, 
-          options, 
-          { include_blank: "選択..." }, 
-          { 
-            class: "w-full border-none focus:ring-0",
-            data: { 
-              action: "change->recipe-calculation#calculate",
-              recipe_calculation_target: "ingredientSelect"
-            } 
-          } %>
-    </div>            <div class="bg-white rounded p-1 shadow-sm flex items-center">
-              <%= ri_form.number_field :amount_gram, 
-                  class: "w-full border-none focus:ring-0", 
-                  data: { action: "input->recipe-calculation#calculate" } %>
-            </div>
-            <div class="bg-white rounded p-1 shadow-sm">
-              <%= ri_form.number_field :custom_price, 
-                  class: "w-full border-none focus:ring-0", 
-                  placeholder: "特売価格など",
-                  data: { action: "input->recipe-calculation#calculate" } %>
-            </div>
-          </div>
+      <%# 材料行のコンテナ %>
+      <div id="ingredient-fields" data-recipe-calculation-target="container" class="space-y-3">
+        <%= f.fields_for :recipe_ingredients do |ri_form| %>
+          <%= render "ingredient_fields", f: ri_form %>
         <% end %>
       </div>
 
-      <%# 合計金額表示エリア %>
-      <div class="w-full md:w-64 bg-white p-6 shadow-md flex flex-col items-center justify-center min-h-[150px]">
-        <span class="text-xl font-bold mb-2 border-b-2 border-gray-800 w-full text-center">合計金額</span>
-        <div class="text-3xl font-black mt-4 text-emerald-600">
-          <span data-recipe-calculation-target="totalDisplay">0</span> <span class="text-xl">円</span>
-        </div>
+      <%# 追加ボタン %>
+      <button type="button" data-action="click->recipe-calculation#add" class="w-full py-2 border-2 border-dashed border-gray-400 rounded text-gray-600 font-bold hover:bg-gray-100 transition-all">
+        + 材料を追加
+      </button>
+    </div>
+
+    <%# 合計金額表示エリア %>
+    <div class="w-full md:w-64 bg-white p-6 shadow-md flex flex-col items-center justify-center min-h-[150px] sticky top-4">
+      <span class="text-xl font-bold mb-2 border-b-2 border-gray-800 w-full text-center">合計金額</span>
+      <div class="text-3xl font-black mt-4 text-emerald-600">
+        <span data-recipe-calculation-target="totalDisplay">0</span> <span class="text-xl">円</span>
       </div>
+    </div>
+  </div>
+
+      <template data-recipe-calculation-target="template">
+        <%= f.fields_for :recipe_ingredients, RecipeIngredient.new, child_index: "NEW_RECORD" do |ri_form| %>
+          <%= render "ingredient_fields", f: ri_form %>
+        <% end %>
+      </template>
     </div>
   </div>
 
