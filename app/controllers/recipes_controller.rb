@@ -25,7 +25,7 @@ def create
   if @recipe.save
     redirect_to @recipe, notice: "レシピを投稿しました！"
   else
-    render :new
+    render :new, status: :unprocessable_entity
   end
 end
 
@@ -33,8 +33,7 @@ private
 
   def recipe_params
     params.require(:recipe).permit(
-      :title, :description, :convenience_food_id, :is_public,
-      steps: [],
+      :title, :description, :convenience_food_id, :is_public, :image, steps: [],
       recipe_ingredients_attributes: [:id, :ingredient_id, :amount_gram, :custom_price, :_destroy]
     )
   end

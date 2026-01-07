@@ -10,5 +10,8 @@ application.register("hello", HelloController)
 import RecipeCalculationController from "./recipe_calculation_controller"
 application.register("recipe-calculation", RecipeCalculationController)
 
+import RecipePreviewController from "./recipe_preview_controller"
+application.register("recipe-preview", RecipePreviewController)
+
 import RecipeStepController from "./recipe_step_controller"
 application.register("recipe-step", RecipeStepController)

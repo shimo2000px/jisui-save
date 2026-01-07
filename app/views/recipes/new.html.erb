@@ -2,17 +2,42 @@
   <h1 class="text-3xl font-bold text-center mb-8">MYレシピ新規作成</h1>
 
   <%= form_with(model: @recipe, class: "space-y-6") do |f| %>
-    
-    <%# --- 上段：基本情報エリア --- %>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      <%# 左側：写真アップロードエリア %>
-      <div class="bg-gray-200 aspect-square flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-400 relative group cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
-        <span class="text-lg font-bold text-gray-600">写真をのせる</span>
+      <% if @recipe.errors.any? %>
+    <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+      <div class="flex">
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-red-800">保存できませんでした：</h3>
+          <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
+            <% @recipe.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
       </div>
+    </div>
+  <% end %>
+    
+    <%# 画像 %>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8" data-controller="recipe-preview">
+        <div class="relative bg-gray-200 aspect-square flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-400 group cursor-pointer overflow-hidden">
+          
+          <img data-recipe-preview-target="preview" class="hidden absolute inset-0 w-full h-full object-cover">
+
+          <div data-recipe-preview-target="placeholder" class="flex flex-col items-center justify-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+            <span class="text-lg font-bold text-gray-600">写真をのせる</span>
+          </div>
+
+          <%= f.file_field :image, 
+              class: "absolute inset-0 opacity-0 cursor-pointer w-full h-full", 
+              data: { 
+                action: "change->recipe-preview#previewImage",
+                recipe_preview_target: "input"
+              } %>
+        </div>
 
       <%# 右側：テキスト情報エリア %>
       <div class="space-y-6 text-xl">
@@ -26,6 +51,7 @@
         <%# コンビニ比較エリア %>
         <div class="text-sm bg-blue-50 p-4 rounded-lg border border-blue-100">
           <%= f.label :convenience_food_id, "比較するコンビニ商品", class: "font-bold text-blue-700" %>
+          <span class="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-sm ml-1">必須</span>
           <% convenience_options = ConvenienceFood.all.map { |c| [c.name, c.id, { data: { price: c.price } }] } %>
           <%= f.select :convenience_food_id, 
               convenience_options, 
@@ -80,8 +106,12 @@
       <div class="flex flex-col md:flex-row gap-8 items-start">
         <div class="flex-grow space-y-4">
           <div class="grid grid-cols-10 gap-2 px-2 font-bold text-sm text-center">
-            <div class="col-span-4">材料名</div>
-            <div class="col-span-2">グラム</div>
+            <div class="col-span-4 flex justify-center items-center gap-1">
+              材料名<span class="bg-red-500 text-white text-[8px] px-1.5 py-0.5 rounded-sm ml-1">必須</span>
+            </div>
+            <div class="col-span-2 flex justify-center items-center gap-1">
+              グラム<span class="bg-red-500 text-white text-[8px] px-1.5 py-0.5 rounded-sm ml-1">必須</span>
+            </div>
             <div class="col-span-3 text-xs">手動金額</div>
             <div class="col-span-1"></div>
           </div>
