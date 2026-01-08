@@ -4,7 +4,7 @@ Rails.application.routes.draw do
       patch :toggle_public
     end
   end
-  
+
   get    "login",   to: "sessions#new"
   post   "login",   to: "sessions#create"
   delete "logout",  to: "sessions#destroy"

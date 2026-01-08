@@ -22,7 +22,7 @@ class RecipesController < ApplicationController
 
   def show
   @recipe = Recipe.find(params[:id])
-  
+
     if !@recipe.is_public? && @recipe.user != current_user
       redirect_to recipes_path, alert: "このレシピは非公開です"
     end
@@ -49,7 +49,7 @@ class RecipesController < ApplicationController
     return redirect_to recipes_path unless @recipe.user == current_user
 
     @recipe.update(is_public: !@recipe.is_public)
-    
+
     # Turboを使って一部分だけ書き換える（または一覧へ戻る）
     respond_to do |format|
       format.turbo_stream
