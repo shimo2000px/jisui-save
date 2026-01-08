@@ -1,32 +1,102 @@
-<div class="min-h-screen bg-orange-50/50 py-8 px-4">
-  <div class="max-w-3xl mx-auto space-y-4">
-    
-    <h2 class="text-2xl font-bold text-gray-800 text-center mb-8">公開レシピ一覧</h2>
+<div class="max-w-6xl mx-auto my-10 px-4">
+  <%# --- ヘッダー & フィルターセクション --- %>
+  <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
+    <div>
+      <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">
+        <%= @current_filter == "mine" ? "MYレシピ" : "みんなのレシピ" %>
+      </h1>
+      <p class="text-gray-500 text-sm mt-1">
+        <%= @current_filter == "mine" ? "あなたが作成したレシピ" : "みんなの公開レシピをチェック！" %>
+      </p>
+    </div>
 
-    <% @recipes.each do |recipe| %>
-      <div class="bg-white rounded-2xl shadow-sm border border-orange-100 flex items-center p-4 hover:shadow-md transition-shadow">
-        
-        <div class="flex-shrink-0 w-24 h-24 sm:w-32 sm:h-32 bg-orange-100 rounded-xl flex items-center justify-center text-4xl">
-          <%= recipe[:image] %>
+    <div class="flex items-center gap-4">
+      <%# 公開/自分切り替えタブ %>
+      <div class="flex bg-gray-100 p-1 rounded-xl shadow-inner">
+        <%= link_to "公開レシピ", recipes_path(filter: "public"), 
+            class: "px-6 py-2 rounded-lg text-sm font-bold transition-all #{@current_filter == "public" ? "bg-white text-green-600 shadow-sm" : "text-gray-500 hover:text-gray-700"}" %>
+        <%= link_to "自分のレシピ", recipes_path(filter: "mine"), 
+            class: "px-6 py-2 rounded-lg text-sm font-bold transition-all #{@current_filter == "mine" ? "bg-white text-green-600 shadow-sm" : "text-gray-500 hover:text-gray-700"}" %>
+      </div>
+
+      <%# 新規作成ボタン %>
+      <%= link_to new_recipe_path, class: "inline-flex items-center px-5 py-2.5 font-bold text-white bg-green-500 rounded-xl hover:bg-green-600 shadow-lg transition-all" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+        作る
+      <% end %>
+    </div>
+  </div>
+
+  <%# --- レシピ一覧グリッド --- %>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+    <% if @recipes.any? %>
+      <% @recipes.each do |recipe| %>
+        <div class="flex flex-col bg-white rounded-3xl border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-300 group relative">
+          
+          <%# --- 画像セクション --- %>
+          <div class="relative overflow-hidden rounded-t-3xl aspect-[4/3]">
+            <%= link_to recipe_path(recipe) do %>
+              <% if recipe.image.attached? %>
+                <%= image_tag recipe.image, class: "w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" %>
+              <% else %>
+                <div class="w-full h-full bg-gray-100 flex items-center justify-center text-gray-400">No Image</div>
+              <% end %>
+            <% end %>
+
+            <%# 節約額バッジ %>
+            <div class="absolute top-4 left-4 bg-orange-500 text-white py-1 px-4 rounded-full shadow-lg">
+              <span class="text-xs font-bold uppercase tracking-wider">節約額</span>
+              <span class="text-xl font-black ml-1">¥<%= number_with_delimiter(recipe.savings_amount) %></span>
+            </div>
+
+            <%# 非公開バッジ（自分のレシピ表示中かつ非公開の時だけ出す） %>
+            <% if @current_filter == "mine" && !recipe.is_public? %>
+              <div class="absolute top-4 right-4 bg-gray-900/70 backdrop-blur-sm text-white text-[10px] font-bold px-2 py-1 rounded-md">
+                非公開
+              </div>
+            <% end %>
+          </div>
+
+          <%# --- コンテンツセクション --- %>
+          <div class="p-6 flex-grow">
+            <div class="text-xs font-bold text-blue-500 mb-2 uppercase tracking-widest">
+              vs <%= recipe.convenience_food&.name || "コンビニ商品" %>
+            </div>
+            <h2 class="text-2xl font-black text-gray-900 mb-3 group-hover:text-green-600 transition-colors">
+              <%= link_to recipe.title, recipe_path(recipe) %>
+            </h2>
+            
+            <%# 金額比較エリア %>
+            <div class="grid grid-cols-2 gap-4 py-4 px-2 bg-gray-50 rounded-2xl mb-4">
+              <div class="text-center border-r border-gray-200">
+                <span class="text-[10px] text-gray-400 font-bold block uppercase">自炊コスト</span>
+                <span class="text-xl font-black text-emerald-600">¥<%= number_with_delimiter(recipe.total_cost) %></span>
+              </div>
+              <div class="text-center">
+                <span class="text-[10px] text-gray-400 font-bold block uppercase">コンビニ</span>
+                <span class="text-xl font-black text-gray-400 line-through decoration-red-400 decoration-2">¥<%= number_with_delimiter(recipe.convenience_food&.price || 0) %></span>
+              </div>
+            </div>
+          </div>
+
+          <%# --- アクションセクション --- %>
+          <div class="p-6 pt-0 mt-auto border-t border-gray-50">
+            <div class="flex items-center justify-between mt-4">
+              <button class="flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors group/btn">
+                <div class="p-2 bg-gray-100 rounded-full group-hover/btn:bg-orange-100">
+                  <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"></path></svg>
+                </div>
+                <span class="text-sm font-bold">作った！</span>
+              </button>
+              <%= link_to "詳細を見る →", recipe_path(recipe), class: "text-sm font-bold text-gray-900 hover:underline" %>
+            </div>
+          </div>
         </div>
-
-        <div class="flex-grow ml-4 sm:ml-6">
-          <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-1">
-            <%= recipe[:title] %>
-          </h3>
-          <p class="text-orange-600 font-bold text-base sm:text-lg">
-            ¥<%= recipe[:cost] %>
-          </p>
-        </div>
-
-        <div class="flex-shrink-0 ml-2">
-          <button class="bg-orange-400 hover:bg-orange-500 text-white font-bold py-2 px-4 sm:px-6 rounded-full text-sm sm:text-base shadow-sm transition-colors">
-            作った！
-          </button>
-        </div>
-
+      <% end %>
+    <% else %>
+      <div class="col-span-full py-20 text-center">
+        <p class="text-gray-400">表示できるレシピがまだありません。</p>
       </div>
     <% end %>
-
   </div>
 </div>

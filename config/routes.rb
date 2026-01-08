@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :recipes
+  resources :recipes do
+    member do
+      patch :toggle_public
+    end
+  end
+
   get    "login",   to: "sessions#new"
   post   "login",   to: "sessions#create"
   delete "logout",  to: "sessions#destroy"
