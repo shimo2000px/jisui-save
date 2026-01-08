@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :recipes do
     member do
+      get :copy
       patch :toggle_public
     end
   end

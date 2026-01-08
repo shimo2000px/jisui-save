@@ -8,7 +8,6 @@ class RecipesController < ApplicationController
                           .page(params[:page]).per(9)
       @current_filter = "mine"
     else
-      # デフォルト：公開レシピのみ（みんなのレシピ）
       @recipes = base_query.where(is_public: true)
                           .order(created_at: :desc)
                           .page(params[:page]).per(9)
@@ -18,8 +17,7 @@ class RecipesController < ApplicationController
 
   def new
     @recipe = Recipe.new
-    # 5つ分くらい最初から表示しておくと親切です
-    5.times { @recipe.recipe_ingredients.build }
+    3.times { @recipe.recipe_ingredients.build }
   end
 
   def show
@@ -47,16 +45,27 @@ class RecipesController < ApplicationController
 
   def toggle_public
     @recipe = Recipe.find(params[:id])
-    # 自分のレシピ以外は操作できないようにガード
     return redirect_to recipes_path unless @recipe.user == current_user
 
     @recipe.update(is_public: !@recipe.is_public)
 
-    # Turboを使って一部分だけ書き換える（または一覧へ戻る）
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to recipes_path }
     end
+  end
+
+  def copy
+    original_recipe = Recipe.includes(:recipe_ingredients).find(params[:id])
+    
+    @recipe = Recipe.new(original_recipe.attributes.except("id", "created_at", "updated_at"))
+
+    original_recipe.recipe_ingredients.each do |ri|
+      attrs = ri.attributes.slice("ingredient_id", "amount_gram", "custom_price")
+      @recipe.recipe_ingredients.build(attrs)
+    end
+
+    render :new
   end
 
 private
