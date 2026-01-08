@@ -22,5 +22,4 @@ class Recipe < ApplicationRecord
   def set_default_is_public
     self.is_public = true if self.is_public.nil?
   end
-
 end

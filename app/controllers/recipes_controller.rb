@@ -1,5 +1,5 @@
 class RecipesController < ApplicationController
-  before_action :set_recipe, only: [:show, :edit, :update, :destroy]
+  before_action :set_recipe, only: [ :show, :edit, :update, :destroy ]
 
   def index
     base_query = Recipe.with_attached_image.includes(:convenience_food)
@@ -33,7 +33,7 @@ class RecipesController < ApplicationController
 def create
   # 1. 保存用のパラメータを取得
   processed_params = recipe_params
-  
+
   # 2. 配列で届いている steps を文字列に合体させて、上書きする
   if params[:recipe][:steps].is_a?(Array)
     processed_params[:steps] = params[:recipe][:steps].reject(&:blank?).join("\n")
@@ -49,7 +49,7 @@ def create
     @recipe.steps = @recipe.steps.to_s.split("\n")
     render :new, status: :unprocessable_entity
   end
-end  
+end
 
 def edit
   end
@@ -57,7 +57,7 @@ def edit
 
 def update
   processed_params = recipe_params
-  
+
   if params[:recipe][:steps].is_a?(Array)
     processed_params[:steps] = params[:recipe][:steps].reject(&:blank?).join("\n")
   end
@@ -69,7 +69,7 @@ def update
     @recipe.steps = @recipe.steps.to_s.split("\n")
     render :edit, status: :unprocessable_entity
   end
-end 
+end
 
   def destroy
     @recipe.destroy
@@ -90,7 +90,7 @@ end
 
   def copy
     original_recipe = Recipe.includes(:recipe_ingredients).find(params[:id])
-    
+
     @recipe = Recipe.new(original_recipe.attributes.except("id", "created_at", "updated_at"))
 
     original_recipe.recipe_ingredients.each do |ri|
@@ -115,10 +115,9 @@ private
 
   def recipe_params
     params.require(:recipe).permit(
-      :title, :description, :convenience_food_id, :is_public, :image, 
+      :title, :description, :convenience_food_id, :is_public, :image,
       steps: [], # 配列として送られてくるので、一旦ここで配列として許可する
       recipe_ingredients_attributes: [ :id, :ingredient_id, :amount_gram, :custom_price, :_destroy ]
     )
   end
 end
-
