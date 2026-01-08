@@ -17,7 +17,7 @@ class RecipesController < ApplicationController
 def create
   @recipe = Recipe.new(recipe_params)
   @recipe.user_id = current_user.id
-  
+
   if params[:recipe][:steps].is_a?(Array)
     @recipe.steps = params[:recipe][:steps].select(&:present?).join("\n")
   end
@@ -34,7 +34,7 @@ private
   def recipe_params
     params.require(:recipe).permit(
       :title, :description, :convenience_food_id, :is_public, :image, steps: [],
-      recipe_ingredients_attributes: [:id, :ingredient_id, :amount_gram, :custom_price, :_destroy]
+      recipe_ingredients_attributes: [ :id, :ingredient_id, :amount_gram, :custom_price, :_destroy ]
     )
   end
 end
