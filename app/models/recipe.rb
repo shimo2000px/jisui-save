@@ -8,16 +8,18 @@ class Recipe < ApplicationRecord
   after_initialize :set_default_is_public, if: :new_record?
 
   def total_cost
-    recipe_ingredients.to_a.sum(&:total_price)
+    recipe_ingredients.to_a.sum(&:total_price) || 0
   end
 
   def savings_amount
-    convenience_food.price - total_cost
+    return 0 if convenience_food.nil?
+
+    (convenience_food.price || 0) - (total_cost || 0)
   end
 
   private
 
   def set_default_is_public
-    self.is_public ||= false
+    self.is_public = true if self.is_public.nil?
   end
 end

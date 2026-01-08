@@ -1,0 +1,129 @@
+<%# フォーム全体を囲む div。Stimulusコントローラーもここに配置 %>
+<div class="max-w-4xl mx-auto my-10 px-4 font-sans text-gray-800" data-controller="recipe-calculation">
+  
+  <%= form_with(model: recipe, class: "space-y-6") do |f| %>
+    <% if recipe.errors.any? %>
+      <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+        <h3 class="text-sm font-medium text-red-800">保存できませんでした：</h3>
+        <ul class="mt-2 text-sm text-red-700 list-disc list-inside">
+          <% recipe.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <%# --- 上段：画像と基本情報 --- %>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8" data-controller="recipe-preview">
+      <div class="relative bg-gray-200 aspect-square flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-400 group cursor-pointer overflow-hidden">
+        <%# 編集時は既存の画像を表示、新規なら隠す %>
+        <img data-recipe-preview-target="preview" 
+            src="<%= recipe.image.attached? ? url_for(recipe.image) : '' %>" 
+            class="<%= recipe.image.attached? ? '' : 'hidden' %> absolute inset-0 w-full h-full object-cover">
+
+        <div data-recipe-preview-target="placeholder" class="<%= recipe.image.attached? ? 'hidden' : 'flex' %> flex flex-col items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-500 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+          </svg>
+          <span class="text-lg font-bold text-gray-600">写真をのせる</span>
+        </div>
+
+        <%= f.file_field :image, class: "absolute inset-0 opacity-0 cursor-pointer w-full h-full", data: { action: "change->recipe-preview#previewImage", recipe_preview_target: "input" } %>
+      </div>
+
+      <div class="space-y-6 text-xl">
+        <div class="relative border-b-2 border-gray-400 pb-2">
+          <%= f.text_field :title, placeholder: "料理名", class: "w-full bg-transparent border-none focus:ring-0 text-2xl font-bold placeholder-gray-400" %>
+        </div>
+        <div class="bg-gray-200 p-4 rounded-sm min-h-[150px]">
+          <%= f.text_area :description, placeholder: "商品説明", class: "w-full bg-transparent border-none focus:ring-0 text-lg placeholder-gray-500 h-full resize-none" %>
+        </div>
+        
+        <div class="text-sm bg-blue-50 p-4 rounded-lg border border-blue-100">
+          <%= f.label :convenience_food_id, "比較するコンビニ商品", class: "font-bold text-blue-700" %>
+          <% convenience_options = ConvenienceFood.all.map { |c| [c.name, c.id, { data: { price: c.price } }] } %>
+          <%= f.select :convenience_food_id, convenience_options, { include_blank: "比較対象を選択してください" }, { class: "w-full rounded border-gray-300 mt-1", data: { action: "change->recipe-calculation#updateComparison", recipe_calculation_target: "convenienceSelect" } } %>
+          <div class="mt-2 text-right text-gray-600 font-bold">
+            コンビニ価格: <span data-recipe-calculation-target="conveniencePriceDisplay"><%= recipe.convenience_food&.price || 0 %></span> 円
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%# --- 中段：作り方（編集時も考慮） --- %>
+    <div class="bg-white p-8 rounded-2xl border-2 border-gray-100 shadow-sm" data-controller="recipe-step">
+      <h3 class="text-2xl font-bold text-center mb-8 text-gray-700">作り方</h3>
+      <div class="space-y-6" data-recipe-step-target="container">
+        <% current_steps = Array(recipe.steps).flat_map { |s| s.to_s.split("\n") }.reject(&:blank?) %>
+        <% current_steps = [""] if current_steps.empty? %>
+
+        <% current_steps = recipe.steps.to_s.split("\n").reject(&:blank?) %>
+
+        <% current_steps.each_with_index do |step, index| %>
+          <div class="flex gap-4 items-start step-item">
+            <div class="flex-none ..."><%= index + 1 %></div>
+            <div class="flex-grow">
+              <%# 修正ポイント: 文字列としてそのまま表示 %>
+              <%= text_area_tag "recipe[steps][]", step, 
+                  placeholder: "手順#{index + 1}を入力...", 
+                  class: "w-full bg-gray-50 border-gray-200 rounded-xl p-4 focus:bg-white focus:ring-2 focus:ring-orange-400 transition-all" %>
+            </div>
+            <button type="button" data-action="click->recipe-step#remove" ...>
+              <%# ゴミ箱アイコン %>
+            </button>
+          </div>
+        <% end %>
+      </div>
+      <button type="button" data-action="click->recipe-step#add" class="mt-6 w-full py-3 border-2 border-dashed border-gray-300 rounded-xl text-gray-400 font-bold hover:bg-gray-50 transition-all">+ ステップを追加する</button>
+      <template data-recipe-step-target="template">
+        <div class="flex gap-4 items-start mt-6 step-item animate-in fade-in duration-300">
+          <div class="flex-none w-10 h-10 bg-orange-100 text-orange-600 font-black rounded-full flex items-center justify-center text-xl mt-1 step-number">NEW_INDEX</div>
+          <div class="flex-grow">
+            <%= text_area_tag "recipe[steps][]", nil, placeholder: "手順NEW_INDEXを入力...", class: "w-full bg-gray-50 border-gray-200 rounded-xl p-4 focus:bg-white focus:ring-2 focus:ring-orange-400 transition-all" %>
+          </div>
+          <button type="button" data-action="click->recipe-step#remove" class="mt-3 text-gray-400 hover:text-red-500 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+          </button>
+        </div>
+      </template>
+    </div>
+
+    <%# --- 下段：材料計算エリア --- %>
+    <div class="bg-gray-200 p-8 rounded-sm relative">
+      <h3 class="text-2xl font-bold text-center mb-8">材料/グラム数</h3>
+      <div class="flex flex-col md:flex-row gap-8 items-start">
+        <div class="flex-grow space-y-4">
+          <div data-recipe-calculation-target="container" class="space-y-3">
+            <%= f.fields_for :recipe_ingredients do |ri_form| %>
+              <%= render "ingredient_fields", f: ri_form %>
+            <% end %>
+          </div>
+          <button type="button" data-action="click->recipe-calculation#add" class="w-full py-2 border-2 border-dashed border-gray-400 rounded text-gray-600 font-bold hover:bg-gray-100 transition-all">+ 材料を追加</button>
+        </div>
+
+        <div class="w-full md:w-64 bg-white p-6 shadow-md flex flex-col items-center justify-center min-h-[150px] sticky top-4">
+          <span class="text-xl font-bold mb-2 border-b-2 border-gray-800 w-full text-center">合計金額</span>
+          <div class="text-3xl font-black mt-4 text-emerald-600">
+            <span data-recipe-calculation-target="totalDisplay"><%= recipe.total_cost || 0 %></span> <span class="text-xl">円</span>
+          </div>
+          <div class="mt-6 pt-4 border-t border-dashed border-gray-300 w-full text-center">
+            <span class="text-sm font-bold text-gray-500">今回の節約額</span>
+            <div class="text-2xl font-black text-orange-500 mt-1">
+              <span data-recipe-calculation-target="savingsDisplay"><%= recipe.savings_amount || 0 %></span> <span class="text-lg">円</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <template data-recipe-calculation-target="template">
+        <%# RecipeIngredient.new ではなく、recipe.recipe_ingredients.build を使うのが Rails の正攻法です %>
+        <%= f.fields_for :recipe_ingredients, recipe.recipe_ingredients.build, child_index: "NEW_RECORD" do |ri_form| %>
+          <%= render "ingredient_fields", f: ri_form %>
+        <% end %>
+      </template>
+    </div>
+
+    <div class="flex justify-center pt-8">
+      <%= f.submit recipe.new_record? ? "登録する" : "更新する", class: "bg-green-400 hover:bg-green-500 text-white font-bold text-2xl py-3 px-20 rounded-sm shadow-lg transition-all active:transform active:scale-95" %>
+    </div>
+  <% end %>
+</div>
