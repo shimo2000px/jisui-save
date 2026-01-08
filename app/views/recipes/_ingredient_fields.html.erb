@@ -1,6 +1,6 @@
 <div class="grid grid-cols-10 gap-2 items-center ingredient-row">
   <div class="col-span-4 bg-white rounded p-1 shadow-sm">
-    <% options = Ingredient.all.map { |i| [i.name, i.id, { data: { price_per_gram: i.price_per_gram } }] } %>
+    <% options = Ingredient.all.map { |i| [i.name, i.id, { data: { price_per_gram: i&.price_per_gram || 0 } }] } %>
     <%= f.select :ingredient_id, options, { include_blank: "選択..." }, 
         { class: "w-full border-none focus:ring-0 text-sm", data: { action: "change->recipe-calculation#calculate" } } %>
   </div>

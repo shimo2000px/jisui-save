@@ -102,6 +102,22 @@
             このレシピを元に作成
           <% end %>
 
+          <% if @recipe.user == current_user %>
+            <div class="flex gap-4 mt-8 pt-8 border-t border-gray-100">
+              <%# 編集ボタン %>
+              <%= link_to edit_recipe_path(@recipe), class: "flex-1 text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-xl transition-all" do %>
+                編集する
+              <% end %>
+
+              <%# 削除ボタン %>
+              <%= link_to recipe_path(@recipe), 
+                  data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, 
+                  class: "flex-1 text-center bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 rounded-xl transition-all" do %>
+                削除する
+              <% end %>
+            </div>
+          <% end %>
+
           <%= link_to "一覧に戻る", recipes_path, class: "block text-center text-gray-400 font-bold hover:text-gray-600 py-2" %>
         </div>
       </div>

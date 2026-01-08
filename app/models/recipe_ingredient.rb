@@ -3,6 +3,8 @@ class RecipeIngredient < ApplicationRecord
   belongs_to :ingredient
 
   def total_price
-    custom_price || (ingredient.price_per_gram * amount_gram).round
+    return 0 if ingredient.nil?
+
+    custom_price || ((ingredient&.price_per_gram || 0) * (amount_gram || 0)).round
   end
 end
