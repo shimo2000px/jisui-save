@@ -5,11 +5,13 @@ class RecipesController < ApplicationController
     if params[:filter] == "mine" && current_user
       @recipes = base_query.where(user_id: current_user.id)
                           .order(created_at: :desc)
+                          .page(params[:page]).per(9)
       @current_filter = "mine"
     else
       # デフォルト：公開レシピのみ（みんなのレシピ）
       @recipes = base_query.where(is_public: true)
                           .order(created_at: :desc)
+                          .page(params[:page]).per(9)
       @current_filter = "public"
     end
   end
