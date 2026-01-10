@@ -4,7 +4,7 @@ class CookingRecordsController < ApplicationController
 
   def create
     @recipe = Recipe.find(params[:recipe_id])
-    
+
     # ログイン中のユーザー（current_user）に関連付けて保存
     @cooking_record = current_user.cooking_records.build(
       recipe: @recipe,
