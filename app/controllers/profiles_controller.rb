@@ -1,6 +1,7 @@
 class ProfilesController < ApplicationController
   def show
     @user = current_user
+    @monthly_stats = @user.monthly_cooking_stats
   end
 
   def edit

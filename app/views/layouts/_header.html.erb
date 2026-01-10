@@ -11,6 +11,7 @@
       <nav class="flex items-center gap-4">
         <% if logged_in? && !guest_user? %>
           <%= link_to "使い方", "#", class: "bg-emerald-400 text-white hover:bg-emerald-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>
+          <%= link_to "レシピ一覧", root_path, class: "bg-blue-300 text-white hover:bg-blue-400 px-4 py-2 rounded-lg text-sm font-medium transition" %>
           <%= link_to "レシピ投稿", new_recipe_path, class: "bg-orange-300 text-white hover:bg-orange-400 px-4 py-2 rounded-lg text-sm font-medium transition" %>
           <%= link_to "プロフィール", profile_path, class: "bg-pink-300 text-white hover:bg-pink-400 px-3 py-2 rounded-lg text-sm font-medium transition" %>
           <%= button_to "ログアウト", logout_path, 
