@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       get :copy
       patch :toggle_public
     end
+    resources :cooking_records, only: [ :create ]
   end
 
   get    "login",   to: "sessions#new"
