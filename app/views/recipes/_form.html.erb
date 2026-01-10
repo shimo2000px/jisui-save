@@ -138,5 +138,11 @@
     <div class="flex justify-center pt-8">
       <%= f.submit recipe.new_record? ? "登録する" : "更新する", class: "bg-green-400 hover:bg-green-500 text-white font-bold text-2xl py-3 px-20 rounded-sm shadow-lg transition-all active:transform active:scale-95" %>
     </div>
+
+    <%= link_to recipes_path, class: "block text-center text-gray-500 font-bold bg-gray-100 hover:bg-blue-200 py-4 rounded-2xl transition-colors mt-4" do %>
+      <div class="flex items-center justify-center gap-2">
+        一覧に戻る
+      </div>
+    <% end %>        
   <% end %>
 </div>

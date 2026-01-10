@@ -89,10 +89,7 @@
 
         <%# アクションボタン %>
         <div class="mt-8 space-y-4">
-          <button class="w-full bg-green-500 hover:bg-green-600 text-white font-black py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-3">
-            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"></path></svg>
-            作った！ボタン (実装予定)
-          </button>
+            <%= render "cooking_button", recipe: @recipe %>        
           
           <%# コピーして作成%>
           <%= link_to copy_recipe_path(@recipe), class: "w-full bg-blue-500 hover:bg-blue-600 text-white font-black py-4 rounded-2xl shadow-lg transition-all flex items-center justify-center gap-3" do %>
@@ -105,7 +102,7 @@
           <% if @recipe.user == current_user %>
             <div class="mt-8 pt-8 border-t border-gray-100">
               <div class="flex items-center justify-between mb-6 p-4 bg-gray-50 rounded-2xl">
-                <span class="text-sm font-bold text-gray-500 uppercase">公開設定</span>
+                <span class="text-sm font-bold text-gray-500 uppercase">公開ステータス</span>
                 <% if @recipe.is_public %>
                   <span class="flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">
                     <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
@@ -134,7 +131,7 @@
           <% if @recipe.user == current_user %>
             <div class="flex gap-4 mt-8 pt-8 border-t border-gray-100">
               <%# 編集ボタン %>
-              <%= link_to edit_recipe_path(@recipe), class: "flex-1 text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-xl transition-all" do %>
+              <%= link_to edit_recipe_path(@recipe), class: "flex-1 text-center bg-green-100 hover:bg-green-200 text-gray-700 font-bold py-3 rounded-xl transition-all" do %>
                 編集する
               <% end %>
 
@@ -147,7 +144,11 @@
             </div>
           <% end %>
 
-          <%= link_to "一覧に戻る", recipes_path, class: "block text-center text-gray-400 font-bold hover:text-gray-600 py-2" %>
+          <%= link_to recipes_path, class: "block text-center text-gray-500 font-bold bg-gray-100 hover:bg-blue-200 py-4 rounded-2xl transition-colors mt-4" do %>
+            <div class="flex items-center justify-center gap-2">
+              一覧に戻る
+            </div>
+          <% end %>        
         </div>
       </div>
     </div>

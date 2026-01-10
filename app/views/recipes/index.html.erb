@@ -81,15 +81,7 @@
 
           <%# --- アクションセクション --- %>
           <div class="p-6 pt-0 mt-auto border-t border-gray-50">
-            <div class="flex items-center justify-between mt-4">
-              <button class="flex items-center gap-2 text-gray-400 hover:text-orange-500 transition-colors group/btn">
-                <div class="p-2 bg-gray-100 rounded-full group-hover/btn:bg-orange-100">
-                  <svg class="w-5 h-5 fill-current" viewBox="0 0 20 20"><path d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"></path></svg>
-                </div>
-                <span class="text-sm font-bold">作った！</span>
-              </button>
-              <%= link_to "詳細を見る →", recipe_path(recipe), class: "text-sm font-bold text-gray-900 hover:underline" %>
-            </div>
+            <%= render "cooking_button", recipe: recipe %>
           </div>
         </div>
       <% end %>

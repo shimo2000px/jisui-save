@@ -2,7 +2,7 @@ class RecipesController < ApplicationController
   before_action :set_recipe, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    base_query = Recipe.with_attached_image.includes(:convenience_food)
+    base_query = Recipe.with_attached_image.includes(:cooking_records, :convenience_food).all
 
     if params[:filter] == "mine" && current_user
       @recipes = base_query.where(user_id: current_user.id)
