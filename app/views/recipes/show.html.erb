@@ -103,6 +103,35 @@
           <% end %>
 
           <% if @recipe.user == current_user %>
+            <div class="mt-8 pt-8 border-t border-gray-100">
+              <div class="flex items-center justify-between mb-6 p-4 bg-gray-50 rounded-2xl">
+                <span class="text-sm font-bold text-gray-500 uppercase">公開設定</span>
+                <% if @recipe.is_public %>
+                  <span class="flex items-center gap-1.5 px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    公開中
+                  </span>
+                <% else %>
+                  <span class="flex items-center gap-1.5 px-3 py-1 bg-gray-200 text-gray-600 rounded-full text-xs font-bold">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                    </svg>
+                    非公開（自分のみ）
+                  </span>
+                <% end %>
+              </div>
+            </div>
+
+            <p class="mt-2 ml-1 text-[11px] text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 inline mr-0.5 mb-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              公開設定は、下の「編集する」ボタンから変更できます
+            </p>
+          <% end %>
+
+
+          <% if @recipe.user == current_user %>
             <div class="flex gap-4 mt-8 pt-8 border-t border-gray-100">
               <%# 編集ボタン %>
               <%= link_to edit_recipe_path(@recipe), class: "flex-1 text-center bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-xl transition-all" do %>
