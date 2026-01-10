@@ -117,7 +117,7 @@ private
   def recipe_params
     params.require(:recipe).permit(
       :title, :description, :convenience_food_id, :is_public, :image,
-      steps: [], 
+      steps: [],
       recipe_ingredients_attributes: [ :id, :ingredient_id, :amount_gram, :custom_price, :_destroy ]
     )
   end
