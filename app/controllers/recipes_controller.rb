@@ -62,7 +62,6 @@ def update
     processed_params[:steps] = params[:recipe][:steps].reject(&:blank?).join("\n")
   end
 
-  # 3. 加工した processed_params を使って更新
   if @recipe.update(processed_params)
     redirect_to recipe_path(@recipe), notice: "レシピを更新しました！"
   else
@@ -80,11 +79,13 @@ end
     @recipe = Recipe.find(params[:id])
     return redirect_to recipes_path unless @recipe.user == current_user
 
-    @recipe.update(is_public: !@recipe.is_public)
+    # params[:is_public] が送られてきたらその値に、なければ現在の状態を反転
+    new_status = params[:is_public].present? ? params[:is_public] == "true" : !@recipe.is_public
+    @recipe.update(is_public: new_status)
 
     respond_to do |format|
       format.turbo_stream
-      format.html { redirect_to recipes_path }
+      format.html { redirect_back(fallback_location: recipes_path) }
     end
   end
 
@@ -116,7 +117,7 @@ private
   def recipe_params
     params.require(:recipe).permit(
       :title, :description, :convenience_food_id, :is_public, :image,
-      steps: [], # 配列として送られてくるので、一旦ここで配列として許可する
+      steps: [], 
       recipe_ingredients_attributes: [ :id, :ingredient_id, :amount_gram, :custom_price, :_destroy ]
     )
   end
