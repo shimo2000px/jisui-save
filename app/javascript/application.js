@@ -1,7 +1,9 @@
-// Entry point for the build script in your package.json
 import "@hotwired/turbo-rails"
 import "./controllers"
 import Chart from 'chart.js/auto';
+import annotationPlugin from 'chartjs-plugin-annotation'; // 将来的に目標設定と紐つかせるため
+
+Chart.register(annotationPlugin); // 将来的に目標設定と紐つかせるため
 
 document.addEventListener("turbo:load", () => {
   const ctx = document.getElementById("savingsChart");
@@ -20,7 +22,7 @@ document.addEventListener("turbo:load", () => {
       datasets: [{
         label: "累計節約額",
         data: values,
-        borderColor: "#f97316", // orange-500
+        borderColor: "#f97316",
         backgroundColor: "rgba(249, 115, 22, 0.1)",
         borderWidth: 3,
         fill: true,
