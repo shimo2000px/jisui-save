@@ -4,7 +4,7 @@ class Recipe < ApplicationRecord
   has_one_attached :image
   has_many :recipe_ingredients, dependent: :destroy
   has_many :ingredients, through: :recipe_ingredients
-  has_many :cooking_records, dependent: :destroy
+  has_many :cooking_records, dependent: :nullify
   accepts_nested_attributes_for :recipe_ingredients, allow_destroy: true, reject_if: :all_blank
   after_initialize :set_default_is_public, if: :new_record?
 
