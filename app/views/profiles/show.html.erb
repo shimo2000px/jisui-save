@@ -103,11 +103,17 @@
         <% end %>
       </div>
 
-      <%# グラフ用エリア %>
-      <div class="bg-gray-50 border-2 border-dashed border-gray-200 rounded-2xl p-10 flex flex-col items-center justify-center text-gray-400">
-        <span class="text-4xl mb-2">📊</span>
-        <p class="text-sm font-medium">グラフ機能（準備中）</p>
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
+        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+          <span>📈</span> 自炊節約の歩み
+        </h3>
+        <div class="h-64">
+          <canvas id="savingsChart" 
+                  data-labels="<%= @chart_labels.to_json %>" 
+                  data-values="<%= @chart_values.to_json %>">
+          </canvas>
+        </div>
       </div>
-    </div> <%# relative px-6 pb-6 の閉じ %>
-  </div> <%# bg-white shadow の閉じ %>
-</div> <%# max-w-3xl の閉じ %>
+    </div>
+  </div>
+</div>
