@@ -23,6 +23,8 @@ Rails.application.routes.draw do
   get "privacy", to: "static_pages#privacy", as: :privacy
   get "contact", to: "static_pages#contact", as: :contact
 
+  get "guide", to: "static_pages#guide",as: :guide
+
   root "recipes#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

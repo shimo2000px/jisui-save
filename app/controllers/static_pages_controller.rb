@@ -1,5 +1,5 @@
 class StaticPagesController < ApplicationController
-  skip_before_action :require_login, only: [ :terms, :privacy, :contact ], raise: false
+  skip_before_action :require_login, only: [ :terms, :privacy, :contact, :guide ], raise: false
 
   def terms
   end

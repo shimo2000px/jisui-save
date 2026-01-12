@@ -1,0 +1,67 @@
+<div class="max-w-4xl mx-auto my-12 px-4 pb-24 font-sans text-stone-800">
+  <div class="text-center mb-16">
+    <span class="bg-orange-500 text-white text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest">How to use</span>
+    <h1 class="text-3xl font-black text-stone-800 mt-4">自炊save の使い方</h1>
+    <p class="text-stone-400 font-medium mt-2">賢く自炊して、お得に楽しもう！</p>
+  </div>
+
+  <div class="space-y-24">
+    <div class="flex flex-col md:flex-row items-center gap-10">
+      <div class="w-full md:w-1/2">
+        <div class="relative bg-orange-100 rounded-[3rem] p-4 shadow-inner">
+          <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white aspect-[9/16] flex items-center justify-center text-stone-300">
+            <%= image_tag "guide/guide-1.jpg", class: "w-full h-full object-cover" %>
+          </div>
+          <div class="absolute -top-4 -left-4 w-12 h-12 bg-orange-500 text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg">1</div>
+        </div>
+      </div>
+      <div class="w-full md:w-1/2 space-y-4">
+        <h2 class="text-2xl font-black text-stone-800">コンビニ商品と比較する</h2>
+        <p class="text-stone-600 leading-relaxed font-medium">
+          作りたい料理に近いコンビニ商品を選びましょう。<br>自動的に価格が表示され、自炊との差額がリアルタイムで計算されます。
+        </p>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row-reverse items-center gap-10">
+      <div class="w-full md:w-1/2">
+        <div class="relative bg-orange-100 rounded-[3rem] p-4 shadow-inner">
+          <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white aspect-[9/16] flex items-center justify-center text-stone-300">
+            <%= image_tag "guide/guide-2.jpg", class: "w-full h-full object-cover" %>
+          </div>
+          <div class="absolute -top-4 -right-4 w-12 h-12 bg-orange-500 text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg">2</div>
+        </div>
+      </div>
+      <div class="w-full md:w-1/2 space-y-4 text-right md:text-left">
+        <h2 class="text-2xl font-black text-stone-800">材料とグラムを入れるだけ</h2>
+        <p class="text-stone-600 leading-relaxed font-medium">
+          使った材料と重さを入力すると、自動でコストを算出。「目安表」を使えば、計りがなくてもざっくり計算できます。
+        </p>
+      </div>
+    </div>
+
+    <div class="flex flex-col md:flex-row items-center gap-10">
+      <div class="w-full md:w-1/2">
+        <div class="relative bg-orange-100 rounded-[3rem] p-4 shadow-inner">
+          <%# ここにSTEP1,2と同じ白枠 div を追加しました %>
+          <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white aspect-[9/16] flex items-center justify-center text-stone-300">
+            <%= image_tag "guide/guide-3.jpg", class: "w-full h-full object-cover" %>
+          </div>
+          <div class="absolute -top-4 -left-4 w-12 h-12 bg-orange-500 text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg">3</div>
+        </div>
+      </div>
+      <div class="w-full md:w-1/2 space-y-4">
+        <div class="inline-block bg-orange-100 text-orange-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">Achievement</div>
+        <h2 class="text-2xl font-black text-stone-800">節約の成果をチェック！</h2>
+        <p class="text-stone-600 leading-relaxed font-medium">
+          プロフィール画面では、これまでに投稿したレシピの「合計節約金額」が自動で集計されます。<br><br>
+          「今月はこれだけお得になった！」というのが一目でわかるので、楽しく自炊を続けられます。
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-24 text-center">
+    <%= link_to "さっそく作ってみる", new_recipe_path, class: "inline-block bg-orange-500 hover:bg-orange-600 text-white font-black px-12 py-5 rounded-[2rem] shadow-xl shadow-orange-200 transition-all active:scale-95 text-xl" %>
+  </div>
+</div>
