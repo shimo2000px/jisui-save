@@ -1,17 +1,31 @@
-<div class="fixed bottom-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-t border-gray-100 md:hidden">
-  <div class="flex justify-around items-center h-16">
-    <%= link_to root_path, class: "flex flex-col items-center text-gray-400" do %>
-      <span class="text-xl">🏠</span>
-      <span class="text-[10px]">ホーム</span>
+<div class="fixed bottom-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-t border-orange-100/50 pb-safe md:hidden shadow-[0_-5px_20px_rgba(251,146,60,0.05)]">
+  <div class="flex justify-around items-center h-16 relative">
+    
+    <%# ホーム（一覧） %>
+    <%= link_to root_path, class: "flex flex-col items-center gap-0.5 transition-colors #{current_page?(root_path) ? 'text-orange-600' : 'text-stone-400'}" do %>
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+      </svg>
+      <span class="text-[10px] font-bold">ホーム</span>
     <% end %>
-    <%= link_to new_recipe_path, class: "flex flex-col items-center -mt-8" do %>
-      <div class="bg-orange-500 p-4 rounded-full shadow-lg border-4 border-white text-white">
-        <span class="text-2xl">➕</span>
+
+    <%# 中央：投稿ボタン（少し浮かせる） %>
+    <%= link_to new_recipe_path, class: "flex flex-col items-center -mt-10 transition-transform active:scale-90" do %>
+      <div class="bg-gradient-to-br from-orange-400 to-orange-600 p-4 rounded-full shadow-lg shadow-orange-200 border-4 border-white text-white">
+        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+        </svg>
       </div>
+      <span class="text-[10px] font-bold text-orange-600 mt-1">投稿</span>
     <% end %>
-    <%= link_to profile_path, class: "flex flex-col items-center text-gray-400" do %>
-      <span class="text-xl">👤</span>
-      <span class="text-[10px]">マイページ</span>
+
+    <%# マイページ %>
+    <%= link_to profile_path, class: "flex flex-col items-center gap-0.5 transition-colors #{current_page?(profile_path) ? 'text-orange-600' : 'text-stone-400'}" do %>
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+      </svg>
+      <span class="text-[10px] font-bold">マイページ</span>
     <% end %>
+
   </div>
 </div>

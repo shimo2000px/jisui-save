@@ -1,23 +1,27 @@
-<header class="bg-white border-b border-orange-100 shadow-sm sticky top-0 z-40" data-controller="menu">
+<header class="bg-white/90 backdrop-blur-md border-b border-orange-100 shadow-sm sticky top-0 z-40" data-controller="menu">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 items-center">
       
+      <%# ロゴエリア：オレンジのグラデーション %>
       <div class="flex-shrink-0 flex items-center">
-        <%= link_to root_path, class: "text-2xl font-bold text-orange-600 flex items-center gap-2" do %>
-          <span>🍳</span>
-          <span class="tracking-tight">自炊save</span>
+        <%= link_to root_path, class: "group flex items-center gap-2" do %>
+          <span class="text-2xl transform group-hover:rotate-12 transition-transform">🍳</span>
+          <span class="text-xl font-black bg-clip-text text-transparent bg-gradient-to-r from-orange-600 to-amber-500 tracking-tighter">
+            自炊save
+          </span>
         <% end %>
       </div>
 
-      <nav class="hidden md:flex items-center gap-4">
+      <nav class="hidden md:flex items-center gap-1">
         <% if logged_in? && !guest_user? %>
-          <%= link_to "使い方", "#", class: "bg-emerald-400 text-white hover:bg-emerald-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>
-          <%= link_to "レシピ一覧", root_path, class: "bg-blue-300 text-white hover:bg-blue-400 px-4 py-2 rounded-lg text-sm font-medium transition" %>
-          <%= link_to "レシピ投稿", new_recipe_path, class: "bg-orange-300 text-white hover:bg-orange-400 px-4 py-2 rounded-lg text-sm font-medium transition" %>
-          <%= link_to "プロフィール", profile_path, class: "bg-pink-300 text-white hover:bg-pink-400 px-3 py-2 rounded-lg text-sm font-medium transition" %>
-          <%= button_to "ログアウト", logout_path, method: :delete, class: "text-white bg-red-400 hover:bg-red-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>       
+          <%= link_to "使い方", "#", class: "text-stone-600 hover:text-orange-600 hover:bg-orange-100/50 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200" %>
+          <%= link_to "レシピ一覧", root_path, class: "text-stone-600 hover:text-orange-600 hover:bg-orange-100/50 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200" %>
+          <%= link_to "レシピ投稿", new_recipe_path, class: "text-stone-600 hover:text-orange-600 hover:bg-orange-100/50 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200" %>
+          <%= link_to "プロフィール", profile_path, class: "text-stone-600 hover:text-orange-600 hover:bg-orange-100/50 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200" %>
+          <div class="h-4 w-[1px] bg-stone-200 mx-2"></div>
+          <%= button_to "ログアウト", logout_path, method: :delete, class: "text-stone-400 hover:text-red-500 hover:bg-red-200 px-3 py-2 rounded-xl text-xs font-bold transition-all duration-200" %>       
         <% else %>
-          <%= link_to "ログイン", login_path, class: "bg-blue-300 text-white hover:bg-blue-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>
+          <%= link_to "ログイン", login_path, class: "bg-orange-500 text-white hover:bg-orange-600 px-6 py-2 rounded-xl text-sm font-bold transition-all shadow-md shadow-orange-100 active:scale-95" %>
         <% end %>
       </nav>
 
