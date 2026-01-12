@@ -1,0 +1,55 @@
+<%# app/views/shared/_ingredient_modal.html.erb %>
+<div data-modal-target="container" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
+  <div class="bg-white rounded-[2.5rem] w-full max-w-sm max-h-[80vh] overflow-y-auto shadow-2xl border border-stone-100">
+    <div class="p-8">
+      <div class="flex justify-between items-center mb-8">
+        <h3 class="text-xl font-black text-stone-800">1人前の目安（g）</h3>
+        <button type="button" data-action="click->modal#close" class="text-stone-300 hover:text-stone-500 text-3xl font-light">&times;</button>
+      </div>
+      
+      <div class="space-y-8">
+        <% [
+          { category: "🥩 肉・魚・メイン", color: "text-red-500",
+            items: [
+              { name: "肉（メイン）", weight: "100~150g", note: "鶏もも1枚は約250g" },
+              { name: "肉（炒め物）", weight: "80g", note: "豚こまなど" },
+              { name: "肉（ひき肉）", weight: "100g", note: "ハンバーグなど" },
+              { name: "魚切り身", weight: "80~100g", note: "1切れの標準" }
+            ]
+          },
+          { category: "🥗 野菜・炭水化物", color: "text-green-600",
+            items: [
+              { name: "たまねぎ", weight: "50g", note: "中サイズ1/4個" },
+              { name: "キャベツ", weight: "50g", note: "大判の葉 1枚" },
+              { name: "もやし", weight: "100g", note: "1袋の半分" },
+              { name: "ご飯", weight: "150g", note: "茶碗1杯分" }
+            ]
+          },
+          { category: "🧂 調味料（大さじ1）", color: "text-blue-500",
+            items: [
+              { name: "しょうゆ/酒/みりん", weight: "15~18g", note: "液体調味料" },
+              { name: "砂糖", weight: "10g", note: "粉末は軽い" }
+            ]
+          }
+        ].each do |group| %>
+          <div>
+            <h4 class="text-xs font-black <%= group[:color] %> mb-3 px-1 uppercase tracking-widest"><%= group[:category] %></h4>
+            <div class="bg-stone-50 rounded-2xl p-4 space-y-4">
+              <% group[:items].each do |item| %>
+                <div class="flex justify-between items-start border-b border-stone-200/50 last:border-0 pb-2 last:pb-0">
+                  <div>
+                    <div class="text-sm font-bold text-stone-700"><%= item[:name] %></div>
+                    <div class="text-[10px] text-stone-400 font-medium"><%= item[:note] %></div>
+                  </div>
+                  <div class="text-sm font-black text-stone-600"><%= item[:weight] %></div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+      
+      <button type="button" data-action="click->modal#close" class="w-full mt-10 py-4 bg-stone-100 text-stone-500 font-black rounded-2xl hover:bg-stone-200 transition-colors">とじる</button>
+    </div>
+  </div>
+</div>

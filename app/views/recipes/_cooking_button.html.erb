@@ -1,13 +1,17 @@
 <% has_cooked = current_user.cooking_records.exists?(recipe_id: recipe.id) %>
 
-<% button_color = has_cooked ? 'bg-emerald-500 text-white shadow-md' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' %>
+<% button_color = has_cooked ? 'bg-emerald-500 text-white shadow-md' : 'bg-emerald-100 text-emerald-600 hover:bg-emerald-200' %>
 
 <%= button_to recipe_cooking_records_path(recipe), 
     method: :post, 
     data: { turbo_confirm: "このレシピで自炊を記録しますか？" }, 
-    class: "w-full flex items-center justify-center gap-3 py-3 px-6 rounded-2xl font-bold transition-all active:scale-95 #{button_color}" do %>
-  <svg class="w-6 h-6 fill-current" viewBox="0 0 20 20">
+    class: "w-full flex items-center justify-center gap-1.5 md:gap-3 py-2 md:py-3 px-2 md:px-6 rounded-xl md:rounded-2xl font-bold transition-all active:scale-95 #{button_color}" do %>
+  
+  <svg class="w-4 h-4 md:w-6 md:h-6 fill-current flex-shrink-0" viewBox="0 0 20 20">
     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
   </svg>
-  <span><%= has_cooked ? "もう1回作ってみる" : "作ってみる！" %></span>
+
+  <span class="text-xs md:text-base truncate">
+    <%= has_cooked ? (request.variant&.include?(:mobile) ? "もう1回" : "もう1回作る!") : "作った！" %>
+  </span>
 <% end %>

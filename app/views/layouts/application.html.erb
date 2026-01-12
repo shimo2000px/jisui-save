@@ -17,7 +17,7 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="bg-orange-50/30">
+  <body class="bg-orange-100/30 text-gray-800 antialiased font-sans">
     <%# ログイン画面（sessions#new）以外の場合のみヘッダーを表示 %>
     <% unless controller_name == 'sessions' && action_name == 'new' %>
       <%= render 'layouts/header' %>
@@ -32,5 +32,6 @@
       
       <%= yield %>
     </main>
+    <%= render 'layouts/footer_nav' %>
   </body>
 </html>
