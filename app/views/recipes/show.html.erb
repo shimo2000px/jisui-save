@@ -6,14 +6,18 @@
   </div>
 
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
-    <%# --- 左カラム（メインコンテンツ） --- %>
     <div class="lg:col-span-2 space-y-12">
-      <%# 料理画像 %>
-      <div class="rounded-3xl overflow-hidden shadow-xl aspect-video bg-gray-100">
+      <div class="rounded-3xl overflow-hidden shadow-xl aspect-video bg-gray-100 relative">
         <% if @recipe.image.attached? %>
           <%= image_tag @recipe.image, class: "w-full h-full object-cover" %>
         <% else %>
-          <div class="flex items-center justify-center h-full text-gray-400 italic">No Image</div>
+          <%= image_tag "default_recipe.png", class: "w-full h-full object-cover opacity-90" %>
+          <div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+            <span class="text-5xl mb-2">🍳</span>
+            <span class="text-xs font-bold text-orange-400 tracking-widest bg-white/80 px-4 py-1.5 rounded-full backdrop-blur-sm shadow-sm">
+              NO IMAGE
+            </span>
+          </div>
         <% end %>
       </div>
 
@@ -53,7 +57,7 @@
         </h3>
         <div class="space-y-6">
           <% (@recipe.steps.presence || "手順はまだ登録されていません").split("\n").each_with_index do |step, index| %>
-            <div class="flex gap-6 p-6 bg-blue-50/30 rounded-2xl border border-blue-100/50">
+            <div class="flex gap-6 p-6 bg-white rounded-2xl border border-blue-100/50">
               <span class="flex-shrink-0 w-10 h-10 bg-blue-500 text-white rounded-full flex items-center justify-center font-black shadow-md">
                 <%= index + 1 %>
               </span>
@@ -135,7 +139,6 @@
                 編集する
               <% end %>
 
-              <%# 削除ボタン %>
               <%= link_to recipe_path(@recipe), 
                   data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, 
                   class: "flex-1 text-center bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 rounded-xl transition-all" do %>
