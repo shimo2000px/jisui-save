@@ -19,6 +19,10 @@ Rails.application.routes.draw do
 
   resource :profile, only: [ :show, :edit, :update ]
 
+  get "terms", to: "static_pages#terms", as: :terms
+  get "privacy", to: "static_pages#privacy", as: :privacy
+  get "contact", to: "static_pages#contact", as: :contact
+
   root "recipes#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
