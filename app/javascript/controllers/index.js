@@ -10,6 +10,9 @@ application.register("hello", HelloController)
 import MenuController from "./menu_controller"
 application.register("menu", MenuController)
 
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
+
 import RecipeCalculationController from "./recipe_calculation_controller"
 application.register("recipe-calculation", RecipeCalculationController)
 
