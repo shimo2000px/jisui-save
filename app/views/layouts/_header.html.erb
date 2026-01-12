@@ -1,4 +1,4 @@
-<header class="bg-white border-b border-orange-100 shadow-sm">
+<header class="bg-white border-b border-orange-100 shadow-sm sticky top-0 z-40" data-controller="menu">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between h-16 items-center">
       
@@ -8,22 +8,38 @@
           <span class="tracking-tight">自炊save</span>
         <% end %>
       </div>
-      <nav class="flex items-center gap-4">
+
+      <nav class="hidden md:flex items-center gap-4">
         <% if logged_in? && !guest_user? %>
           <%= link_to "使い方", "#", class: "bg-emerald-400 text-white hover:bg-emerald-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>
           <%= link_to "レシピ一覧", root_path, class: "bg-blue-300 text-white hover:bg-blue-400 px-4 py-2 rounded-lg text-sm font-medium transition" %>
           <%= link_to "レシピ投稿", new_recipe_path, class: "bg-orange-300 text-white hover:bg-orange-400 px-4 py-2 rounded-lg text-sm font-medium transition" %>
           <%= link_to "プロフィール", profile_path, class: "bg-pink-300 text-white hover:bg-pink-400 px-3 py-2 rounded-lg text-sm font-medium transition" %>
-          <%= button_to "ログアウト", logout_path, 
-              method: :delete, 
-              data: { 
-                turbo_confirm: "ログアウトしてもよろしいですか？" 
-              }, 
-              class: "text-white bg-red-400 hover:bg-red-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>       
+          <%= button_to "ログアウト", logout_path, method: :delete, class: "text-white bg-red-400 hover:bg-red-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>       
         <% else %>
           <%= link_to "ログイン", login_path, class: "bg-blue-300 text-white hover:bg-blue-600 px-3 py-2 rounded-lg text-sm font-medium transition" %>
         <% end %>
       </nav>
+
+      <div class="md:hidden">
+        <button data-action="click->menu#toggle" class="p-2 text-gray-600 focus:outline-none">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <%# スマホレスポンシブ %>
+  <div data-menu-target="content" class="hidden md:hidden bg-white border-t border-orange-50">
+    <div class="px-4 pt-2 pb-6 space-y-2 shadow-inner">
+      <% if logged_in? && !guest_user? %>
+        <%= link_to "💡 使い方", "#", class: "block px-4 py-3 text-gray-700 bg-gray-50 rounded-xl" %>
+        <%= button_to "🚪 ログアウト", logout_path, method: :delete, class: "w-full text-left px-4 py-3 text-red-500 bg-red-50 rounded-xl" %>
+      <% else %>
+        <%= link_to "ログイン", login_path, class: "block px-4 py-3 text-blue-500 bg-blue-50 rounded-xl" %>
+      <% end %>
     </div>
   </div>
 </header>
