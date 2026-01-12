@@ -31,7 +31,6 @@ export default class extends Controller {
 
   calculate() {
     let total = 0
-    // コンテナ内の有効な材料行をすべて取得
     const activeRows = this.containerTarget.querySelectorAll(".ingredient-row")
     
     activeRows.forEach((row) => {
@@ -51,12 +50,10 @@ export default class extends Controller {
       }
     })
 
-    // 2. 自炊合計の表示（これが抜けていました）
     if (this.hasTotalDisplayTarget) {
       this.totalDisplayTarget.textContent = Math.round(total).toLocaleString()
     }
 
-    // 3. 節約額の計算と表示
     if (this.hasConvenienceSelectTarget && this.hasSavingsDisplayTarget) {
       const cvsSelect = this.convenienceSelectTarget
       const cvsPrice = cvsSelect.selectedIndex > 0 
@@ -66,7 +63,6 @@ export default class extends Controller {
       const savings = cvsPrice - total
       this.savingsDisplayTarget.textContent = Math.round(savings).toLocaleString()
       
-      // 色の演出（節約できていればオレンジ、自炊の方が高ければグレー）
       if (savings < 0) {
         this.savingsDisplayTarget.parentElement.classList.add('text-gray-400')
         this.savingsDisplayTarget.parentElement.classList.remove('text-orange-500')

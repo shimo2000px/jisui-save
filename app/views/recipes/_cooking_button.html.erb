@@ -1,6 +1,6 @@
 <% has_cooked = current_user.cooking_records.exists?(recipe_id: recipe.id) %>
 
-<% button_color = has_cooked ? 'bg-emerald-500 text-white shadow-md' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100' %>
+<% button_color = has_cooked ? 'bg-emerald-500 text-white shadow-md' : 'bg-emerald-100 text-emerald-600 hover:bg-emerald-200' %>
 
 <%= button_to recipe_cooking_records_path(recipe), 
     method: :post, 
