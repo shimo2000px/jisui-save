@@ -18,7 +18,6 @@
   </head>
 
   <body class="bg-orange-100/30 text-gray-800 antialiased font-sans">
-    <%# ログイン画面（sessions#new）以外の場合のみヘッダーを表示 %>
     <% unless controller_name == 'sessions' && action_name == 'new' %>
       <%= render 'layouts/header' %>
     <% end %>
@@ -31,6 +30,7 @@
       <% end %>
       
       <%= yield %>
+      <%= render 'layouts/footer' %>
     </main>
     <%= render 'layouts/footer_nav' %>
   </body>
