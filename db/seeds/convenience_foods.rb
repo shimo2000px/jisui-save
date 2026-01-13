@@ -1,118 +1,94 @@
 puts "Deleting existing convenience foods..."
 ConvenienceFood.destroy_all
 
-convenience_foods = [
-  # --- お弁当・御膳 ---
-  { name: "幕の内弁当", price: 598 },
-  { name: "海苔弁当", price: 480 },
-  { name: "チキン南蛮弁当", price: 650 },
-  { name: "ハンバーグ弁当", price: 680 },
-  { name: "焼肉弁当", price: 720 },
-  { name: "とんかつ弁当", price: 700 },
-  { name: "三色そぼろ弁当", price: 450 },
-  { name: "肉野菜炒め弁当", price: 560 },
-  { name: "豚肉の生姜焼き弁当", price: 598 },
-  { name: "レバニラ炒め弁当", price: 580 },
-  { name: "回鍋肉弁当", price: 620 },
-  { name: "鶏と野菜の黒酢あん弁当", price: 650 },
-  { name: "八宝菜丼", price: 590 },
-  { name: "野菜たっぷりタンメン", price: 550 },
-  { name: "デミグラスハンバーグ弁当", price: 680 },
-  { name: "おろしポン酢ハンバーグ弁当", price: 650 },
-  { name: "鶏の照り焼き弁当", price: 590 },
-  { name: "スタミナ豚焼肉丼", price: 580 },
-  { name: "特製ロースかつ丼", price: 640 },
-  { name: "おつまみ冷製チャーシュー", price: 380 },
-  { name: "油淋鶏(単品/惣菜)", price: 450 },
-  { name: "銀鮭塩焼の御膳", price: 690 },
-  { name: "縞ほっけの塩焼き弁当", price: 720 },
-  { name: "鯖の味噌煮弁当", price: 600 },
-  { name: "鮭塩焼弁当", price: 620 },
+convenience_foods_groups = {
+"🍱 お弁当・丼・カレー" => [
+    { name: "幕の内弁当（定番）", price: 598 },
+    { name: "海苔弁当", price: 480 },
+    { name: "肉系弁当（チキン南蛮・ハンバーグ等）", price: 680 },
+    { name: "焼肉・スタミナ系弁当", price: 720 },
+    { name: "魚系弁当（鮭・鯖等）", price: 620 },
+    { name: "牛丼・親子丼", price: 550 },
+    { name: "カツ丼", price: 650 },
+    { name: "欧風カレー・チキンカレー", price: 580 },
+    { name: "カツカレー", price: 720 },
+    { name: "麻婆豆腐丼・中華丼", price: 550 },
+    { name: "オムライス・ドリア・グラタン", price: 520 }
+  ],
+  "🍝 パスタ・うどん・そば・ラーメン" => [
+    { name: "ミートソース・ナポリタン", price: 490 },
+    { name: "カルボナーラ・クリームパスタ", price: 580 },
+    { name: "明太子・和風パスタ", price: 550 },
+    { name: "冷やし中華・冷し麺（夏季）", price: 580 },
+    { name: "ざるそば・とろろそば", price: 460 },
+    { name: "天ぷらそば・肉そば", price: 580 },
+    { name: "冷やしぶっかけうどん", price: 450 },
+    { name: "肉うどん・カレーうどん", price: 590 },
+    { name: "醤油・味噌・塩ラーメン", price: 580 },
+    { name: "豚骨・こってり系ラーメン", price: 680 },
+    { name: "ソース焼きそば", price: 480 },
+    { name: "油そば・まぜそば", price: 650 }
+  ],
+  "🥪 パン・サンドイッチ・おにぎり" => [
+    { name: "おにぎり（鮭・ツナマヨ等）", price: 170 },
+    { name: "高級おにぎりシリーズ", price: 240 },
+    { name: "ミックスサンド・たまごサンド", price: 320 },
+    { name: "カツサンド・肉系サンド", price: 480 },
+    { name: "惣菜パン（焼きそばパン・カレーパン等）", price: 180 },
+    { name: "バーガー・ロールパン", price: 350 }
+  ],
+  "🍗 ホットスナック" => [
+    { name: "レジ横チキン（骨なし）", price: 240 },
+    { name: "レジ横チキン（骨付き）", price: 300 },
+    { name: "からあげ棒・竜田揚げ", price: 200 },
+    { name: "アメリカンドッグ", price: 150 },
+    { name: "肉まん・あんまん", price: 160 },
+    { name: "コロッケ・メンチカツ", price: 130 },
+    { name: "フライドポテト", price: 220 }
+  ],
+  "🥦 惣菜・サラダ" => [
+    { name: "サラダチキン", price: 320 },
+    { name: "カップサラダ", price: 250 },
+    { name: "パスタサラダ", price: 380 },
+    { name: "豚しゃぶ・冷しゃぶサラダ", price: 498 },
+    { name: "ポテトサラダ・マカロニサラダ", price: 240 },
+    { name: "袋入り惣菜（きんぴら・ひじき等）", price: 160 },
+    { name: "袋入りメイン惣菜（ハンバーグ・角煮等）", price: 400 },
+    { name: "カップスープ・みそ汁", price: 180 }
+  ],
+  "💰 その他(金額目安)" => [
+    { name: "その他商品(100円)", price: 100 },
+    { name: "その他商品(150円)", price: 150 },
+    { name: "その他商品(200円)", price: 200 },
+    { name: "その他商品(250円)", price: 250 },
+    { name: "その他商品(300円)", price: 300 },
+    { name: "その他商品(350円)", price: 350 },
+    { name: "その他商品(400円)", price: 400 },
+    { name: "その他商品(450円)", price: 450 },
+    { name: "その他商品(500円)", price: 500 },
+    { name: "その他商品(550円)", price: 550 },
+    { name: "その他商品(600円)", price: 600 },
+    { name: "その他商品(650円)", price: 650 },
+    { name: "その他商品(700円)", price: 700 },
+    { name: "その他商品(750円)", price: 750 },
+    { name: "その他商品(800円)", price: 800 },
+    { name: "その他商品(850円)", price: 850 },
+    { name: "その他商品(900円)", price: 900 },
+    { name: "その他商品(950円)", price: 950 },
+    { name: "その他商品(1000円)", price: 1000 }
+  ]
+}
 
+  convenience_foods_groups.each do |category_name, foods|
+    foods.each do |food_data|
+      # find_or_create_by を使うと「名前」が同じならダブらせない
+      ConvenienceFood.find_or_create_by!(
+        name: food_data[:name],
+        category: category_name
+      ) do |cf|
+        cf.price = food_data[:price]
+      end
+    end
+  end
 
-  # --- 丼物・カレー ---
-  { name: "特製牛丼", price: 530 },
-  { name: "親子丼", price: 500 },
-  { name: "カツ丼", price: 580 },
-  { name: "麻婆豆腐丼", price: 480 },
-  { name: "チキンカレー", price: 580 },
-  { name: "キーマカレー", price: 600 },
-  { name: "カツカレー", price: 750 },
-  { name: "バターチキンカレー", price: 650 },
-  { name: "海老グラタン", price: 450 },
-  { name: "ミートドリア", price: 450 },
-  { name: "オムライス", price: 520 },
-
-  # --- 麺類 ---
-  { name: "醤油ラーメン", price: 550 },
-  { name: "味噌ラーメン", price: 580 },
-  { name: "豚骨ラーメン", price: 620 },
-  { name: "こってりラーメン", price: 700 },
-  { name: "冷やし中華(夏季)", price: 590 },
-  { name: "カルボナーラパスタ", price: 580 },
-  { name: "ミートソースパスタ", price: 550 },
-  { name: "ナポリタン", price: 490 },
-  { name: "明太子パスタ", price: 560 },
-  { name: "和風パスタ", price: 520 },
-  { name: "冷したぬきうどん", price: 460 },
-  { name: "肉うどん", price: 580 },
-  { name: "ソース焼きそば", price: 450 },
-
-  # --- おにぎり・サンドイッチ ---
-  { name: "おにぎり(鮭)", price: 180 },
-  { name: "おにぎり(梅)", price: 140 },
-  { name: "おにぎり(ツナマヨ)", price: 160 },
-  { name: "おにぎり(明太子)", price: 190 },
-  { name: "ミックスサンド", price: 320 },
-  { name: "レタスハムサンド", price: 300 },
-  { name: "たまごサンド", price: 280 },
-  { name: "カツサンド", price: 450 },
-
-  # --- 惣菜・ホットスナック ---
-  { name: "レジ横唐揚げ", price: 240 },
-  { name: "ファミチキ風チキン", price: 220 },
-  { name: "肉じゃが(惣菜パック)", price: 350 },
-  { name: "海老のチリソース炒め(惣菜)", price: 480 },
-  { name: "きんぴらごぼう(小)", price: 200 },
-  { name: "ひじき煮(小)", price: 200 },
-  { name: "ポテトサラダ", price: 250 },
-  { name: "コールスローサラダ", price: 230 },
-  { name: "餃子(5個)", price: 280 },
-  { name: "焼売(6個)", price: 320 },
-  { name: "筑前煮(パウチ)", price: 280 },
-  { name: "かぼちゃ煮(小)", price: 180 },
-  { name: "きんぴらごぼう(パウチ)", price: 150 },
-  { name: "ひじき煮(パウチ)", price: 150 },
-  { name: "切り干し大根(パウチ)", price: 160 },
-  { name: "ほうれん草の胡麻和え", price: 220 },
-  { name: "ポテトサラダ(大)", price: 350 },
-  { name: "マカロニサラダ", price: 240 },
-  { name: "卯の花(パウチ)", price: 160 },
-
-  # --- サラダ・健康系 ---
-  { name: "1/2日分の野菜サラダ", price: 450 },
-  { name: "ラーメンサラダ", price: 420 },
-  { name: "豚しゃぶサラダ", price: 480 },
-  { name: "豆腐ハンバーグ(惣菜)", price: 320 },
-  { name: "チョレギサラダ", price: 380 },
-
-  # --- その他・軽食 ---
-  { name: "お好み焼き", price: 550 },
-  { name: "たこ焼き(6個)", price: 480 },
-  { name: "ナゲット(5個)", price: 260 },
-  { name: "アメリカンドッグ", price: 140 },
-  { name: "春巻(1本)", price: 110 },
-
-  # --- スープ・カップ麺類 ---
-  { name: "豚汁", price: 230 },
-  { name: "ミネストローネ", price: 180 },
-  { name: "コーンポタージュ", price: 180 },
-  { name: "カップヌードル", price: 240 },
-  { name: "カップ焼きそば", price: 240 }
-]
-
-convenience_foods.each do |data|
-  ConvenienceFood.create!(data)
-end
-
-puts "Success: Created #{ConvenienceFood.count} convenience foods master data!"
+puts "Success: Created #{ConvenienceFood.count} convenience foods with categories!"
