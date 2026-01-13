@@ -14,7 +14,7 @@
 
       <nav class="hidden md:flex items-center gap-1">
         <% if logged_in? && !guest_user? %>
-          <%= link_to "使い方", "#", class: "text-stone-600 hover:text-orange-600 hover:bg-orange-100/50 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200" %>
+          <%= link_to "使い方", guide_path, class: "text-stone-600 hover:text-orange-600 hover:bg-orange-100/50 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200" %>
           <%= link_to "レシピ一覧", root_path, class: "text-stone-600 hover:text-orange-600 hover:bg-orange-100/50 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200" %>
           <%= link_to "レシピ投稿", new_recipe_path, class: "text-stone-600 hover:text-orange-600 hover:bg-orange-100/50 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200" %>
           <%= link_to "プロフィール", profile_path, class: "text-stone-600 hover:text-orange-600 hover:bg-orange-100/50 px-4 py-2 rounded-xl text-sm font-bold transition-all duration-200" %>
