@@ -1,8 +1,8 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  // 1. savingsDisplay をターゲットに追加
-  static targets = ["row", "totalDisplay", "container", "template", "convenienceSelect", "conveniencePriceDisplay", "savingsDisplay"]
+  // totalDisplay をターゲットに含める
+  static targets = ["totalDisplay", "container", "template", "convenienceSelect", "conveniencePriceDisplay", "savingsDisplay"]
 
   connect() {
     this.calculate()
@@ -38,22 +38,29 @@ export default class extends Controller {
       const amountInput = row.querySelector('input[name*="amount_gram"]')
       const customPriceInput = row.querySelector('input[name*="custom_price"]')
 
-      const amount = parseFloat(amountInput.value) || 0
-      const customPrice = customPriceInput.value.trim()
+      const amount = parseFloat(amountInput?.value) || 0
+      const customPrice = customPriceInput?.value.trim()
 
-      if (customPrice !== "") {
-        total += parseFloat(customPrice) || 0
+      if (customPrice !== "" && !isNaN(customPrice)) {
+        // 手動入力があれば優先
+        total += parseFloat(customPrice)
       } else if (select && select.selectedIndex > 0) {
+        // セレクトボックスから計算
         const selectedOption = select.options[select.selectedIndex]
         const pricePerGram = parseFloat(selectedOption.dataset.pricePerGram) || 0
         total += pricePerGram * amount
       }
     })
 
+    // 表示を更新
     if (this.hasTotalDisplayTarget) {
       this.totalDisplayTarget.textContent = Math.round(total).toLocaleString()
     }
 
+    this.updateSavings(total)
+  }
+
+  updateSavings(total) {
     if (this.hasConvenienceSelectTarget && this.hasSavingsDisplayTarget) {
       const cvsSelect = this.convenienceSelectTarget
       const cvsPrice = cvsSelect.selectedIndex > 0 
@@ -63,12 +70,13 @@ export default class extends Controller {
       const savings = cvsPrice - total
       this.savingsDisplayTarget.textContent = Math.round(savings).toLocaleString()
       
+      const displayElement = this.savingsDisplayTarget.parentElement
       if (savings < 0) {
-        this.savingsDisplayTarget.parentElement.classList.add('text-gray-400')
-        this.savingsDisplayTarget.parentElement.classList.remove('text-orange-500')
+        displayElement.classList.add('text-gray-400')
+        displayElement.classList.remove('text-orange-600')
       } else {
-        this.savingsDisplayTarget.parentElement.classList.add('text-orange-500')
-        this.savingsDisplayTarget.parentElement.classList.remove('text-gray-400')
+        displayElement.classList.add('text-orange-600')
+        displayElement.classList.remove('text-gray-400')
       }
     }
   }
@@ -76,16 +84,12 @@ export default class extends Controller {
   updateComparison() {
     const select = this.convenienceSelectTarget
     let price = 0
-
     if (select.selectedIndex > 0) {
-      const selectedOption = select.options[select.selectedIndex]
-      price = parseFloat(selectedOption.dataset.price) || 0
+      price = parseFloat(select.options[select.selectedIndex].dataset.price) || 0
     }
-
     if (this.hasConveniencePriceDisplayTarget) {
       this.conveniencePriceDisplayTarget.textContent = price.toLocaleString()
     }
-
     this.calculate() 
   }
 }

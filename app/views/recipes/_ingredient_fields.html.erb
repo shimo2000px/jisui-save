@@ -1,18 +1,26 @@
-<div class="grid grid-cols-10 gap-2 items-center ingredient-row">
-  <div class="col-span-4 bg-white rounded p-1 shadow-sm">
-    <% options = Ingredient.all.map { |i| [i.name, i.id, { data: { price_per_gram: i&.price_per_gram || 0 } }] } %>
-    <%= f.select :ingredient_id, options, { include_blank: "選択..." }, 
+<div class="grid grid-cols-10 gap-2 items-center ingredient-row mb-2">
+  <div class="col-span-4 bg-white rounded p-1 shadow-sm border border-transparent focus-within:border-orange-200 transition-all">
+    <% 
+      categories = ["🥩 肉類", "🥬 野菜", "🐟 魚介類", "🥚 卵・乳製品・豆腐", "🍚 炭水化物（米・麺・パン）", "🧂 調味料・トッピング", "💰 その他（金額目安）"]
+      all_ingredients = Ingredient.all.order(:id)
+      grouped_options = categories.map do |display_cat|
+        ingredients_in_cat = all_ingredients.select { |i| i.category.present? && display_cat.include?(i.category) }
+        [display_cat, ingredients_in_cat.map { |i| [i.name, i.id, { data: { price_per_gram: i.price_per_gram || 0 } }] }]
+      end
+    %>
+    <%= f.select :ingredient_id, grouped_options_for_select(grouped_options, f.object.ingredient_id), { include_blank: "選択..." }, 
         { class: "w-full border-none focus:ring-0 text-sm", data: { action: "change->recipe-calculation#calculate" } } %>
   </div>
-  
+
   <div class="col-span-2 bg-white rounded p-1 shadow-sm flex items-center">
-    <%= f.number_field :amount_gram, class: "w-full border-none focus:ring-0 text-center", 
+    <%= f.number_field :amount_gram, class: "w-full border-none focus:ring-0 text-center text-sm", 
         data: { action: "input->recipe-calculation#calculate" } %>
     <span class="text-[10px] text-gray-400 mr-1">g</span>
   </div>
 
-  <div class="col-span-3 bg-white rounded p-1 shadow-sm">
-    <%= f.number_field :custom_price, class: "w-full border-none focus:ring-0 text-sm", placeholder: "特売品など",
+  <div class="col-span-3 bg-gray-50/80 rounded p-1 shadow-sm border border-dashed border-gray-200">
+    <%= f.number_field :custom_price, class: "w-full border-none bg-transparent focus:ring-0 text-sm text-right pr-2", 
+        placeholder: "または金額入力",
         data: { action: "input->recipe-calculation#calculate" } %>
   </div>
 
@@ -22,5 +30,6 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
       </svg>
     </button>
-    <%= f.hidden_field :_destroy if f.object&.respond_to?(:persisted?) && f.object.persisted? %>  </div>
+    <%= f.hidden_field :_destroy if f.object&.respond_to?(:persisted?) && f.object.persisted? %>
+  </div>
 </div>
