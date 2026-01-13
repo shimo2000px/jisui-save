@@ -126,7 +126,7 @@ ingredient_groups = {
 ingredient_groups.each do |category_name, items|
   items.each do |item_data|
     ingredient = Ingredient.find_or_initialize_by(name: item_data[:name])
-    
+
     ingredient.update!(
       category: category_name,
       price_per_gram: item_data[:price_per_gram]
