@@ -2,7 +2,7 @@
   <div class="col-span-4 bg-white rounded p-1 shadow-sm border border-transparent focus-within:border-orange-200 transition-all">
     <% 
       categories = ["🥩 肉類", "🥬 野菜", "🐟 魚介類", "🥚 卵・乳製品・豆腐", "🍚 炭水化物（米・麺・パン）", "🧂 調味料・トッピング", "💰 その他（金額目安）"]
-      all_ingredients = Ingredient.all
+      all_ingredients = Ingredient.all.order(:id)
       grouped_options = categories.map do |display_cat|
         ingredients_in_cat = all_ingredients.select { |i| i.category.present? && display_cat.include?(i.category) }
         [display_cat, ingredients_in_cat.map { |i| [i.name, i.id, { data: { price_per_gram: i.price_per_gram || 0 } }] }]

@@ -20,6 +20,7 @@ class RecipesController < ApplicationController
   def new
     @recipe = Recipe.new
     3.times { @recipe.recipe_ingredients.build }
+    @ingredients = Ingredient.all.order(:id)
   end
 
   def show
@@ -30,28 +31,26 @@ class RecipesController < ApplicationController
     end
   end
 
-def create
-  # 1. 保存用のパラメータを取得
-  processed_params = recipe_params
+  def create
+    processed_params = recipe_params
 
-  # 2. 配列で届いている steps を文字列に合体させて、上書きする
-  if params[:recipe][:steps].is_a?(Array)
-    processed_params[:steps] = params[:recipe][:steps].reject(&:blank?).join("\n")
+    if params[:recipe][:steps].is_a?(Array)
+      processed_params[:steps] = params[:recipe][:steps].reject(&:blank?).join("\n")
+    end
+
+    @recipe = Recipe.new(processed_params)
+    @recipe.user_id = current_user.id
+
+    if @recipe.save
+      redirect_to recipes_path, notice: "レシピを投稿しました！"
+    else
+      @recipe.steps = @recipe.steps.to_s.split("\n")
+      render :new, status: :unprocessable_entity
+    end
   end
 
-  # 3. 加工した processed_params を使って作成
-  @recipe = Recipe.new(processed_params)
-  @recipe.user_id = current_user.id
-
-  if @recipe.save
-    redirect_to recipes_path, notice: "レシピを投稿しました！"
-  else
-    @recipe.steps = @recipe.steps.to_s.split("\n")
-    render :new, status: :unprocessable_entity
-  end
-end
-
-def edit
+  def edit
+  @ingredients = Ingredient.all.order(:id)
   end
 
 

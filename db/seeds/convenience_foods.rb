@@ -1,19 +1,18 @@
-puts "Deleting existing convenience foods..."
-ConvenienceFood.destroy_all
+puts "Updating convenience foods (Safely)..."
 
 convenience_foods_groups = {
 "🍱 お弁当・丼・カレー" => [
     { name: "幕の内弁当（定番）", price: 598 },
     { name: "海苔弁当", price: 480 },
     { name: "肉系弁当（チキン南蛮・ハンバーグ等）", price: 680 },
-    { name: "焼肉・スタミナ系弁当", price: 720 },
+    { name: "焼肉・スタミナ系弁当", price: 680 },
     { name: "魚系弁当（鮭・鯖等）", price: 620 },
     { name: "牛丼・親子丼", price: 550 },
     { name: "カツ丼", price: 650 },
     { name: "欧風カレー・チキンカレー", price: 580 },
     { name: "カツカレー", price: 720 },
     { name: "麻婆豆腐丼・中華丼", price: 550 },
-    { name: "チャーハン", price: 480 },
+    { name: "チャーハン", price: 420 },
     { name: "オムライス・ドリア・グラタン", price: 520 }
   ],
   "🍝 パスタ・うどん・そば・ラーメン" => [
@@ -36,19 +35,18 @@ convenience_foods_groups = {
     { name: "ミックスサンド・たまごサンド", price: 320 },
     { name: "カツサンド・肉系サンド", price: 480 },
     { name: "惣菜パン（焼きそばパン・カレーパン等）", price: 180 },
-    { name: "バーガー・ロールパン", price: 350 }
+    { name: "バーガー", price: 350 }
   ],
   "🍗 ホットスナック" => [
-    { name: "レジ横チキン（骨なし）", price: 240 },
-    { name: "レジ横チキン（骨付き）", price: 300 },
-    { name: "からあげ棒・竜田揚げ", price: 200 },
+    { name: "フライドチキン", price: 240 },
+    { name: "からあげ・竜田揚げ", price: 200 },
     { name: "アメリカンドッグ", price: 150 },
     { name: "肉まん・あんまん", price: 160 },
     { name: "コロッケ・メンチカツ", price: 130 },
     { name: "フライドポテト", price: 220 }
   ],
   "🥦 惣菜・サラダ" => [
-    { name: "サラダチキン", price: 320 },
+    { name: "サラダチキン", price: 180 },
     { name: "カップサラダ", price: 250 },
     { name: "パスタサラダ", price: 380 },
     { name: "豚しゃぶ・冷しゃぶサラダ", price: 498 },
@@ -80,15 +78,14 @@ convenience_foods_groups = {
   ]
 }
 
-  convenience_foods_groups.each do |category_name, foods|
-    foods.each do |food_data|
-      ConvenienceFood.find_or_create_by!(
-        name: food_data[:name],
-        category: category_name
-      ) do |cf|
-        cf.price = food_data[:price]
-      end
-    end
+convenience_foods_groups.each do |category_name, foods|
+  foods.each do |food_data|
+    food = ConvenienceFood.find_or_initialize_by(name: food_data[:name])
+    food.update!(
+      category: category_name,
+      price: food_data[:price]
+    )
   end
+end
 
-puts "Success: Created #{ConvenienceFood.count} convenience foods with categories!"
+puts "Success: Created/Updated #{ConvenienceFood.count} convenience foods!"

@@ -1,6 +1,4 @@
-puts "Deleting existing ingredients..."
-RecipeIngredient.delete_all
-Ingredient.delete_all
+puts "Updating ingredients (Safely)..."
 
 ingredient_groups = {
   "🥩 肉類" => [
@@ -9,7 +7,7 @@ ingredient_groups = {
     { name: "鶏ささみ", price_per_gram: 1.10 },
     { name: "豚こま切れ肉", price_per_gram: 1.28 },
     { name: "豚バラ肉", price_per_gram: 1.98 },
-    { name: "豚ロース肉", price_per_gram: 1.78 },
+    { name: "豚ロース肉", price_per_gram: 1.77 },
     { name: "合い挽き肉", price_per_gram: 1.18 },
     { name: "牛バラ肉", price_per_gram: 2.50 },
     { name: "牛もも肉(ブロック)", price_per_gram: 3.80 },
@@ -127,10 +125,12 @@ ingredient_groups = {
 
 ingredient_groups.each do |category_name, items|
   items.each do |item_data|
-    Ingredient.find_or_create_by!(name: item_data[:name]) do |i|
-      i.category = category_name
-      i.price_per_gram = item_data[:price_per_gram]
-    end
+    ingredient = Ingredient.find_or_initialize_by(name: item_data[:name])
+    
+    ingredient.update!(
+      category: category_name,
+      price_per_gram: item_data[:price_per_gram]
+    )
   end
 end
 
