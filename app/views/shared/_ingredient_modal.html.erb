@@ -19,6 +19,7 @@
           },
           { category: "🥗 野菜・炭水化物", color: "text-green-600",
             items: [
+              { name: "卵", weight: "50g", note: "Mサイズ1個" },
               { name: "たまねぎ", weight: "50g", note: "中サイズ1/4個" },
               { name: "キャベツ", weight: "50g", note: "大判の葉 1枚" },
               { name: "もやし", weight: "100g", note: "1袋の半分" },
@@ -48,7 +49,7 @@
           </div>
         <% end %>
       </div>
-      
+      <p class="text-sm">※食材がない場合は「その他」から近いグラム数を選んでください。(右の手動入力と合わせて細かく計算もできます)</p>
       <button type="button" data-action="click->modal#close" class="w-full mt-10 py-4 bg-stone-100 text-stone-500 font-black rounded-2xl hover:bg-stone-200 transition-colors">とじる</button>
     </div>
   </div>
