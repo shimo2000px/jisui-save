@@ -81,7 +81,6 @@ convenience_foods_groups = {
 
   convenience_foods_groups.each do |category_name, foods|
     foods.each do |food_data|
-      # find_or_create_by を使うと「名前」が同じならダブらせない
       ConvenienceFood.find_or_create_by!(
         name: food_data[:name],
         category: category_name
