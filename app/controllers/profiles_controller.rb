@@ -3,9 +3,9 @@ class ProfilesController < ApplicationController
     if guest_user?
         redirect_to recipes_path, alert: "プロフィール機能はアカウントログインが必要です"
         return
-      end
+    end
       @recipe = Recipe.new
-    
+
 
     @user = current_user
     @monthly_stats = @user.monthly_cooking_stats

@@ -5,7 +5,7 @@ class CookingRecordsController < ApplicationController
     if guest_user?
         redirect_to recipe_path(params[:recipe_id]), alert: "自炊を記録するにはアカウントログインが必要です"
         return
-      end
+    end
 
     @recipe = Recipe.find(params[:recipe_id])
 

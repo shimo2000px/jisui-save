@@ -5,8 +5,8 @@ class RecipesController < ApplicationController
     if params[:filter] == "mine" && guest_user?
         redirect_to recipes_path(filter: "public"), alert: "「MYレシピ」の利用にはアカウント登録が必要です"
         return
-      end
-    
+    end
+
     base_query = Recipe.with_attached_image.includes(:cooking_records, :convenience_food).all
 
     if params[:filter] == "mine" && current_user
@@ -40,12 +40,12 @@ class RecipesController < ApplicationController
     end
   end
 
-  
+
   def new
   if guest_user?
       redirect_to recipes_path, alert: "レシピを新しく作るにはアカウントログインが必要です"
       return
-    end
+  end
 
     @recipe = Recipe.new
     3.times { @recipe.recipe_ingredients.build }
