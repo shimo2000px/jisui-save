@@ -1,11 +1,14 @@
 class CookingRecordsController < ApplicationController
-  # authenticate_user! ではなく、ApplicationController で定義した require_login を使う
   before_action :require_login
 
   def create
+    if guest_user?
+        redirect_to recipe_path(params[:recipe_id]), alert: "自炊を記録するにはアカウントログインが必要です"
+        return
+      end
+
     @recipe = Recipe.find(params[:recipe_id])
 
-    # ログイン中のユーザー（current_user）に関連付けて保存
     @cooking_record = current_user.cooking_records.build(
       recipe: @recipe,
       cooking_cost: @recipe.total_cost,
@@ -14,7 +17,7 @@ class CookingRecordsController < ApplicationController
     )
 
     if @cooking_record.save
-      redirect_to recipe_path(@recipe), notice: "自炊えらい！記録しました。"
+      redirect_to recipe_path(@recipe), notice: "自炊お疲れ様です！記録しました。"
     else
       redirect_to recipe_path(@recipe), alert: "記録に失敗しました。"
     end
