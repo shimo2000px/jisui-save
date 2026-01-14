@@ -1,0 +1,20 @@
+ja:
+  activerecord:
+    models:
+      recipe: "レシピ"
+    attributes:
+      recipe:
+        convenience_food: "コンビニ商品"
+        recipe_ingredients: "食材"
+    errors:
+      models:
+        recipe:
+          attributes:
+            convenience_food:
+              required: "を選択してください"
+            recipe_ingredients:
+              blank: "を1つ以上追加してください"
+  errors:
+    format: "%{attribute}%{message}"
+    messages:
+      blank: "を入力してください"
