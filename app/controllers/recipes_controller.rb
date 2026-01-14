@@ -2,32 +2,23 @@ class RecipesController < ApplicationController
   before_action :set_recipe, only: [ :show, :edit, :update, :destroy ]
 
   def index
+    if params[:filter] == "mine" && guest_user?
+        redirect_to recipes_path(filter: "public"), alert: "「MYレシピ」の利用にはアカウント登録が必要です"
+        return
+    end
+
     base_query = Recipe.with_attached_image.includes(:cooking_records, :convenience_food).all
 
     if params[:filter] == "mine" && current_user
       @recipes = base_query.where(user_id: current_user.id)
                           .order(created_at: :desc)
-                          .page(params[:page]).per(9)
+                          .page(params[:page]).per(12)
       @current_filter = "mine"
     else
       @recipes = base_query.where(is_public: true)
                           .order(created_at: :desc)
-                          .page(params[:page]).per(9)
+                          .page(params[:page]).per(12)
       @current_filter = "public"
-    end
-  end
-
-  def new
-    @recipe = Recipe.new
-    3.times { @recipe.recipe_ingredients.build }
-    @ingredients = Ingredient.all.order(:id)
-  end
-
-  def show
-  @recipe = Recipe.find(params[:id])
-
-    if !@recipe.is_public? && @recipe.user != current_user
-      redirect_to recipes_path, alert: "このレシピは非公開です"
     end
   end
 
@@ -46,6 +37,26 @@ class RecipesController < ApplicationController
     else
       @recipe.steps = @recipe.steps.to_s.split("\n")
       render :new, status: :unprocessable_entity
+    end
+  end
+
+
+  def new
+  if guest_user?
+      redirect_to recipes_path, alert: "レシピを新しく作るにはアカウントログインが必要です"
+      return
+  end
+
+    @recipe = Recipe.new
+    3.times { @recipe.recipe_ingredients.build }
+    @ingredients = Ingredient.all.order(:id)
+  end
+
+  def show
+  @recipe = Recipe.find(params[:id])
+
+    if !@recipe.is_public? && @recipe.user != current_user
+      redirect_to recipes_path, alert: "このレシピは非公開です"
     end
   end
 
@@ -78,7 +89,6 @@ end
     @recipe = Recipe.find(params[:id])
     return redirect_to recipes_path unless @recipe.user == current_user
 
-    # params[:is_public] が送られてきたらその値に、なければ現在の状態を反転
     new_status = params[:is_public].present? ? params[:is_public] == "true" : !@recipe.is_public
     @recipe.update(is_public: new_status)
 
@@ -89,6 +99,11 @@ end
   end
 
   def copy
+    if guest_user?
+        redirect_to recipe_path, alert: "自炊を記録するにはアカウントログインが必要です"
+      return
+    end
+
     original_recipe = Recipe.includes(:recipe_ingredients).find(params[:id])
 
     @recipe = Recipe.new(original_recipe.attributes.except("id", "created_at", "updated_at"))
@@ -112,6 +127,14 @@ private
       redirect_to recipes_path, alert: "権限がありません。"
     end
   end
+
+  def require_login_except_guest_view
+  if guest_user?
+    redirect_to login_path, alert: "レシピの作成や編集には、アカウントログインが必要です"
+  elsif !logged_in?
+    redirect_to login_path, alert: "ログインが必要です。"
+  end
+end
 
   def recipe_params
     params.require(:recipe).permit(

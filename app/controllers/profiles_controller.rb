@@ -1,21 +1,28 @@
 class ProfilesController < ApplicationController
   def show
+    if guest_user?
+        redirect_to recipes_path, alert: "プロフィール機能はアカウントログインが必要です"
+        return
+    end
+      @recipe = Recipe.new
+
+
     @user = current_user
     @monthly_stats = @user.monthly_cooking_stats
 
-  daily_data = @user.cooking_records
-                  .where(cooked_at: 30.days.ago.beginning_of_day..Time.current.end_of_day)
-                  .group("DATE(cooked_at)")
-                  .sum("convenience_cost - cooking_cost")
-                  .transform_keys(&:to_s)
+    daily_data = @user.cooking_records
+                    .where(cooked_at: 30.days.ago.beginning_of_day..Time.current.end_of_day)
+                    .group("DATE(cooked_at)")
+                    .sum("convenience_cost - cooking_cost")
+                    .transform_keys(&:to_s)
 
-  @chart_labels = (30.days.ago.to_date..Date.current).map(&:to_s)
+    @chart_labels = (30.days.ago.to_date..Date.current).map(&:to_s)
 
-  cumulative_sum = 0
-  @chart_values = @chart_labels.map do |date|
-    cumulative_sum += (daily_data[date] || 0)
-    cumulative_sum
-  end
+    cumulative_sum = 0
+    @chart_values = @chart_labels.map do |date|
+      cumulative_sum += (daily_data[date] || 0)
+      cumulative_sum
+    end
   end
 
   def edit

@@ -14,4 +14,7 @@
   <span class="text-xs md:text-base truncate">
     <%= has_cooked ? (request.variant&.include?(:mobile) ? "もう1回" : "もう1回作る!") : "作った！" %>
   </span>
+  <% if guest_user? %>
+    <span class="text-[7px] opacity-70 ml-1">(要登録)</span>
+  <% end %>
 <% end %>
