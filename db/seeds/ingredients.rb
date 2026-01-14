@@ -83,7 +83,6 @@ ingredient_groups = {
     { name: "薄力粉", price_per_gram: 0.25 },
     { name: "強力粉", price_per_gram: 0.35 },
     { name: "ホットケーキミックス", price_per_gram: 0.58 }
-
   ],
   "🧂 調味料・トッピング" => [
     { name: "醤油", price_per_gram: 0.40 },
@@ -112,26 +111,31 @@ ingredient_groups = {
     { name: "コンソメ(顆粒)", price_per_gram: 2.8 },
     { name: "鶏ガラスープの素", price_per_gram: 2.5 },
     { name: "味覇", price_per_gram: 2.8 }
-    ],
+  ],
   "💰 その他（金額目安）" => [
-      { name: "その他食材（100g/50円）", price_per_gram: 0.5 },
-      { name: "その他食材（100g/100円）", price_per_gram: 1.0 },
-      { name: "その他食材（100g/150円）", price_per_gram: 1.5 },
-      { name: "その他食材（100g/200円）", price_per_gram: 2.0 },
-      { name: "その他食材（100g/300円）", price_per_gram: 3.0 },
-      { name: "その他食材（100g/500円）", price_per_gram: 5.0 }
-    ]
+    { name: "その他食材（100g/50円）", price_per_gram: 0.5 },
+    { name: "その他食材（100g/100円）", price_per_gram: 1.0 },
+    { name: "その他食材（100g/150円）", price_per_gram: 1.5 },
+    { name: "その他食材（100g/200円）", price_per_gram: 2.0 },
+    { name: "その他食材（100g/300円）", price_per_gram: 3.0 },
+    { name: "その他食材（100g/500円）", price_per_gram: 5.0 }
+  ]
 }
 
 ingredient_groups.each do |category_name, items|
   items.each do |item_data|
     ingredient = Ingredient.find_or_initialize_by(name: item_data[:name])
-
-    ingredient.update!(
-      category: category_name,
-      price_per_gram: item_data[:price_per_gram]
-    )
+    ingredient.update!(category: category_name, price_per_gram: item_data[:price_per_gram])
   end
 end
 
-puts "Success: Created #{Ingredient.count} ingredients with categories!"
+active_ing_names = ingredient_groups.values.flatten.map { |i| i[:name] }
+unused_ings = Ingredient.where.not(name: active_ing_names).left_outer_joins(:recipe_ingredients).where(recipe_ingredients: { id: nil })
+puts "Deleting #{unused_ings.count} unused ingredients..."
+unused_ings.destroy_all
+
+Ingredient.where.not(name: active_ing_names).each do |ing|
+  ing.update(name: "【廃止】#{ing.name}") unless ing.name.start_with?("【廃止】")
+end
+
+puts "Success: Ingredients maintenance completed!"

@@ -1,4 +1,5 @@
-<div class="h-60 bg-gradient-to-br from-orange-200 via-orange-400 to-red-500 relative overflow-hidden">
+<div class="animate-fade-in-up h-60 bg-gradient-to-br from-orange-200 via-orange-400 to-red-500 relative overflow-hidden"
+    style="animation-delay: 0.1s; opacity: 0; animation-fill-mode: forwards;">
   <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-white/10 rounded-full blur-3xl"></div>
   <div class="absolute left-1/4 top-0 w-32 h-32 bg-yellow-300/10 rounded-full blur-2xl"></div>
   
@@ -30,90 +31,84 @@
   </div>
 </div>
 
-    <div class="relative px-10 pb-10">
-      <div class="relative -top-12 flex justify-between items-end">
-        <div class="p-1 bg-white rounded-full">
-          <% if @user.avatar.attached? %>
-            <%= image_tag @user.avatar, class: "w-32 h-32 rounded-full object-cover border-4 border-white shadow-sm" %>
-          <% else %>
-            <div class="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-4xl border-4 border-white shadow-sm">👤</div>
-          <% end %>
-        </div>
-        <%= link_to "編集する", edit_profile_path, class: "mb-2 bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-50 transition shadow-sm" %>
+<div class="relative px-10 pb-10">
+  <div class="animate-fade-in-up relative -top-12 flex justify-between items-end"
+      style="animation-delay: 0.3s; opacity: 0; animation-fill-mode: forwards;">
+    <div class="p-1 bg-white rounded-full">
+      <% if @user.avatar.attached? %>
+        <%= image_tag @user.avatar, class: "w-32 h-32 rounded-full object-cover border-4 border-white shadow-sm" %>
+      <% else %>
+        <div class="w-32 h-32 rounded-full bg-gray-200 flex items-center justify-center text-4xl border-4 border-white shadow-sm">👤</div>
+      <% end %>
+    </div>
+    <%= link_to "編集する", edit_profile_path, class: "mb-2 bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-50 transition shadow-sm" %>
+  </div>
+
+  <div class="animate-fade-in-up -mt-8"
+      style="animation-delay: 0.4s; opacity: 0; animation-fill-mode: forwards;">
+    <h1 class="text-2xl font-bold text-gray-900"><%= @user.name %></h1>
+    <p class="text-gray-500 text-sm"><%= @user.email %></p>
+  </div>
+
+  <hr class="my-6 border-gray-100">
+
+  <div class="animate-fade-in-up grid grid-cols-2 gap-4 mb-8"
+      style="animation-delay: 0.5s; opacity: 0; animation-fill-mode: forwards;">
+    <div class="bg-orange-50 p-6 rounded-2xl text-center shadow-sm border border-orange-100/50">
+      <p class="text-gray-500 text-[10px] uppercase font-bold tracking-[0.15em] mb-2">今月の節約額</p>
+      <div class="flex items-baseline justify-center text-orange-600">
+        <span class="text-lg font-bold mr-0.5">¥</span>
+        <span class="text-4xl md:text-5xl font-black tabular-nums tracking-tight">
+          <%= number_with_delimiter(@user.savings_this_month) %>
+        </span>
       </div>
+    </div>
 
-      <div class="-mt-8">
-        <h1 class="text-2xl font-bold text-gray-900"><%= @user.name %></h1>
-        <p class="text-gray-500 text-sm"><%= @user.email %></p>
+    <div class="bg-emerald-50 p-6 rounded-2xl text-center shadow-sm border border-emerald-100/50">
+      <p class="text-gray-500 text-[10px] uppercase font-bold tracking-[0.15em] mb-2">今月の自炊回数</p>
+      <div class="flex items-baseline justify-center text-emerald-600">
+        <span class="text-4xl md:text-5xl font-black tabular-nums tracking-tight">
+          <%= @user.count_this_month %>
+        </span>
+        <span class="text-sm font-bold ml-1">回</span>
       </div>
-
-      <hr class="my-6 border-gray-100">
-
-      <%# 統計情報エリア %>
-<div class="grid grid-cols-2 gap-4 mb-8">
-        <%# 今月の節約額カード %>
-        <div class="bg-orange-50 p-6 rounded-2xl text-center shadow-sm border border-orange-100/50">
-          <p class="text-gray-500 text-[10px] uppercase font-bold tracking-[0.15em] mb-2">今月の節約額</p>
-          <div class="flex items-baseline justify-center text-orange-600">
-            <span class="text-lg font-bold mr-0.5">¥</span>
-            <span class="text-4xl md:text-5xl font-black tabular-nums tracking-tight">
-              <%= number_with_delimiter(@user.savings_this_month) %>
-            </span>
+    </div>
+  </div>
+  
+  <div class="animate-fade-in-up"
+      style="animation-delay: 0.6s; opacity: 0; animation-fill-mode: forwards;">
+    <h3 class="text-lg font-bold text-gray-800 mb-4 px-1">月別の自炊実績</h3>
+    <div class="space-y-3 mb-8">
+      <% @monthly_stats.each do |stat| %>
+        <div class="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+          <div class="font-bold text-gray-700">
+            <%= stat.month.to_date.strftime("%Y年 %m月") rescue stat.month %>
           </div>
-        </div>
-
-        <%# 今月の自炊回数カード %>
-        <div class="bg-emerald-50 p-6 rounded-2xl text-center shadow-sm border border-emerald-100/50">
-          <p class="text-gray-500 text-[10px] uppercase font-bold tracking-[0.15em] mb-2">今月の自炊回数</p>
-          <div class="flex items-baseline justify-center text-emerald-600">
-            <span class="text-4xl md:text-5xl font-black tabular-nums tracking-tight">
-              <%= @user.count_this_month %>
-            </span>
-            <span class="text-sm font-bold ml-1">回</span>
-          </div>
-        </div>
-      </div>
-      
-      <%# 月別の集計結果リスト %>
-      <h3 class="text-lg font-bold text-gray-800 mb-4 px-1">月別の自炊実績</h3>
-      <div class="space-y-3 mb-8">
-        <% @monthly_stats.each do |stat| %>
-          <div class="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
-            <div class="font-bold text-gray-700">
-              <%# 月の表示（SQLite/PostgreSQL両対応のための考慮） %>
-              <%= stat.month.to_date.strftime("%Y年 %m月") rescue stat.month %>
+          <div class="flex gap-6">
+            <div class="text-right">
+              <p class="text-[9px] text-gray-400 font-bold uppercase">Savings</p>
+              <p class="text-emerald-600 font-black">¥<%= number_with_delimiter(stat.savings.to_i) %></p>
             </div>
-            <div class="flex gap-6">
-              <div class="text-right">
-                <p class="text-[9px] text-gray-400 font-bold uppercase">Savings</p>
-                <p class="text-emerald-600 font-black">¥<%= number_with_delimiter(stat.savings.to_i) %></p>
-              </div>
-              <div class="text-right border-l pl-6 border-gray-100">
-                <p class="text-[9px] text-gray-400 font-bold uppercase">Cooked</p>
-                <p class="text-gray-900 font-black"><%= stat.count %><span class="text-[10px] ml-0.5">回</span></p>
-              </div>
+            <div class="text-right border-l pl-6 border-gray-100">
+              <p class="text-[9px] text-gray-400 font-bold uppercase">Cooked</p>
+              <p class="text-gray-900 font-black"><%= stat.count %><span class="text-[10px] ml-0.5">回</span></p>
             </div>
           </div>
-        <% end %>
-
-        <% if @monthly_stats.empty? %>
-          <div class="text-center py-10 bg-gray-50 rounded-2xl border-2 border-dashed border-gray-200">
-            <p class="text-gray-400 text-sm">まだ記録がありません。自炊して記録してみましょう！</p>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8">
-        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-          <span>📈</span> 自炊節約の歩み
-        </h3>
-      <div class="w-full aspect-video md:aspect-[2/1]">
-          <canvas id="savingsChart" 
-                  data-labels="<%= @chart_labels.to_json %>" 
-                  data-values="<%= @chart_values.to_json %>">
-          </canvas>
         </div>
-      </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="animate-fade-in-up bg-white p-4 md:p-6 rounded-2xl shadow-sm border border-gray-100 mb-8"
+      style="animation-delay: 0.8s; opacity: 0; animation-fill-mode: forwards;">
+    <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+      <span>📈</span> 自炊節約の歩み
+    </h3>
+    <div class="relative w-full h-[250px] md:h-[350px]">
+        <canvas id="savingsChart" 
+                data-labels="<%= @chart_labels.to_json %>" 
+                data-values="<%= @chart_values.to_json %>">
+        </canvas>
     </div>
   </div>
 </div>
