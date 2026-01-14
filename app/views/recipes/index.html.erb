@@ -21,7 +21,6 @@
             class: "flex-1 md:flex-none md:w-32 py-2.5 rounded-xl text-xs md:text-sm font-bold text-center transition-all #{@current_filter == "mine" ? "bg-white text-orange-600 shadow-sm" : "text-stone-400 hover:text-orange-500"}" %>
       </div>
 
-      <%# 新規作成ボタン：オレンジに変更 %>
       <%= link_to new_recipe_path, class: "inline-flex items-center px-5 py-3 font-bold text-white bg-orange-500 rounded-2xl hover:bg-orange-600 shadow-lg shadow-orange-100 transition-all text-sm active:scale-95" do %>
         <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
         作る
@@ -35,7 +34,6 @@
       <% @recipes.each_with_index do |recipe, index| %>
           
           <%# 2. classに animate-fade-in-up があることを確認 %>
-          <%# 3. style属性で index に応じたディレイを追加 %>
           <div class="animate-fade-in-up bg-white rounded-[2rem] border border-orange-50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden"
               style="animation-delay: <%= index * 0.1 %>s; opacity: 0; animation-fill-mode: forwards;">
               
