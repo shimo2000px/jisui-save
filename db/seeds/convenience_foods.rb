@@ -1,7 +1,7 @@
 puts "Updating convenience foods (Safely)..."
 
 convenience_foods_groups = {
-"🍱 お弁当・丼・カレー" => [
+  "🍱 お弁当・丼・カレー" => [
     { name: "幕の内弁当（定番）", price: 598 },
     { name: "海苔弁当", price: 480 },
     { name: "肉系弁当（チキン南蛮・ハンバーグ等）", price: 680 },
@@ -81,11 +81,22 @@ convenience_foods_groups = {
 convenience_foods_groups.each do |category_name, foods|
   foods.each do |food_data|
     food = ConvenienceFood.find_or_initialize_by(name: food_data[:name])
-    food.update!(
-      category: category_name,
-      price: food_data[:price]
-    )
+    food.update!(category: category_name, price: food_data[:price])
   end
 end
 
-puts "Success: Created/Updated #{ConvenienceFood.count} convenience foods!"
+active_cf_names = convenience_foods_groups.values.flatten.map { |f| f[:name] }
+
+used_cf_ids = Recipe.pluck(:convenience_food_id).compact.uniq
+
+unused_old_cfs = ConvenienceFood.where.not(name: active_cf_names)
+                                .where.not(id: used_cf_ids)
+
+puts "Deleting #{unused_old_cfs.count} old convenience foods (safely)..."
+unused_old_cfs.destroy_all
+
+ConvenienceFood.where.not(name: active_cf_names).each do |cf|
+  cf.update(name: "【販売終了】#{cf.name}") unless cf.name.start_with?("【販売終了】")
+end
+
+puts "Success: Convenience foods maintenance completed!"
