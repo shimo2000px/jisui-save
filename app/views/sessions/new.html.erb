@@ -21,7 +21,6 @@
   <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
     <div class="bg-white/80 backdrop-blur-md py-10 px-8 shadow-[0_20px_50px_rgba(255,140,0,0.1)] rounded-[3rem] border border-white space-y-6">
       
-      <%# Googleログインボタンをよりリッチに %>
       <%= button_to '/auth/google_oauth2', 
           method: :post, 
           data: { turbo: false }, 
@@ -43,7 +42,6 @@
         </span>
       <% end %>
 
-      <%# ガイドへの導線 %>
       <div class="pt-8 border-t border-dashed border-orange-100">
         <%= link_to guide_path, class: "group flex flex-col items-center gap-3 no-underline" do %>
           <div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center group-hover:bg-orange-100 transition-colors">
@@ -61,7 +59,6 @@
       </div>
     </div>
 
-    <%# フッター的な安心要素 %>
     <p class="mt-8 text-center text-[10px] font-bold text-stone-400 px-6 leading-relaxed">
       ログインすることで、<br class="md:hidden">
       <%= link_to "利用規約", terms_path, class: "underline decoration-orange-200 hover:text-orange-500" %> と 

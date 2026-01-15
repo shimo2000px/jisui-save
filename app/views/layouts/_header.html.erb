@@ -43,6 +43,11 @@
   <%# スマホレスポンシブ %>
   <div data-menu-target="content" class="hidden md:hidden bg-white border-t border-orange-50">
     <div class="px-4 pt-2 pb-6 space-y-2 shadow-inner">
+        <% if current_user&.admin? %>
+          <%= link_to admin_users_path, class: "block px-4 py-3 text-blue-600 bg-blue-50 rounded-xl font-bold border border-blue-100 mb-2" do %>
+            ⚙️ ユーザー管理
+          <% end %>
+        <% end %>
       <% if logged_in? && !guest_user? %>
         <%= link_to "💡 使い方", guide_path, class: "block px-4 py-3 text-gray-700 bg-gray-50 rounded-xl" %>
         <%= button_to "🚪 ログアウト", logout_path, method: :delete, class: "w-full text-left px-4 py-3 text-red-500 bg-red-50 rounded-xl" %>
