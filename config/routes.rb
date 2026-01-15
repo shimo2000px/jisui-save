@@ -17,13 +17,17 @@ Rails.application.routes.draw do
   match "auth/:provider/callback", to: "sessions#create", via: [ :get, :post ]
   get "auth/failure", to: redirect("/login")
 
-  resource :profile, only: [ :show, :edit, :update ]
+  resource :profile, only: [ :show, :edit, :update, :destroy ]
 
   get "terms", to: "static_pages#terms", as: :terms
   get "privacy", to: "static_pages#privacy", as: :privacy
   get "contact", to: "static_pages#contact", as: :contact
 
   get "guide", to: "static_pages#guide", as: :guide
+
+  namespace :admin do
+    resources :users, only: [:index, :destroy]
+  end
 
   root "recipes#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

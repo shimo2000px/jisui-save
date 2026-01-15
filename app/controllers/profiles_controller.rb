@@ -38,6 +38,12 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def destroy
+    current_user.destroy
+    reset_session
+    redirect_to root_path, notice: "退会しました"
+  end
+
   private
 
   def set_user
