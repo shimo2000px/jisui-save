@@ -13,7 +13,6 @@
     </div>
 
     <div class="flex items-center gap-3 w-full md:w-auto">
-      <%# 公開/自分切り替えタブ %>
       <div class="flex flex-1 md:flex-none bg-orange-100/50 p-1.5 rounded-2xl shadow-inner">
         <%= link_to "公開レシピ", recipes_path(filter: "public"), 
             class: "flex-1 md:flex-none md:w-32 py-2.5 rounded-xl text-xs md:text-sm font-bold text-center transition-all #{@current_filter == "public" ? "bg-white text-orange-600 shadow-sm" : "text-stone-400 hover:text-orange-500"}" %>
@@ -31,12 +30,10 @@
     </div>
   </div>
 
-  <%# --- レシピ一覧グリッド --- %>
   <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-10">
     <% if @recipes.any? %>
       <% @recipes.each_with_index do |recipe, index| %>
           
-          <%# 2. classに animate-fade-in-up があることを確認 %>
           <div class="animate-fade-in-up bg-white rounded-[2rem] border border-orange-50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden"
               style="animation-delay: <%= index * 0.1 %>s; opacity: 0; animation-fill-mode: forwards;">
               
@@ -66,15 +63,12 @@
             <% end %>
           </div>
 
-          <%# --- コンテンツセクション --- %>
           <div class="p-4 md:p-6 flex-grow flex flex-col">
             <h2 class="text-sm md:text-xl font-black text-stone-800 mb-3 line-clamp-2 md:line-clamp-none transition-colors group-hover:text-orange-600">
               <%= link_to recipe.title, recipe_path(recipe) %>
             </h2>
             
-            <%# 金額比較エリア %>
             <div class="mt-auto p-3 bg-[#FFFBF7] rounded-2xl border border-orange-100/50">
-              <%# 自炊コスト %>
               <div class="flex justify-between items-baseline border-b border-orange-100/30 pb-1.5 mb-1.5">
                 <span class="text-[8px] md:text-[10px] text-stone-400 font-bold uppercase tracking-widest">自炊</span>
                 <span class="text-xs md:text-lg font-black text-stone-700">
@@ -82,7 +76,6 @@
                 </span>
               </div>
               
-              <%# 比較対象 %>
               <div class="flex justify-between items-baseline">
                 <span class="text-[8px] md:text-[10px] text-stone-400 font-bold uppercase truncate mr-1 max-w-[60px] md:max-w-[100px]">
                   <%= recipe.convenience_food&.name || "外食" %>
@@ -94,7 +87,6 @@
             </div>
           </div>
 
-          <%# --- アクションセクション --- %>
           <div class="p-4 pt-0">
             <%= render "cooking_button", recipe: recipe %>
           </div>

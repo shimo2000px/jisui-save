@@ -1,7 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  // totalDisplay をターゲットに含める
   static targets = ["totalDisplay", "container", "template", "convenienceSelect", "conveniencePriceDisplay", "savingsDisplay"]
 
   connect() {
@@ -42,17 +41,14 @@ export default class extends Controller {
       const customPrice = customPriceInput?.value.trim()
 
       if (customPrice !== "" && !isNaN(customPrice)) {
-        // 手動入力があれば優先
         total += parseFloat(customPrice)
       } else if (select && select.selectedIndex > 0) {
-        // セレクトボックスから計算
         const selectedOption = select.options[select.selectedIndex]
         const pricePerGram = parseFloat(selectedOption.dataset.pricePerGram) || 0
         total += pricePerGram * amount
       }
     })
 
-    // 表示を更新
     if (this.hasTotalDisplayTarget) {
       this.totalDisplayTarget.textContent = Math.round(total).toLocaleString()
     }
