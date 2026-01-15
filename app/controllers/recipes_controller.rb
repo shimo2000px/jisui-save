@@ -48,8 +48,9 @@ class RecipesController < ApplicationController
   end
 
     @recipe = Recipe.new
-    3.times { @recipe.recipe_ingredients.build }
-    @ingredients = Ingredient.all.order(:id)
+    5.times { @recipe.recipe_ingredients.build }
+    @ingredients = Ingredient.all.order(:sort_order)
+    @convenience_foods = ConvenienceFood.all.order(:sort_order)
   end
 
   def show
@@ -61,7 +62,7 @@ class RecipesController < ApplicationController
   end
 
   def edit
-  @ingredients = Ingredient.all.order(:id)
+  @ingredients = Ingredient.all.order(:sort_order)
   end
 
 
