@@ -1,5 +1,5 @@
 class Admin::UsersController < ApplicationController
-  before_action :authenticate_user!
+  before_action :require_login
   before_action :if_not_admin
 
   def index
