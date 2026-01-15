@@ -1,7 +1,7 @@
 class ProfilesController < ApplicationController
   def show
     if guest_user?
-        redirect_to recipes_path, alert: "プロフィール機能はアカウントログインが必要です"
+        redirect_to recipes_path, alert: "プロフィール機能はアカウント登録が必要です"
         return
     end
       @recipe = Recipe.new
