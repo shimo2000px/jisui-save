@@ -43,7 +43,7 @@ class RecipesController < ApplicationController
 
   def new
   if guest_user?
-      redirect_to recipes_path, alert: "レシピを新しく作るにはアカウントログインが必要です"
+      redirect_to recipes_path, alert: "レシピを新しく作るにはアカウント登録が必要です"
       return
   end
 
@@ -81,8 +81,14 @@ def update
 end
 
   def destroy
-    @recipe.destroy
-    redirect_to recipes_path, notice: "レシピを削除しました", status: :see_other
+    @recipe = Recipe.find(params[:id])
+
+    if @recipe.user == current_user || current_user.admin?
+      @recipe.destroy
+      redirect_to recipes_path, notice: "レシピを削除しました。", status: :see_other
+    else
+      redirect_to recipes_path, alert: "権限がありません。", status: :see_other
+    end
   end
 
   def toggle_public
@@ -100,7 +106,7 @@ end
 
   def copy
     if guest_user?
-        redirect_to recipe_path, alert: "自炊を記録するにはアカウントログインが必要です"
+        redirect_to recipe_path, alert: "自炊を記録するにはアカウント登録が必要です"
       return
     end
 
@@ -130,7 +136,7 @@ private
 
   def require_login_except_guest_view
   if guest_user?
-    redirect_to login_path, alert: "レシピの作成や編集には、アカウントログインが必要です"
+    redirect_to login_path, alert: "レシピの作成や編集には、アカウント登録が必要です"
   elsif !logged_in?
     redirect_to login_path, alert: "ログインが必要です。"
   end

@@ -1,5 +1,4 @@
 <div class="max-w-5xl mx-auto my-12 px-4">
-  <%# --- 1. ヘッダーセクション --- %>
   <div class="mb-8 text-center">
     <h1 class="text-4xl font-black text-gray-900 mb-4"><%= @recipe.title %></h1>
     <p class="text-gray-500"><%= @recipe.description %></p>
@@ -21,7 +20,6 @@
         <% end %>
       </div>
 
-      <%# 材料リスト %>
       <div>
         <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <span class="w-1.5 h-8 bg-green-500 rounded-full"></span>
@@ -49,7 +47,6 @@
         </div>
       </div>
 
-      <%# 作り方の手順 %>
       <div>
         <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
           <span class="w-1.5 h-8 bg-blue-500 rounded-full"></span>
@@ -68,7 +65,6 @@
       </div>
     </div>
 
-    <%# --- 右カラム（節約・比較スコア） --- %>
     <div class="space-y-6">
       <div class="sticky top-10">
         <div class="bg-gradient-to-br from-orange-500 to-red-500 rounded-3xl p-8 text-white shadow-2xl overflow-hidden relative">
@@ -87,11 +83,9 @@
               </div>
             </div>
           </div>
-          <%# 背景の飾りデコレーション %>
           <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
         </div>
 
-        <%# アクションボタン %>
         <div class="mt-8 space-y-4">
             <%= render "cooking_button", recipe: @recipe %>        
           
@@ -134,27 +128,32 @@
           <% end %>
 
 
+        <div class="flex flex-col gap-4 mt-8 pt-8 border-t border-gray-100">
+          
           <% if @recipe.user == current_user %>
-            <div class="flex gap-4 mt-8 pt-8 border-t border-gray-100">
-              <%# 編集ボタン %>
-              <%= link_to edit_recipe_path(@recipe), class: "flex-1 text-center bg-green-100 hover:bg-green-200 text-gray-700 font-bold py-3 rounded-xl transition-all" do %>
-                編集する
+            <%= link_to edit_recipe_path(@recipe), class: "flex-1 text-center bg-green-100 hover:bg-green-200 text-gray-700 font-bold py-3 rounded-xl transition-all" do %>
+              編集する
+            <% end %>
+          <% end %>
+
+          <% if @recipe.user == current_user || current_user&.admin? %>
+            <div class="flex flex-col gap-2">
+              <% if current_user&.admin? && @recipe.user != current_user %>
+                <span class="text-center text-[10px] bg-red-100 text-red-600 py-1 rounded-t-lg font-bold">管理者権限</span>
               <% end %>
 
               <%= link_to recipe_path(@recipe), 
-                  data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, 
-                  class: "flex-1 text-center bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 rounded-xl transition-all" do %>
+                          data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, 
+                          class: "flex-1 text-center bg-red-50 hover:bg-red-100 text-red-600 font-bold py-3 #{current_user&.admin? && @recipe.user != current_user ? 'rounded-b-xl' : 'rounded-xl'} transition-all" do %>
                 削除する
               <% end %>
             </div>
           <% end %>
 
-          <%= link_to recipes_path, class: "block text-center text-gray-500 font-bold bg-gray-100 hover:bg-blue-200 py-4 rounded-2xl transition-colors mt-4" do %>
-            <div class="flex items-center justify-center gap-2">
-              一覧に戻る
-            </div>
+          <%= link_to recipes_path, class: "block text-center text-gray-500 font-bold bg-gray-100 hover:bg-gray-200 py-4 rounded-2xl transition-colors mt-4" do %>
+            一覧に戻る
           <% end %>        
-        </div>
+        </div> 
       </div>
     </div>
   </div>

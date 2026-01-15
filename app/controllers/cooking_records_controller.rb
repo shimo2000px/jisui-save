@@ -3,7 +3,7 @@ class CookingRecordsController < ApplicationController
 
   def create
     if guest_user?
-        redirect_to recipe_path(params[:recipe_id]), alert: "自炊を記録するにはアカウントログインが必要です"
+        redirect_to recipe_path(params[:recipe_id]), alert: "自炊を記録するにはアカウント登録が必要です"
         return
     end
 

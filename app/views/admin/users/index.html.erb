@@ -1,0 +1,68 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold text-gray-800">ユーザー管理（管理者専用）</h1>
+    <span class="bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-semibold">
+      管理者モード
+    </span>
+  </div>
+
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <table class="min-w-full leading-normal">
+      <thead>
+        <tr>
+          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            ユーザー名
+          </th>
+          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            メールアドレス
+          </th>
+          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            権限
+          </th>
+          <th class="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-center text-xs font-semibold text-gray-600 uppercase tracking-wider">
+            操作
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @users.each do |user| %>
+          <tr>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <div class="flex items-center">
+                <div class="ml-3">
+                  <p class="text-gray-900 whitespace-no-wrap font-bold">
+                    <%= user.name %>
+                  </p>
+                </div>
+              </div>
+            </td>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <p class="text-gray-900 whitespace-no-wrap"><%= user.email %></p>
+            </td>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+              <% if user.admin? %>
+                <span class="relative inline-block px-3 py-1 font-semibold text-blue-900 leading-tight">
+                  <span aria-hidden class="absolute inset-0 bg-blue-200 opacity-50 rounded-full"></span>
+                  <span class="relative text-xs">管理者</span>
+                </span>
+              <% else %>
+                <span class="text-xs text-gray-500">一般ユーザー</span>
+              <% end %>
+            </td>
+            <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm text-center">
+              <% if user == current_user %>
+                <span class="text-gray-400 text-xs italic">自分自身</span>
+              <% elsif !user.admin? %>
+                <%= link_to admin_user_path(user), 
+                            data: { turbo_method: :delete, turbo_confirm: "本当にこのユーザー（#{user.name}）を強制退会させますか？\n投稿した全てのレシピも削除されます。" }, 
+                            class: "text-red-600 hover:text-red-900 font-bold" do %>
+                  <i class="fa-solid fa-user-slash mr-1"></i>強制退会
+                <% end %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
