@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   has_one_attached :avatar
-
+  has_many :recipes, dependent: :destroy
   has_many :cooking_records, dependent: :destroy
 
   def total_savings
