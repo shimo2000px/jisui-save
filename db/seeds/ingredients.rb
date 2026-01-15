@@ -1,4 +1,4 @@
-puts "Updating ingredients (Safely)..."
+puts "Updating ingredients & convenience foods (Maintaining Order)..."
 
 ingredient_groups = {
   "🥩 肉類" => [
@@ -128,20 +128,18 @@ ingredient_groups = {
   ]
 }
 
+ing_order = 0
+
 ingredient_groups.each do |category_name, items|
   items.each do |item_data|
     ingredient = Ingredient.find_or_initialize_by(name: item_data[:name])
-    ingredient.update!(category: category_name, price_per_gram: item_data[:price_per_gram])
+    ingredient.update!(
+      category: category_name,
+      price_per_gram: item_data[:price_per_gram],
+      sort_order: ing_order
+    )
+    ing_order += 1
   end
 end
 
-active_ing_names = ingredient_groups.values.flatten.map { |i| i[:name] }
-unused_ings = Ingredient.where.not(name: active_ing_names).left_outer_joins(:recipe_ingredients).where(recipe_ingredients: { id: nil })
-puts "Deleting #{unused_ings.count} unused ingredients..."
-unused_ings.destroy_all
-
-Ingredient.where.not(name: active_ing_names).each do |ing|
-  ing.update(name: "【廃止】#{ing.name}") unless ing.name.start_with?("【廃止】")
-end
-
-puts "Success: Ingredients maintenance completed!"
+puts "Success: Ingredients and ConvenienceFoods maintenance completed!"

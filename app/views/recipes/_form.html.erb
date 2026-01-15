@@ -42,7 +42,7 @@
 
         <% 
           category_order = ["🍱 お弁当・丼・カレー", "🍝 パスタ・うどん・そば・ラーメン", "🥪 パン・サンドイッチ・おにぎり", "🍗 ホットスナック", "🥦 惣菜・サラダ", "💰 その他(金額目安)"]
-          all_foods = ConvenienceFood.all.order(:id)
+          all_foods = ConvenienceFood.all.order(:sort_order)
           grouped_options = category_order.map { |cat| [cat, all_foods.select { |f| f.category == cat }.map { |f| [f.name, f.id, { data: { price: f.price } }] }] } 
         %>
 
