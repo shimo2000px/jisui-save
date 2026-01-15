@@ -26,7 +26,7 @@ Rails.application.routes.draw do
   get "guide", to: "static_pages#guide", as: :guide
 
   namespace :admin do
-    resources :users, only: [:index, :destroy]
+    resources :users, only: [ :index, :destroy ]
   end
 
   root "recipes#index"
