@@ -1,6 +1,7 @@
 class Admin::UsersController < ApplicationController
   before_action :require_login
   before_action :if_not_admin
+  before_create :set_share_uid
 
   def index
     @users = User.all
@@ -17,4 +18,8 @@ class Admin::UsersController < ApplicationController
   def if_not_admin
     redirect_to root_path, alert: "管理者専用です" unless current_user.admin?
   end
+
+  def set_share_uid
+  self.share_uid = SecureRandom.alphanumeric(10)
+end
 end
