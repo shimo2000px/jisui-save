@@ -1,5 +1,5 @@
 class SharesController < ApplicationController
-  skip_before_action :require_login, only:[:show]
+  skip_before_action :require_login, only: [ :show ]
 
   def show
     @user = User.find_by!(share_uid: params[:id])
@@ -20,7 +20,7 @@ class SharesController < ApplicationController
       cumulative_sum = 0
       @chart_values = @chart_labels.map do |date|
         cumulative_sum += (daily_data[date] || 0)
-        cumulative_sum  
+        cumulative_sum
       end
   end
 end
