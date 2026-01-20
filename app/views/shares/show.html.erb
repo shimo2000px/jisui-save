@@ -1,0 +1,49 @@
+<% content_for :title, "#{@user_name}さんの自炊レポート | 自炊save" %>
+<% content_for :og_title, "#{@user_name}さんの今月の節約額は...？" %>
+<% content_for :og_description, "今月は自炊で ¥#{number_with_delimiter(@monthly_savings)} 節約しました！" %>
+<% content_for :og_image, asset_url('jisui_ogp.png') %>
+
+<div class="min-h-screen bg-cover bg-center py-12 px-4" style="background-image: url('<%= asset_path('unnamed 2.jpg') %>');">
+  
+  <div class="max-w-2xl mx-auto bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl p-8 border border-white">
+    
+    <div class="text-center mb-8">
+      <h1 class="text-2xl font-extrabold text-gray-800">
+        <%= @user_name %> <span class="text-gray-500 font-medium">さんの自炊成果</span>
+      </h1>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-10">
+      <div class="bg-orange-50 rounded-2xl p-6 text-center border border-orange-100">
+        <p class="text-gray-600 text-sm mb-1">今月の節約額</p>
+        <p class="text-3xl font-black text-orange-500">
+          <span class="text-lg">¥</span><%= number_with_delimiter(@monthly_savings) %>
+        </p>
+      </div>
+      <div class="bg-blue-50 rounded-2xl p-6 text-center border border-blue-100">
+        <p class="text-gray-600 text-sm mb-1">今月の自炊回数</p>
+        <p class="text-3xl font-black text-blue-500">
+          <%= @cooking_count %><span class="text-lg">回</span>
+        </p>
+      </div>
+    </div>
+
+    <div class="mb-10 bg-gray-50 rounded-2xl p-4 border border-gray-100">
+      <p class="text-center text-gray-500 text-xs font-bold mb-4 uppercase tracking-widest">自炊節約の歩み</p>
+      <div class="relative" style="height: 300px; width: 100%;">
+        <canvas id="savingsChart" 
+                data-labels="<%= @chart_labels.to_json %>" 
+                data-values="<%= @chart_values.to_json %>">
+        </canvas>
+      </div>
+    </div>
+
+    <div class="text-center border-t border-gray-100 pt-8">
+      <p class="text-gray-500 text-sm mb-4 italic">「自炊save」で節約を楽しく可視化</p>
+      <%= link_to root_path, class: "inline-block bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-full transition-all transform hover:scale-105 shadow-lg" do %>
+        あなたも自炊saveを始めよう！
+      <% end %>
+    </div>
+
+  </div>
+</div>

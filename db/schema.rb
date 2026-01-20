@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_15_223034) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_19_074943) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -54,11 +54,12 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_223034) do
   create_table "cooking_records", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "recipe_id"
-    t.integer "cooking_cost"
-    t.integer "convenience_cost"
-    t.datetime "cooked_at"
+    t.integer "cooking_cost", null: false
+    t.integer "convenience_cost", null: false
+    t.datetime "cooked_at", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["cooked_at"], name: "index_cooking_records_on_cooked_at"
     t.index ["recipe_id"], name: "index_cooking_records_on_recipe_id"
     t.index ["user_id"], name: "index_cooking_records_on_user_id"
   end
@@ -105,6 +106,8 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_15_223034) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "admin", default: false, null: false
+    t.string "share_uid"
+    t.index ["share_uid"], name: "index_users_on_share_uid"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"

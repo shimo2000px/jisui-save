@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_many :recipes, dependent: :destroy
   has_many :cooking_records, dependent: :destroy
+  before_create :set_share_uid
 
   def total_savings
     cooking_records.sum("convenience_cost - cooking_cost")
@@ -39,5 +40,9 @@ class User < ApplicationRecord
       )
       .group("month")
       .order("month DESC")
+  end
+
+  def set_share_uid
+    self.share_uid = SecureRandom.alphanumeric(10)
   end
 end
