@@ -44,11 +44,13 @@
       </div>
 
       <div class="flex gap-2 mb-2">
-        <%= link_to "https://twitter.com/intent/tweet?text=#{u("#{@user.name}さんの今月の自炊成果は...？")}&url=#{u(share_url(@user.share_uid))}", 
-            class: "flex items-center bg-black text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition shadow-sm", 
-            target: '_blank' do %>
-          <span class="">𝕏 シェア</span>
-        <% end %>
+        <% if @user.share_uid.present? %>
+                  <%= link_to "https://twitter.com/intent/tweet?text=#{u("#{@user.name}さんの今月の自炊成果は...？")}&url=#{u(share_url(@user.share_uid))}", 
+                      class: "flex items-center bg-black text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-800 transition shadow-sm", 
+                      target: '_blank' do %>
+                    <span class="">𝕏 シェア</span>
+                  <% end %>
+                <% end %>
 
         <%= link_to "編集する", edit_profile_path, class: "bg-white border border-gray-300 px-4 py-2 rounded-lg text-sm font-bold hover:bg-gray-50 transition shadow-sm" %>
       </div> 
