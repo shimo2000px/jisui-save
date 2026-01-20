@@ -1,8 +1,7 @@
 <% content_for :title, "#{@user_name}さんの自炊レポート | 自炊save" %>
-
 <% content_for :og_title, "#{@user_name}さんの今月の節約額は...？" %>
 <% content_for :og_description, "今月は自炊で ¥#{number_with_delimiter(@monthly_savings)} 節約しました！" %>
-<% content_for :og_image, asset_url('jisui:OGP.png') %>
+<% content_for :og_image, asset_url('jisui_ogp.png') %>
 
 <div class="min-h-screen bg-cover bg-center py-12 px-4" style="background-image: url('<%= asset_path('unnamed 2.jpg') %>');">
   

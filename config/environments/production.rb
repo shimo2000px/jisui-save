@@ -97,6 +97,9 @@ Rails.application.configure do
 
   config.active_storage.service = :cloudinary
 
+  config.action_controller.default_url_options = { host: 'jisui-save.onrender.com', protocol: 'https' }
+  config.asset_host = 'https://jisui-save.onrender.com'
+
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [
   #   "example.com",     # Allow requests from example.com
