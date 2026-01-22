@@ -16,6 +16,7 @@
     <meta property="og:description" content="<%= content_for?(:og_description) ? yield(:og_description) : "「お得」を実感して、自炊がもっと好きになる。" %>">
     <meta property="og:image" content="<%= content_for?(:og_image) ? yield(:og_image) : "https://jisui-save.onrender.com/jisui_ogp.png" %>">    <meta name="twitter:card" content="summary_large_image">
     <meta property="og:url" content="<%= request.original_url %>">
+    <meta name="twitter:image" content="<%= content_for?(:og_image) ? yield(:og_image) : "[https://jisui-save.onrender.com/jisui_ogp.png](https://jisui-save.onrender.com/jisui_ogp.png)" %>">
 
     <%= favicon_link_tag '/jisui-favicon.png', rel: 'icon', type: 'image/png' %>
     <%= yield :head %>

@@ -9,6 +9,14 @@ class Recipe < ApplicationRecord
   after_initialize :set_default_is_public, if: :new_record?
   validates :recipe_ingredients, presence: true
 
+  def self.ransackable_attributes(auth_object = nil)
+    [ "title", "description", "cooking_records_count", "created_at" ]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    [ "convenience_food", "cooking_records", "user" ]
+  end
+
   def total_cost
     recipe_ingredients.to_a.sum(&:total_price) || 0
   end
