@@ -1,8 +1,8 @@
 class RecipesController < ApplicationController
   before_action :set_recipe, only: [ :show, :edit, :update, :destroy ]
 
-  def index
-    if params[:filter] == "mine" && guest_user?
+def index
+    if params[:filter] == "mine" && (current_user.nil? || guest_user?)
         redirect_to recipes_path(filter: "public"), alert: "「MYレシピ」の利用にはアカウント登録が必要です"
         return
     end
@@ -10,19 +10,21 @@ class RecipesController < ApplicationController
     @q = Recipe.ransack(params[:q])
     @q.sorts = 'created_at desc' if @q.sorts.empty?
 
-    base_query = @q.result(distinct: true).with_attached_image.includes(:cooking_records, :convenience_food).all
-
-    if params[:filter] == "mine" && current_user
-      @recipes = base_query.where(user_id: current_user.id)
-                          .order(created_at: :desc)
-                          .page(params[:page]).per(12)
+    if params[:filter] == "mine"
+      scope = Recipe.where(user_id: current_user.id)
       @current_filter = "mine"
     else
-      @recipes = base_query.where(is_public: true)
-                          .order(created_at: :desc)
-                          .page(params[:page]).per(12)
+      scope = Recipe.where(is_public: true)
       @current_filter = "public"
     end
+
+    @recipes = @q.result(distinct: true)
+                .merge(scope) 
+                .with_attached_image
+                .includes(:cooking_records, :convenience_food)
+                .order(created_at: :desc)
+                .page(params[:page])
+                .per(12)
   end
 
   def create
