@@ -7,7 +7,10 @@ class RecipesController < ApplicationController
         return
     end
 
-    base_query = Recipe.with_attached_image.includes(:cooking_records, :convenience_food).all
+    @q = Recipe.ransack(params[:q])
+    @q.sorts = 'created_at desc' if @q.sorts.empty?
+
+    base_query = @q.result(distinct: true).with_attached_image.includes(:cooking_records, :convenience_food).all
 
     if params[:filter] == "mine" && current_user
       @recipes = base_query.where(user_id: current_user.id)
