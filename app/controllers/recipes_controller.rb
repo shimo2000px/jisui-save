@@ -8,7 +8,7 @@ def index
     end
 
     @q = Recipe.ransack(params[:q])
-    @q.sorts = 'created_at desc' if @q.sorts.empty?
+    @q.sorts = "created_at desc" if @q.sorts.empty?
 
     if params[:filter] == "mine"
       scope = Recipe.where(user_id: current_user.id)
@@ -19,7 +19,7 @@ def index
     end
 
     @recipes = @q.result(distinct: true)
-                .merge(scope) 
+                .merge(scope)
                 .with_attached_image
                 .includes(:cooking_records, :convenience_food)
                 .order(created_at: :desc)
