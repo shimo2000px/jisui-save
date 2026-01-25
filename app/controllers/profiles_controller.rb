@@ -1,13 +1,16 @@
 class ProfilesController < ApplicationController
+
   def show
     if guest_user?
-        redirect_to recipes_path, alert: "プロフィール機能はアカウント登録が必要です"
-        return
+      redirect_to recipes_path, alert: "プロフィール機能はアカウント登録が必要です"
+      return
     end
-      @recipe = Recipe.new
-
 
     @user = current_user
+    @recipe = Recipe.new
+
+    @current_goal = @user.goals.find_by(target_month: Date.current.beginning_of_month)
+
     @monthly_stats = @user.monthly_cooking_stats
 
     daily_data = @user.cooking_records

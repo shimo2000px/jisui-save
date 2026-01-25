@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_many :recipes, dependent: :destroy
   has_many :cooking_records, dependent: :destroy
+  has_many :goals, dependent: :destroy
   before_create :set_share_uid
 
   def total_savings
