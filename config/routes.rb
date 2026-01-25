@@ -31,6 +31,8 @@ Rails.application.routes.draw do
 
   resources :shares, only: [ :show ]
 
+  resources :goals, only: [:new, :create, :edit, :update]
+
   root "recipes#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

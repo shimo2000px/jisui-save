@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_22_030632) do
+ActiveRecord::Schema[7.2].define(version: 2026_01_25_050835) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -64,6 +64,18 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_22_030632) do
     t.index ["user_id"], name: "index_cooking_records_on_user_id"
   end
 
+  create_table "goals", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.date "target_month", null: false
+    t.integer "target_amount"
+    t.integer "target_times"
+    t.datetime "achieved_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id", "target_month"], name: "index_goals_on_user_id_and_target_month", unique: true
+    t.index ["user_id"], name: "index_goals_on_user_id"
+  end
+
   create_table "ingredients", force: :cascade do |t|
     t.string "name"
     t.decimal "price_per_gram", precision: 10, scale: 2
@@ -115,6 +127,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_22_030632) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "cooking_records", "recipes"
   add_foreign_key "cooking_records", "users"
+  add_foreign_key "goals", "users"
   add_foreign_key "recipe_ingredients", "ingredients"
   add_foreign_key "recipe_ingredients", "recipes"
   add_foreign_key "recipes", "convenience_foods"
