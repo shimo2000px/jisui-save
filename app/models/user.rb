@@ -32,6 +32,14 @@ class User < ApplicationRecord
     cooking_records.where(cooked_at: Time.current.all_month).count
   end
 
+  def savings_for_month(date)
+  cooking_records.where(cooked_at: date.all_month).sum("convenience_cost - cooking_cost")
+  end
+
+  def count_for_month(date)
+    cooking_records.where(cooked_at: date.all_month).count
+  end
+
   def monthly_cooking_stats
     cooking_records
       .select(

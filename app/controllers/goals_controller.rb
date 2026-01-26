@@ -2,6 +2,11 @@ class GoalsController < ApplicationController
   before_action :require_login
   before_action :set_goal, only: [:edit, :update, :destroy]
 
+  def index
+    @user = current_user
+    @goals = current_user.goals.order(target_month: :desc)
+  end
+
   def create
     @goal = current_user.goals.build(goal_params)
     @goal.target_month = Time.current.beginning_of_month
