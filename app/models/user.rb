@@ -2,6 +2,7 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_many :recipes, dependent: :destroy
   has_many :cooking_records, dependent: :destroy
+  has_many :goals, dependent: :destroy
   before_create :set_share_uid
 
   def total_savings
@@ -29,6 +30,14 @@ class User < ApplicationRecord
 
   def count_this_month
     cooking_records.where(cooked_at: Time.current.all_month).count
+  end
+
+  def savings_for_month(date)
+  cooking_records.where(cooked_at: date.all_month).sum("convenience_cost - cooking_cost")
+  end
+
+  def count_for_month(date)
+    cooking_records.where(cooked_at: date.all_month).count
   end
 
   def monthly_cooking_stats
