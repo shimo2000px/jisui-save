@@ -3,8 +3,8 @@ class CookingRecordsController < ApplicationController
 
   def create
     if guest_user?
-        redirect_to recipe_path(params[:recipe_id]), alert: "自炊を記録するにはアカウント登録が必要です"
-        return
+      redirect_to recipe_path(params[:recipe_id]), alert: "自炊を記録するにはアカウント登録が必要です"
+      return
     end
 
     @recipe = Recipe.find(params[:recipe_id])
@@ -17,7 +17,13 @@ class CookingRecordsController < ApplicationController
     )
 
     if @cooking_record.save
-      redirect_to recipe_path(@recipe), notice: "自炊お疲れ様です！記録しました。"
+      goal = current_user.goals.find_by(target_month: @cooking_record.cooked_at.beginning_of_month)
+      
+      if goal && goal.achieved_at.present? && goal.achieved_at >= 1.minute.ago
+        flash[:achievement] = "🎉 おめでとうございます！今月の目標を達成しました！"
+      end
+
+      redirect_to profile_path, notice: "自炊お疲れ様です！記録しました。"
     else
       redirect_to recipe_path(@recipe), alert: "記録に失敗しました。"
     end

@@ -1,0 +1,56 @@
+<% if flash[:achievement] %>
+  <div id="achievement-toast" 
+      class="fixed top-20 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm animate-fade-in-up"
+      data-controller="achievement">
+    <div class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-1 rounded-[2rem] shadow-[0_20px_50px_rgba(234,179,8,0.3)]">
+      <div class="bg-white px-6 py-5 rounded-[1.8rem] text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5 pointer-events-none select-none text-xs flex flex-wrap gap-2 p-2">
+          <% 10.times do %><span>✨</span><span>🍳</span><% end %>
+        </div>
+
+        <div class="relative z-10">
+          <div class="text-3xl mb-2 drop-shadow-sm">👑</div>
+          <p class="font-black text-stone-800 text-base leading-tight mb-1">
+            <%= flash[:achievement] %>
+          </p>
+          <p class="text-[10px] font-black text-orange-500 uppercase tracking-[0.2em]">Goal Accomplished!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%# JSで発火 %>
+<%# 1. ライブラリの読み込みは、一度読み込めばOKなのでこのままでOK %>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<script>
+    // この関数を定義して、準備ができ次第実行する
+    (function() {
+      const startConfetti = () => {
+        if (typeof confetti === 'function') {
+          confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 },
+            zIndex: 9999
+          });
+        } else {
+          // もし読み込みが間に合わなければ0.1秒後に再トライ
+          setTimeout(startConfetti, 100);
+        }
+      };
+
+      // 即時実行
+      startConfetti();
+
+      // トーストの自動削除ロジック
+      const toast = document.getElementById('achievement-toast');
+      if (toast) {
+        setTimeout(() => {
+          toast.classList.add('opacity-0', 'transition-opacity', 'duration-1000');
+          setTimeout(() => toast.remove(), 1000);
+        }, 5000);
+      }
+    })();
+  </script>
+<% end %>

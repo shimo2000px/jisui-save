@@ -2,8 +2,7 @@
   <h1 class="text-2xl font-black text-stone-800 text-center mb-8">🎯 目標を設定・編集</h1>
   
   <div class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-stone-100">
-    <%= form_with(model: @goal, local: true, class: "space-y-6") do |f| %>
-      
+<%= form_with(model: @goal, url: goal_path(id: "current"), method: :patch, local: true, data: { turbo: false }) do |f| %>      
       <% if @goal.errors.any? %>
         <div class="bg-red-50 text-red-500 p-4 rounded-xl text-sm font-bold">
           <ul>
