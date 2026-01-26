@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   resources :recipes do
     member do
       get :copy
@@ -33,7 +32,7 @@ Rails.application.routes.draw do
   resources :shares, only: [ :show ]
 
   resources :goals, only: [ :index, :edit, :update, :destroy ]
-    
+
 
   root "recipes#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

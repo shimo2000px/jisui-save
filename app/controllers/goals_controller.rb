@@ -1,6 +1,6 @@
 class GoalsController < ApplicationController
   before_action :require_login
-  before_action :set_goal, only: [:edit, :update, :destroy]
+  before_action :set_goal, only: [ :edit, :update, :destroy ]
 
   def index
     @user = current_user

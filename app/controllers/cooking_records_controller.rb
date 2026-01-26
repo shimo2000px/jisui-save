@@ -18,7 +18,7 @@ class CookingRecordsController < ApplicationController
 
   if @cooking_record.save
       goal = current_user.goals.find_by(target_month: Time.current.beginning_of_month)
-      
+
       if goal && goal.achieved_at.nil?
         monthly_savings = current_user.cooking_records
                                     .where(cooked_at: Time.current.all_month)
@@ -31,8 +31,8 @@ class CookingRecordsController < ApplicationController
       end
 
       redirect_to profile_path, notice: "自炊お疲れ様です！記録しました。"
-    else
+  else
       redirect_to recipe_path(@recipe), alert: "記録に失敗しました。"
-    end
+  end
   end
 end
