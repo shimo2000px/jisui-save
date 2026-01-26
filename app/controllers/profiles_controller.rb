@@ -9,6 +9,8 @@ class ProfilesController < ApplicationController
     @user = current_user
     @recipe = Recipe.new
 
+    @goal = @user.goals.find_by(target_month: Time.current.beginning_of_month)
+
     @current_goal = @user.goals.find_by(target_month: Date.current.beginning_of_month)
 
     @monthly_stats = @user.monthly_cooking_stats

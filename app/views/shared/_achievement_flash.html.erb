@@ -18,39 +18,4 @@
       </div>
     </div>
   </div>
-
-  <%# JSで発火 %>
-<%# 1. ライブラリの読み込みは、一度読み込めばOKなのでこのままでOK %>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-<script>
-    // この関数を定義して、準備ができ次第実行する
-    (function() {
-      const startConfetti = () => {
-        if (typeof confetti === 'function') {
-          confetti({
-            particleCount: 150,
-            spread: 70,
-            origin: { y: 0.6 },
-            zIndex: 9999
-          });
-        } else {
-          // もし読み込みが間に合わなければ0.1秒後に再トライ
-          setTimeout(startConfetti, 100);
-        }
-      };
-
-      // 即時実行
-      startConfetti();
-
-      // トーストの自動削除ロジック
-      const toast = document.getElementById('achievement-toast');
-      if (toast) {
-        setTimeout(() => {
-          toast.classList.add('opacity-0', 'transition-opacity', 'duration-1000');
-          setTimeout(() => toast.remove(), 1000);
-        }, 5000);
-      }
-    })();
-  </script>
 <% end %>

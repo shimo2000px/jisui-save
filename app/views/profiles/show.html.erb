@@ -191,7 +191,8 @@
         <div class="relative w-full h-[250px] md:h-[350px]">
             <canvas id="savingsChart" 
                     data-labels="<%= @chart_labels.to_json %>" 
-                    data-values="<%= @chart_values.to_json %>">
+                    data-values="<%= @chart_values.to_json %>"
+                    data-target-amount="<%= @goal&.target_amount.to_i %>">
             </canvas>
         </div>
       </div>

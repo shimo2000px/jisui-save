@@ -16,11 +16,18 @@ class CookingRecordsController < ApplicationController
       cooked_at: Time.current
     )
 
-    if @cooking_record.save
-      goal = current_user.goals.find_by(target_month: @cooking_record.cooked_at.beginning_of_month)
+  if @cooking_record.save
+      goal = current_user.goals.find_by(target_month: Time.current.beginning_of_month)
       
-      if goal && goal.achieved_at.present? && goal.achieved_at >= 1.minute.ago
-        flash[:achievement] = "🎉 おめでとうございます！今月の目標を達成しました！"
+      if goal && goal.achieved_at.nil?
+        monthly_savings = current_user.cooking_records
+                                    .where(cooked_at: Time.current.all_month)
+                                    .sum("convenience_cost - cooking_cost")
+
+        if monthly_savings >= goal.target_amount
+          goal.update(achieved_at: Time.current)
+          flash[:achievement] = "🎉 おめでとうございます！今月の目標を達成しました！"
+        end
       end
 
       redirect_to profile_path, notice: "自炊お疲れ様です！記録しました。"
