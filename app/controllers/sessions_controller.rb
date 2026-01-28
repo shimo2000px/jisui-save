@@ -13,7 +13,9 @@ def create
 
     session[:user_id] = user.id
     cookies.permanent.signed[:user_id] = user.id
-    redirect_to recipes_path, notice: "ログインしました！"
+
+    provider_name = auth.provider == 'google_oauth2' ? 'Google' : 'LINE'
+    redirect_to recipes_path, notice: "#{provider_name}でログインしました！"
   end
   def destroy
     session.delete(:user_id)
