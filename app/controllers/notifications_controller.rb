@@ -14,12 +14,6 @@ class NotificationsController < ApplicationController
       end
   end
 
-  def destroy
-    @setting = current_user
-    @setting.update(notification_enabled: false)
-    redirect_to profile_path, notice: "通知をオフにしました"
-  end
-
   private
 
   def notification_params

@@ -6,17 +6,15 @@
       LINE通知設定
     </h2>
 
-    <%# モデルを @setting (NotificationSetting) に変更 %>
     <%= form_with model: @setting, url: notification_path, method: :patch do |f| %>
       
-      <%# 通知のON/OFF %>
       <div class="mb-6 p-4 bg-stone-50 rounded-2xl flex justify-between items-center border border-stone-100">
         <span class="font-bold text-stone-700">通知を有効にする</span>
         <%= f.check_box :enabled, class: "w-6 h-6 rounded border-stone-300 text-[#06C755] focus:ring-[#06C755]" %>
       </div>
 
       <div class="mb-6">
-        <p class="text-sm font-bold text-stone-400 mb-3 uppercase tracking-wider">配信曜日</p>
+        <p class="text-sm font-bold text-stone-400 mb-3 uppercase tracking-wider">通知日時</p>
         <div class="grid grid-cols-7 gap-2">
           <% [:mon, :tue, :wed, :thu, :fri, :sat, :sun].each do |day| %>
             <label class="cursor-pointer">
