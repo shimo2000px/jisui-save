@@ -67,7 +67,7 @@ class User < ApplicationRecord
   def self.find_or_create_from_auth(auth)
     user = find_or_initialize_by(provider: auth.provider, uid: auth.uid)
     user.name = auth.info.name
-    user.line_user_id = auth.uid if auth.provider == 'line'
+    user.line_user_id = auth.uid if auth.provider == "line"
     user.save
     user
   end

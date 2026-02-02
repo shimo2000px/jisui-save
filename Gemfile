@@ -50,7 +50,7 @@ gem "ransack"
 gem "omniauth-line"
 
 # line message api
-gem 'line-bot-api'
+gem "line-bot-api"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
