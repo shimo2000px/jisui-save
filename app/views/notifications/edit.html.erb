@@ -1,24 +1,27 @@
 <div class="max-w-md mx-auto p-6">
-  <%# 1. LINE連携済みかどうかで分岐 %>
-  <% if @user.line_user_id.present? %>
+  <% if current_user.line_user_id.present? %>
     
-    <h2 class="text-xl font-black mb-6">LINE通知設定</h2>
+    <h2 class="text-xl font-black mb-6 flex items-center gap-2">
+      <span class="w-2 h-6 bg-[#06C755] rounded-full"></span>
+      LINE通知設定
+    </h2>
 
-    <%= form_with model: @user, url: notification_path, method: :patch do |f| %>
+    <%# モデルを @setting (NotificationSetting) に変更 %>
+    <%= form_with model: @setting, url: notification_path, method: :patch do |f| %>
+      
       <%# 通知のON/OFF %>
-      <div class="mb-6 p-4 bg-stone-50 rounded-2xl flex justify-between items-center">
-        <span class="font-bold">通知を有効にする</span>
-        <%= f.check_box :notification_enabled, class: "w-6 h-6 rounded text-[#06C755]" %>
+      <div class="mb-6 p-4 bg-stone-50 rounded-2xl flex justify-between items-center border border-stone-100">
+        <span class="font-bold text-stone-700">通知を有効にする</span>
+        <%= f.check_box :enabled, class: "w-6 h-6 rounded border-stone-300 text-[#06C755] focus:ring-[#06C755]" %>
       </div>
 
-      <%# 曜日選択（一部抜粋） %>
       <div class="mb-6">
-        <p class="text-sm font-bold text-stone-400 mb-2">配信曜日</p>
-        <div class="grid grid-cols-7 gap-1">
+        <p class="text-sm font-bold text-stone-400 mb-3 uppercase tracking-wider">配信曜日</p>
+        <div class="grid grid-cols-7 gap-2">
           <% [:mon, :tue, :wed, :thu, :fri, :sat, :sun].each do |day| %>
-            <label>
-              <%= f.check_box "subscribe_#{day}", class: "hidden peer" %>
-              <div class="py-2 text-center border rounded-lg peer-checked:bg-[#06C755] peer-checked:text-white">
+            <label class="cursor-pointer">
+              <%= f.check_box day, class: "hidden peer" %>
+              <div class="py-3 text-center border-2 border-stone-100 rounded-xl font-bold text-stone-400 transition-all peer-checked:border-[#06C755] peer-checked:bg-[#06C755]/5 peer-checked:text-[#06C755]">
                 <%= t("date.abbr_day_names")[[:sun, :mon, :tue, :wed, :thu, :fri, :sat].index(day)] %>
               </div>
             </label>
@@ -26,31 +29,34 @@
         </div>
       </div>
 
-      <%# 時間設定 %>
       <div class="mb-8">
-        <p class="text-sm font-bold text-stone-400 mb-2">配信時間</p>
-        <%= f.time_field :notification_time, class: "w-full p-3 border rounded-xl" %>
+        <p class="text-sm font-bold text-stone-400 mb-3 uppercase tracking-wider">配信時間</p>
+        <%= f.time_field :send_time, class: "w-full p-4 bg-stone-50 border-2 border-stone-100 rounded-2xl font-bold text-stone-700 focus:border-orange-200 outline-none transition-all" %>
       </div>
 
-      <%= f.submit "保存する", class: "w-full py-4 bg-orange-500 text-white font-black rounded-2xl" %>
+      <%= f.submit "設定を保存する", class: "w-full py-4 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-black rounded-2xl shadow-lg shadow-orange-100 hover:scale-[1.02] transition-all active:scale-[0.98] cursor-pointer" %>
     <% end %>
 
   <% else %>
-    <%# 2. 未連携（主にGoogleユーザー）の場合 %>
-    <div class="text-center py-10">
-      <div class="bg-[#06C755]/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-        <svg class="w-10 h-10 text-[#06C755]" ...> </svg>
+    <div class="text-center py-10 bg-white border-2 border-dashed border-stone-200 rounded-[2.5rem] px-6">
+      <div class="bg-[#06C755]/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-[#06C755]" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.185 1.039.646 1.281-.54 6.913-4.073 9.448-6.972 1.747-2.008 2.551-3.654 2.551-5.286z"/>
+        </svg>
       </div>
-      <h2 class="text-lg font-black mb-2">LINE通知を使いませんか？</h2>
-      <p class="text-sm text-stone-500 mb-8">
-        LINEと連携すると、設定した時間に<br>レシピの通知を受け取れます。
+      <h2 class="text-xl font-black text-stone-800 mb-3">LINE通知を使いませんか？</h2>
+      <p class="text-sm text-stone-500 mb-8 leading-relaxed">
+        LINEと連携すると、設定した時間に<br>
+        <span class="font-bold text-stone-700">「今日の献立どうする？」</span><br>
+        とお知らせが届くようになります。
       </p>
       
-      <%# LINE連携ボタン（実体はLINEログインと同じURLを叩かせる） %>
-      <%= button_to "LINEと連携する", "/auth/line", 
+      <%= button_to "/auth/line", 
           method: :post, 
           data: { turbo: false },
-          class: "w-full py-4 bg-[#06C755] text-white font-black rounded-2xl shadow-lg" %>
+          class: "w-full py-4 bg-[#06C755] text-white font-black rounded-2xl shadow-lg shadow-green-100 hover:scale-[1.02] transition-all active:scale-[0.98] flex items-center justify-center gap-2" do %>
+        <span>LINEと連携して通知を受け取る</span>
+      <% end %>
     </div>
   <% end %>
 </div>

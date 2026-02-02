@@ -1,10 +1,10 @@
 class User < ApplicationRecord
   has_one_attached :avatar
+  has_one :notification_setting, dependent: :destroy
   has_many :recipes, dependent: :destroy
   has_many :cooking_records, dependent: :destroy
   has_many :goals, dependent: :destroy
   before_create :set_share_uid
-  validates :notification_time, presence: true, if: :notification_enabled?
 
   def total_savings
     cooking_records.sum("convenience_cost - cooking_cost")
@@ -54,5 +54,21 @@ class User < ApplicationRecord
 
   def set_share_uid
     self.share_uid = SecureRandom.alphanumeric(10)
+  end
+
+  after_create :prepare_notification_setting
+
+  private
+
+  def prepare_notification_setting
+    create_notification_setting
+  end
+
+  def self.find_or_create_from_auth(auth)
+    user = find_or_initialize_by(provider: auth.provider, uid: auth.uid)
+    user.name = auth.info.name
+    user.line_user_id = auth.uid if auth.provider == 'line'
+    user.save
+    user
   end
 end
