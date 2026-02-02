@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_01_25_050835) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_02_064729) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -85,6 +85,22 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_25_050835) do
     t.integer "sort_order"
   end
 
+  create_table "notification_settings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.boolean "enabled", default: false, null: false
+    t.time "send_time"
+    t.boolean "mon", default: false, null: false
+    t.boolean "tue", default: false, null: false
+    t.boolean "wed", default: false, null: false
+    t.boolean "thu", default: false, null: false
+    t.boolean "fri", default: false, null: false
+    t.boolean "sat", default: false, null: false
+    t.boolean "sun", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notification_settings_on_user_id"
+  end
+
   create_table "recipe_ingredients", force: :cascade do |t|
     t.bigint "recipe_id", null: false
     t.bigint "ingredient_id", null: false
@@ -120,6 +136,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_25_050835) do
     t.datetime "updated_at", null: false
     t.boolean "admin", default: false, null: false
     t.string "share_uid"
+    t.string "line_user_id"
     t.index ["share_uid"], name: "index_users_on_share_uid"
   end
 
@@ -128,6 +145,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_01_25_050835) do
   add_foreign_key "cooking_records", "recipes"
   add_foreign_key "cooking_records", "users"
   add_foreign_key "goals", "users"
+  add_foreign_key "notification_settings", "users"
   add_foreign_key "recipe_ingredients", "ingredients"
   add_foreign_key "recipe_ingredients", "recipes"
   add_foreign_key "recipes", "convenience_foods"
