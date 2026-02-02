@@ -33,6 +33,8 @@ Rails.application.routes.draw do
 
   resources :goals, only: [ :index, :edit, :update, :destroy ]
 
+  resource :notification, only: [:edit, :update, :destroy]
+
 
   root "recipes#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

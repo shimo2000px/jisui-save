@@ -4,6 +4,7 @@ class User < ApplicationRecord
   has_many :cooking_records, dependent: :destroy
   has_many :goals, dependent: :destroy
   before_create :set_share_uid
+  validates :notification_time, presence: true, if: :notification_enabled?
 
   def total_savings
     cooking_records.sum("convenience_cost - cooking_cost")
