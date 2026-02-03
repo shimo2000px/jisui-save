@@ -13,8 +13,8 @@ namespace :notification do
 
     targets = NotificationSetting.includes(:user)
                                 .where("#{day_of_week} = ?", true)
-                                .where("EXTRACT(HOUR FROM (send_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Tokyo')) = ?", now.hour)
-                                .where("EXTRACT(MINUTE FROM (send_time AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Tokyo')) = ?", now.min)
+                                .where("EXTRACT(HOUR FROM send_time) = ?", now.hour)
+                                .where("EXTRACT(MINUTE FROM send_time) = ?", now.min)
                                 .where(enabled: true)
 
     puts "Found targets: #{targets.count}"
