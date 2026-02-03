@@ -11,12 +11,14 @@ namespace :notification do
 
     puts "Checking for: Day=#{day_of_week}, Time=#{now.hour}:#{now.min}"
 
-    targets = NotificationSetting.includes(:user)
-                                .where("#{day_of_week} = ?", true)
-                                .where("EXTRACT(HOUR FROM send_time) = ?", now.hour)
-                                .where("EXTRACT(MINUTE FROM send_time) = ?", now.min)
-                                .where(enabled: true)
+    all_enabled = NotificationSetting.includes(:user)
+                                    .where("#{day_of_week} = ?", true)
+                                    .where(enabled: true)
 
+    targets = all_enabled.select do |setting|
+      setting.send_time.in_time_zone("Asia/Tokyo").hour == now.hour &&
+      setting.send_time.in_time_zone("Asia/Tokyo").min == now.min
+    end
     puts "Found targets: #{targets.count}"
 
     line_creds = Rails.application.credentials.line
@@ -55,7 +57,7 @@ namespace :notification do
           messages: [ message ]
         )
 
-      begin
+        begin
           response = client.push_message(push_message_request: push_request)
 
           if response.respond_to?(:sent_messages)
@@ -66,7 +68,7 @@ namespace :notification do
         rescue => e
           puts "Error: #{e.message}"
         end
-      end
+      end # ← ここに each に対する end が必要でした
     end
 
     puts "--- Scan Finished ---"
