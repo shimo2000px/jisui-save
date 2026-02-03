@@ -1,4 +1,4 @@
-require 'line/bot'
+require "line/bot"
 
 class LineBotService
   def initialize
@@ -10,7 +10,7 @@ class LineBotService
 
   def send_message(line_user_id, message)
     return if line_user_id.blank?
-    
+
     response = @client.push_message(line_user_id, message)
     response.code
   end

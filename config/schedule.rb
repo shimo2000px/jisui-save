@@ -1,5 +1,5 @@
-env :PATH, ENV['PATH']
-env :GEM_HOME, ENV['GEM_HOME']
+env :PATH, ENV["PATH"]
+env :GEM_HOME, ENV["GEM_HOME"]
 set :output, "/myapp/log/cron.log"
 set :environment, :development
 
