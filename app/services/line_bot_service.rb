@@ -3,8 +3,8 @@ require "line/bot"
 class LineBotService
   def initialize
     @client ||= ::Line::Bot::Client.new { |config|
-      config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
-      config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
+      config.channel_secret = Rails.application.credentials.line[:messaging_secret]
+      config.channel_token = Rails.application.credentials.line[:messaging_token]
     }
   end
 
