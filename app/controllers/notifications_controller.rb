@@ -1,6 +1,10 @@
 class NotificationsController < ApplicationController
   before_action :require_login
 
+  def create
+    update
+  end
+
   def edit
     @setting = current_user.notification_setting || current_user.create_notification_setting
   end

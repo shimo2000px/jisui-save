@@ -4,23 +4,24 @@ require "line/bot/v2/messaging_api/api/messaging_api_client"
 namespace :notification do
   desc "LINEのリマインド通知を送信します"
   task send_reminders: :environment do
-    now = Time.find_zone("Asia/Tokyo").now
-    day_of_week = now.strftime("%a").downcase
+    now = Time.current.in_time_zone("Asia/Tokyo")
+    day_of_week = now.strftime("%a").downcase # "mon", "tue" など
 
-    puts "--- [Task Start] Time: #{now.strftime('%H:%M:%S')}, Day: #{day_of_week} ---"
+    puts "--- [Task Start] JST Time: #{now.strftime('%H:%M:%S')}, Day: #{day_of_week} ---"
 
     all_configs = NotificationSetting.includes(:user)
-                                    .where("#{day_of_week} = ?", true)
+                                    .where(day_of_week => true)
                                     .where(enabled: true)
 
     puts "Checked DB: Found #{all_configs.count} enabled configs for #{day_of_week}."
 
     targets = all_configs.select do |setting|
-      jst_send_time = setting.send_time.in_time_zone("Asia/Tokyo")
+      config_time = setting.send_time.in_time_zone("Asia/Tokyo").strftime("%H:%M")
+      current_time = now.strftime("%H:%M")
 
-      is_match = jst_send_time.strftime("%H:%M") == now.strftime("%H:%M")
+      is_match = (config_time == current_time)
 
-      puts "  ID:#{setting.id} | User:#{setting.user_id} | Config:#{jst_send_time.strftime('%H:%M')} -> Match: #{is_match}"
+      puts "  SettingID:#{setting.id} | User:#{setting.user_id} | Config:#{config_time} | Now:#{current_time} -> Match: #{is_match}"
 
       is_match
     end
@@ -30,12 +31,9 @@ namespace :notification do
       next
     end
 
-    puts "Target found! Starting LINE Push..."
-
     line_creds = Rails.application.credentials.line
     if line_creds&.[](:messaging_token).nil?
-      puts "ERROR: Line messaging_token is missing in credentials!"
-      Rails.logger.error "[Notification] Line credentials not found."
+      puts "ERROR: Line messaging_token is missing!"
       next
     end
 
@@ -46,7 +44,7 @@ namespace :notification do
     targets.each do |setting|
       line_user_id = setting.user&.line_user_id
       if line_user_id.blank?
-        puts "  Skip User #{setting.user_id}: No LINE ID (line_user_id is nil)."
+        puts "  Skip User #{setting.user_id}: No LINE ID."
         next
       end
 
@@ -60,7 +58,6 @@ namespace :notification do
         puts "  SUCCESS: Sent to User ID #{setting.user_id}"
       rescue => e
         puts "  FAILED: User ID #{setting.user_id} - #{e.message}"
-        Rails.logger.error "[Notification] Failed to send: #{e.message}"
       end
     end
     puts "--- [Task End] ---"
