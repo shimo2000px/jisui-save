@@ -10,7 +10,7 @@ namespace :notification do
     puts "--- [Task Start] JST Time: #{now.strftime('%H:%M:%S')}, Day: #{day_of_week} ---"
 
     all_configs = NotificationSetting.includes(:user)
-                                    .where(day_of_week => true) 
+                                    .where(day_of_week => true)
                                     .where(enabled: true)
 
     puts "Checked DB: Found #{all_configs.count} enabled configs for #{day_of_week}."
