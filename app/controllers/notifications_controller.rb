@@ -6,19 +6,18 @@ class NotificationsController < ApplicationController
   end
 
   def update
-      logger.debug "--- DEBUG: Params received: #{params[:notification_setting].inspect} ---"
-      @setting = current_user.notification_setting
+    @setting = current_user.notification_setting || current_user.build_notification_setting
 
-      p_hash = notification_params
-      if p_hash[:send_time].present?
-        p_hash[:send_time] = Time.zone.parse(p_hash[:send_time])
-      end
+    p_hash = notification_params
+    if p_hash[:send_time].present?
+      p_hash[:send_time] = Time.zone.parse(p_hash[:send_time])
+    end
 
-      if @setting.update(p_hash)
-        redirect_to profile_path, notice: "通知設定を更新しました"
-      else
-        render :edit, status: :unprocessable_entity
-      end
+    if @setting.update(p_hash)
+      redirect_to profile_path, notice: "通知設定を保存しました（ID:#{@setting.id}）"
+    else
+      render :edit, status: :unprocessable_entity
+    end
   end
 
   private
