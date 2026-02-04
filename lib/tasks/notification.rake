@@ -15,7 +15,6 @@ namespace :notification do
     targets = all_configs.select do |setting|
       next unless setting.send(day_of_week) == true
 
-      # 2. 時間のチェック
       config_time = setting.send_time.in_time_zone("Asia/Tokyo").strftime("%H:%M")
       current_time = now.strftime("%H:%M")
 
@@ -43,7 +42,7 @@ namespace :notification do
 
       action = Line::Bot::V2::MessagingApi::URIAction.new(label: "レシピを探す", uri: "https://jisui-save.onrender.com")
       template = Line::Bot::V2::MessagingApi::ButtonsTemplate.new(text: "自炊の時間です！🍳", actions: [ action ])
-      message = Line::Bot::V2::MessagingApi::TemplateMessage.new(type: "template", alt_text: "自炊の時間です🍳", template: template)
+      message = Line::Bot::V2::MessagingApi::TemplateMessage.new(type: "template", alt_text: "自炊の時間になりました🍳", template: template)
       push_request = Line::Bot::V2::MessagingApi::PushMessageRequest.new(to: line_user_id, messages: [ message ])
 
       begin

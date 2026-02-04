@@ -23,7 +23,7 @@ class NotificationSettingsController < ApplicationController
     else
       Rails.logger.error "保存失敗: #{@setting.errors.full_messages}"
       flash.now[:alert] = "保存に失敗しました。入力内容を確認してください。"
-      render :edit, status: :unprocessable_entity   
+      render :edit, status: :unprocessable_entity
     end
   end
 
