@@ -14,7 +14,7 @@ class NotificationsController < ApplicationController
     end
 
     if @setting.update(p_hash)
-      redirect_to profile_path, notice: "通知設定を保存しました（ID:#{@setting.id}）"
+      redirect_to profile_path, notice: "通知設定を保存しました"
     else
       render :edit, status: :unprocessable_entity
     end
