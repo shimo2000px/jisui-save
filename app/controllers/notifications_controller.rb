@@ -10,12 +10,10 @@ class NotificationsController < ApplicationController
     @setting = current_user.notification_setting || current_user.build_notification_setting
 
     p_hash = notification_params
-
+    
     if p_hash[:send_time].present?
-      begin
-        @setting.send_time = Time.zone.parse(p_hash[:send_time])
-      rescue
-      end
+      hour, min = p_hash[:send_time].split(':')
+      @setting.send_time = Time.zone.now.change(hour: hour.to_i, min: min.to_i)
     end
 
     @setting.assign_attributes(p_hash.except(:send_time))
@@ -23,8 +21,8 @@ class NotificationsController < ApplicationController
     if @setting.save
       redirect_to profile_path, notice: "通知設定を保存しました"
     else
-      flash.now[:alert] = "保存に失敗しました: #{@setting.errors.full_messages.join(', ')}"
-      render :edit, status: :unprocessable_entity
+      Rails.logger.error "保存失敗の理由: #{@setting.errors.full_messages}"
+      redirect_to notification_path, alert: "保存に失敗しました: #{@setting.errors.full_messages.join(', ')}"
     end
   end
 
