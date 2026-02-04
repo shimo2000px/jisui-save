@@ -9,13 +9,13 @@ namespace :notification do
 
     puts "--- [Task Start] JST Time: #{now.strftime('%H:%M:%S')}, Day: #{day_of_week} ---"
 
-    all_configs = NotificationSetting.includes(:user)
-                                    .where(day_of_week.to_sym => true)
-                                    .where(enabled: true)
-
-    puts "Checked DB: Found #{all_configs.count} enabled configs for #{day_of_week}."
+    all_configs = NotificationSetting.includes(:user).where(enabled: true).to_a
+    puts "DEBUG: Fetched #{all_configs.count} enabled settings from DB."
 
     targets = all_configs.select do |setting|
+      next unless setting.send(day_of_week) == true
+
+      # 2. 時間のチェック
       config_time = setting.send_time.in_time_zone("Asia/Tokyo").strftime("%H:%M")
       current_time = now.strftime("%H:%M")
 
