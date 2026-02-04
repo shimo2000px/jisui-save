@@ -1,9 +1,5 @@
-class NotificationsController < ApplicationController
+class NotificationSettingsController < ApplicationController
   before_action :require_login
-
-  def create
-    update
-  end
 
   def edit
     @setting = current_user.notification_setting || current_user.create_notification_setting
@@ -25,8 +21,9 @@ class NotificationsController < ApplicationController
     if @setting.save
       redirect_to profile_path, notice: "通知設定を保存しました"
     else
-      Rails.logger.error "保存失敗の理由: #{@setting.errors.full_messages}"
-      redirect_to notification_path, alert: "保存に失敗しました: #{@setting.errors.full_messages.join(', ')}"
+      Rails.logger.error "保存失敗: #{@setting.errors.full_messages}"
+      flash.now[:alert] = "保存に失敗しました。入力内容を確認してください。"
+      render :edit, status: :unprocessable_entity   
     end
   end
 

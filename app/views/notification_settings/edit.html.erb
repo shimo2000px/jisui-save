@@ -7,7 +7,7 @@
     </h2>
     
     <%= form_with model: @setting, 
-                  url: notification_path, 
+                  url: notification_settings_path, 
                   method: @setting.persisted? ? :patch : :post, 
                   data: { turbo: false } do |f| %>
                     

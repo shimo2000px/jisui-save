@@ -33,7 +33,7 @@ Rails.application.routes.draw do
 
   resources :goals, only: [ :index, :edit, :update, :destroy ]
 
-  resource :notification, only: [ :edit, :update, :create ]
+  resource :notification_settings, only: [ :edit, :update ]
 
 
   root "recipes#index"
