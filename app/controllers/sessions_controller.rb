@@ -4,17 +4,24 @@ class SessionsController < ApplicationController
   def new
   end
 
-  def create
+def create
     auth = request.env["omniauth.auth"]
 
     if current_user
-      if auth.provider == "line"
+      if guest_user?
+        session.delete(:user_id)
+        cookies.delete(:user_id)
+        @current_user = nil
+
+      elsif auth.provider == "line"
         current_user.update!(line_user_id: auth.uid)
         redirect_to edit_notification_path, notice: "LINEと連携しました！通知設定が可能です。"
+        return
+
       else
         redirect_to recipes_path, alert: "すでにログインしています。"
+        return
       end
-      return
     end
 
     user = User.find_or_create_by!(provider: auth.provider, uid: auth.uid) do |u|
@@ -29,7 +36,6 @@ class SessionsController < ApplicationController
     provider_name = auth.provider.include?("google") ? "Google" : "LINE"
     redirect_to recipes_path, notice: "#{provider_name}でログインしました！"
   end
-
   def destroy
     session.delete(:user_id)
     cookies.delete(:user_id)
