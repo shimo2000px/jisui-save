@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="w-full md:w-1/2 space-y-4">
-        <h2 class="text-2xl font-black text-stone-800">コンビニ商品と比較する</h2>
+        <h2 class="text-2xl font-black text-stone-800">コンビニ価格と比較する</h2>
         <p class="text-stone-600 leading-relaxed font-medium">
           投稿画面で、作りたい料理に近いコンビニ商品やお弁当を選びましょう。<br>自動的に価格が表示され、自炊との差額がリアルタイムで計算されます！
         </p>
@@ -26,7 +26,7 @@
     </div>
 
     <div class="animate-fade-in-up flex flex-col md:flex-row-reverse items-center gap-10"
-        style="animation-delay: 1.0s; opacity: 0; animation-fill-mode: forwards;">
+        style="animation-delay: 0.5s; opacity: 0; animation-fill-mode: forwards;">
       <div class="w-full md:w-1/2">
         <div class="relative bg-orange-100 rounded-[3rem] p-4 shadow-inner">
           <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white aspect-[9/16] flex items-center justify-center text-stone-300">
@@ -44,44 +44,83 @@
     </div>
 
     <div class="animate-fade-in-up flex flex-col md:flex-row items-center gap-10"
-        style="animation-delay: 1.2s; opacity: 0; animation-fill-mode: forwards;">
+        style="animation-delay: 0.7s; opacity: 0; animation-fill-mode: forwards;">
       <div class="w-full md:w-1/2">
         <div class="relative bg-orange-100 rounded-[3rem] p-4 shadow-inner">
           <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white aspect-[9/16] flex items-center justify-center text-stone-300">
-            <%= image_tag "guide/guide_3.jpg", class: "w-full h-full object-cover" %>
+            <%= image_tag "guide/new_guide.png", class: "w-full h-full object-cover" %>
           </div>
           <div class="absolute -top-4 -left-4 w-12 h-12 bg-orange-500 text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg">3</div>
         </div>
       </div>
       <div class="w-full md:w-1/2 space-y-4">
-        <h2 class="text-2xl font-black text-stone-800">「作った！」ボタンをクリック</h2>
+        <h2 class="text-2xl font-black text-stone-800">自炊を記録する</h2>
         <p class="text-stone-600 leading-relaxed font-medium">
-          自炊したレシピの「作った！」ボタンをクリックして、節約金額と自炊回数を記録しましょう。<br><br>
+          自炊したレシピの「作る」ボタンをクリックして、節約金額と自炊回数を記録しましょう。<br><br>
           レシピの詳細画面にあるコピーボタンを使えば、自分なりのアレンジレシピも簡単に作れます！
         </p>
       </div>
     </div>
 
     <div class="animate-fade-in-up flex flex-col md:flex-row-reverse items-center gap-10"
-        style="animation-delay: 1.4s; opacity: 0; animation-fill-mode: forwards;">
+        style="animation-delay: 0.9s; opacity: 0; animation-fill-mode: forwards;">
       <div class="w-full md:w-1/2">
         <div class="relative bg-orange-100 rounded-[3rem] p-4 shadow-inner">
           <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white aspect-[9/16] flex items-center justify-center text-stone-300">
-            <%= image_tag "guide/guide_4.jpg", class: "w-full h-full object-cover" %>
+            <%= image_tag "guide/step-new-guide.png", class: "w-full h-full object-cover" %>
           </div>
           <div class="absolute -top-4 -right-4 w-12 h-12 bg-orange-500 text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg">4</div>
         </div>
       </div>
       <div class="w-full md:w-1/2 space-y-4 text-right md:text-left">
-        <h2 class="text-2xl font-black text-stone-800">節約の成果をチェック！</h2>
+        <h2 class="text-2xl font-black text-stone-800">頑張りを共有</h2>
         <p class="text-stone-600 leading-relaxed font-medium">
-          プロフィール画面では、「作ったボタン」を押したレシピの「合計節約金額」と「自炊回数」が集計されます。<br><br>
-          「これだけお得になった！」「頑張って自炊できている！」というのが一目でわかるので、楽しく自炊を続けられます！</p>
+          プロフィール画面では、自炊記録の他に様々な機能が使えます。<br>
+          頑張りを誰かと共有したいときは、「Xシェア機能」で今月のあなたの頑張りをシェアしましょう！
+        </p>
+      </div>
+    </div>
+
+    <div class="animate-fade-in-up flex flex-col md:flex-row items-center gap-10"
+        style="animation-delay: 1.1s; opacity: 0; animation-fill-mode: forwards;">
+      <div class="w-full md:w-1/2">
+        <div class="relative bg-orange-100 rounded-[3rem] p-4 shadow-inner">
+          <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white aspect-[9/16] flex items-center justify-center text-stone-300">
+            <%= image_tag "guide/guide-step-4.png", class: "w-full h-full object-cover" %>
+          </div>
+          <div class="absolute -top-4 -left-4 w-12 h-12 bg-orange-500 text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg">5</div>
+        </div>
+      </div>
+      <div class="w-full md:w-1/2 space-y-4">
+        <h2 class="text-2xl font-black text-stone-800">目標を立てる</h2>
+        <p class="text-stone-600 leading-relaxed font-medium">
+          プロフィール画面では、「作る」ボタンを押したレシピの節約額が集計されます。<br><br>
+          グラフの表示で、「これだけお得になった！」「頑張って自炊できている！」というのが一目でわかるので、楽しく自炊を続けられます！
+        </p>
+      </div>
+    </div>
+
+    <div class="animate-fade-in-up flex flex-col md:flex-row-reverse items-center gap-10"
+        style="animation-delay: 1.3s; opacity: 0; animation-fill-mode: forwards;">
+      <div class="w-full md:w-1/2">
+        <div class="relative bg-orange-100 rounded-[3rem] p-4 shadow-inner">
+          <div class="bg-white rounded-[2.5rem] overflow-hidden shadow-xl border-4 border-white aspect-[9/16] flex items-center justify-center text-stone-300">
+            <%= image_tag "guide/guide-step-5.png", class: "w-full h-full object-cover" %>
+          </div>
+          <div class="absolute -top-4 -right-4 w-12 h-12 bg-orange-500 text-white rounded-2xl flex items-center justify-center text-xl font-black shadow-lg">6</div>
+        </div>
+      </div>
+      <div class="w-full md:w-1/2 space-y-4 text-right md:text-left">
+        <h2 class="text-2xl font-black text-stone-800">LINE通知で習慣化</h2>
+        <p class="text-stone-600 leading-relaxed font-medium">
+          LINE連携をすれば、あなたが決めた日時に通知が届きます。<br>
+          自分のペースに合わせて無理なく自炊の習慣化を手助けします！
+        </p>
       </div>
     </div>
   </div>
 
-  <div class="animate-fade-in-up mt-24 text-center" style="animation-delay: 1.1s; opacity: 0; animation-fill-mode: forwards;">
+  <div class="animate-fade-in-up mt-24 text-center" style="animation-delay: 1.5s; opacity: 0; animation-fill-mode: forwards;">
     <%= link_to "さっそく作ってみる", new_recipe_path, class: "inline-block bg-orange-500 hover:bg-orange-600 text-white font-black px-12 py-5 rounded-[2rem] shadow-xl shadow-orange-200 transition-all active:scale-95 text-xl" %>
   </div>
 </div>

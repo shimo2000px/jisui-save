@@ -9,18 +9,20 @@ class ProfilesController < ApplicationController
     @recipe = Recipe.new
 
     @goal = @user.goals.find_by(target_month: Time.current.beginning_of_month)
-
-    @current_goal = @user.goals.find_by(target_month: Date.current.beginning_of_month)
+    @current_goal = @goal
 
     @monthly_stats = @user.monthly_cooking_stats
 
+    start_of_month = Time.current.beginning_of_month
+    today = Date.current
+
     daily_data = @user.cooking_records
-                    .where(cooked_at: 30.days.ago.beginning_of_day..Time.current.end_of_day)
+                    .where(cooked_at: start_of_month..Time.current.end_of_day)
                     .group("DATE(cooked_at)")
                     .sum("convenience_cost - cooking_cost")
                     .transform_keys(&:to_s)
 
-    @chart_labels = (30.days.ago.to_date..Date.current).map(&:to_s)
+    @chart_labels = (start_of_month.to_date..today).map(&:to_s)
 
     cumulative_sum = 0
     @chart_values = @chart_labels.map do |date|

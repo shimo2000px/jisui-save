@@ -1,5 +1,5 @@
 # 自炊save
-![ER図](jisui-save.png)
+![サムネ](jisui-OGP.png)
 [自炊save](https://jisui-save.onrender.com)
 
 ## サービス概要
