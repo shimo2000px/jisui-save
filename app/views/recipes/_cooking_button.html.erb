@@ -4,7 +4,10 @@
 
 <%= button_to recipe_cooking_records_path(recipe), 
     method: :post, 
-    data: { turbo_confirm: "このレシピで自炊を記録しますか？" }, 
+    data: { 
+      turbo_confirm: "このレシピで自炊を記録しますか？",
+      turbo_frame: "_top"
+    }, 
     class: "w-full flex items-center justify-center gap-1.5 md:gap-3 py-2 md:py-3 px-2 md:px-6 rounded-xl md:rounded-2xl font-bold transition-all active:scale-95 #{button_color}" do %>
   
   <svg class="w-4 h-4 md:w-6 md:h-6 fill-current flex-shrink-0" viewBox="0 0 20 20">

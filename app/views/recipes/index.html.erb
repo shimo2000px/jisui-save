@@ -29,7 +29,13 @@
   </div>
 
   <div class="bg-white p-6 rounded-[2.5rem] shadow-sm border border-orange-50 mb-8">
-    <%= search_form_for @q, html: { data: { search_target: "form" }}, class: "space-y-4" do |f| %>
+      <%= search_form_for @q, html: { 
+        data: { 
+          search_target: "form",
+          turbo_frame: "recipes_frame"
+        }, 
+        class: "space-y-4" 
+      } do |f| %>
       <%= hidden_field_tag :filter, @current_filter %>
       
       <div class="flex flex-col md:flex-row gap-3">
@@ -39,7 +45,10 @@
           </div>
           <%= f.search_field :title_or_description_cont, 
               placeholder: "料理名やキーワードで検索...", 
-              data: { action: "input->search#update" },
+              data: { 
+                action: "input->search#update",
+                turbo_frame: "recipes_frame"
+              },
               class: "block w-full pl-12 pr-4 py-3 border-none bg-stone-100 rounded-2xl focus:ring-2 focus:ring-orange-500 sm:text-sm font-bold text-stone-700" %>
         </div>
         <%= f.submit "検索", class: "btn bg-orange-500 hover:bg-orange-600 text-white border-none rounded-2xl px-8 font-black shadow-lg shadow-orange-100 transition-all active:scale-95" %>
@@ -47,9 +56,9 @@
 
       <div class="flex flex-wrap items-center gap-4 text-xs md:text-sm font-bold text-stone-500 px-2">
         <span class="text-stone-300">並び替え：</span>
-        <%= sort_link(@q, :created_at, "新着順", default_order: :desc, class: "hover:text-orange-600 transition-colors") %>
+        <%= sort_link(@q, :created_at, "新着順", { default_order: :desc }, { class: "hover:text-orange-600 transition-colors", data: { turbo_frame: "recipes_frame" } }) %>      
         <span class="text-stone-200">|</span>
-        <%= sort_link(@q, :cooking_records_count, "人気順", default_order: :desc, class: "hover:text-orange-600 transition-colors") %>
+        <%= sort_link(@q, :cooking_records_count, "人気順", { default_order: :desc }, { class: "hover:text-orange-600 transition-colors",  data: { turbo_frame: "recipes_frame" } }) %>
       </div>
     <% end %>
   </div>
@@ -62,7 +71,7 @@
           <div class="animate-fade-in-up bg-white rounded-[2rem] border border-orange-50 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group relative overflow-hidden flex flex-col"
               style="animation-delay: <%= index * 0.1 %>s; opacity: 0; animation-fill-mode: forwards;">
               <div class="relative overflow-hidden aspect-square md:aspect-[4/3]"> 
-                <%= link_to recipe_path(recipe) do %>
+                <%= link_to recipe_path(recipe), data: { turbo_frame: "_top" } do %>
                   <% if recipe.image.attached? %>
                     <%= image_tag recipe.image, class: "w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" %>
                   <% else %>
@@ -77,7 +86,7 @@
 
               <div class="p-4 md:p-6 flex-grow flex flex-col">
                 <h2 class="text-sm md:text-xl font-black text-stone-800 mb-3 line-clamp-2 transition-colors group-hover:text-orange-600">
-                  <%= link_to recipe.title, recipe_path(recipe) %>
+                  <%= link_to recipe.title, recipe_path(recipe), data: { turbo_frame: "_top" } %>
                 </h2>
                 <div class="mt-auto p-3 bg-[#FFFBF7] rounded-2xl border border-orange-100/50">
                   <div class="flex justify-between items-baseline border-b border-orange-100/30 pb-1.5 mb-1.5">
