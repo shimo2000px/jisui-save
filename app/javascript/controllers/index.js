@@ -24,3 +24,6 @@ application.register("recipe-preview", RecipePreviewController)
 
 import RecipeStepController from "./recipe_step_controller"
 application.register("recipe-step", RecipeStepController)
+
+import SearchController from "./search_controller"
+application.register("search", SearchController)
