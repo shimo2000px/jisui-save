@@ -1,5 +1,5 @@
 <div class="max-w-4xl mx-auto my-8 md:my-12 px-4 pb-24 font-sans text-stone-800" data-controller="recipe-calculation">
-  <%= form_with(model: recipe, class: "space-y-10") do |f| %>
+  <%= form_with(model: recipe, class: "space-y-10", data: { turbo: false }) do |f| %>
     
     <% if recipe.errors.any? %>
       <div class="bg-red-50/50 border-2 border-red-100 p-6 rounded-[2rem] mb-8">

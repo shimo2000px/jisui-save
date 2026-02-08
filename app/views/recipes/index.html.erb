@@ -4,12 +4,12 @@
     <div>
       <h1 class="text-2xl md:text-3xl font-black text-stone-800 tracking-tight flex items-center gap-2">
         <span class="text-orange-500 text-3xl md:text-4xl">
-          <%= @current_filter == "mine" ? "🥘" : "🥗" %>
+          <%= @current_filter == "mine" ? "🥚" : "🐣" %>
         </span>
         <%= @current_filter == "mine" ? "MYレシピ" : "公開レシピ" %>
       </h1>
       <p class="text-stone-400 text-xs md:text-sm mt-1 font-medium">
-        <%= @current_filter == "mine" ? "あなたが作成した節約の記録" : "おいしく賢く節約！みんなの公開レシピ" %>
+        <%= @current_filter == "mine" ? "あなたが作成した節約の記録" : "みんなの公開レシピ" %>
       </p>
     </div>
 
@@ -53,18 +53,41 @@
         </div>
         <%= f.submit "検索", class: "btn bg-orange-500 hover:bg-orange-600 text-white border-none rounded-2xl px-8 font-black shadow-lg shadow-orange-100 transition-all active:scale-95" %>
       </div>
-
-      <div class="flex flex-wrap items-center gap-4 text-xs md:text-sm font-bold text-stone-500 px-2">
-        <span class="text-stone-300">並び替え：</span>
-        <%= sort_link(@q, :created_at, "新着順", { default_order: :desc }, { class: "hover:text-orange-600 transition-colors", data: { turbo_frame: "recipes_frame" } }) %>      
-        <span class="text-stone-200">|</span>
-        <%= sort_link(@q, :cooking_records_count, "人気順", { default_order: :desc }, { class: "hover:text-orange-600 transition-colors",  data: { turbo_frame: "recipes_frame" } }) %>
-      </div>
     <% end %>
   </div>
 
-
   <%= turbo_frame_tag "recipes_frame" do %>
+    <div class="flex flex-wrap items-center gap-4 text-xs md:text-sm font-bold text-stone-500 px-2 mb-6">
+      <span class="text-stone-300">並び替え：</span>
+      
+      <% current_q = params[:q].present? ? params[:q].to_unsafe_h.with_indifferent_access : {} %>
+      <% current_sort = current_q[:s].to_s %>
+
+      <% if current_sort.include?("created_at") %>
+        <% is_desc = current_sort.include?("desc") %>
+        <% next_path = is_desc ? recipes_path(filter: @current_filter, q: current_q.merge(s: "created_at asc")) : recipes_path(filter: @current_filter, q: current_q.except(:s)) %>
+        
+        <%= link_to next_path, class: "text-orange-600 font-black underline underline-offset-4 transition-colors", data: { turbo_frame: "recipes_frame" } do %>
+          新着順 <%= is_desc ? "▼" : "▲" %>
+        <% end %>
+      <% else %>
+        <%= sort_link(@q, :created_at, "新着順 ▼", { default_order: :desc }, { class: "hover:text-orange-600 transition-colors" }) %>
+      <% end %>
+
+      <span class="text-stone-200">|</span>
+
+      <% if current_sort.include?("cooking_records_count") %>
+        <% is_desc = current_sort.include?("desc") %>
+        <% next_path = is_desc ? recipes_path(filter: @current_filter, q: current_q.merge(s: "cooking_records_count asc")) : recipes_path(filter: @current_filter, q: current_q.except(:s)) %>
+        
+        <%= link_to next_path, class: "text-orange-600 font-black underline underline-offset-4 transition-colors", data: { turbo_frame: "recipes_frame" } do %>
+          人気順 <%= is_desc ? "▼" : "▲" %>
+        <% end %>
+      <% else %>
+        <%= sort_link(@q, :cooking_records_count, "人気順 ▼", { default_order: :desc }, { class: "hover:text-orange-600 transition-colors" }) %>
+      <% end %>
+    </div>
+    
     <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-10">
       <% if @recipes.any? %>
         <% @recipes.each_with_index do |recipe, index| %>

@@ -63,7 +63,9 @@ def index
   end
 
   def show
-  @recipe = Recipe.find(params[:id])
+    @recipe = Recipe.find_by(id: params[:id])
+
+    return redirect_to recipes_path, alert: "レシピが見つかりませんでした。" if @recipe.nil?
 
     if !@recipe.is_public? && @recipe.user != current_user
       redirect_to recipes_path, alert: "このレシピは非公開です"

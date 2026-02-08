@@ -14,3 +14,7 @@
     }
   }
 }
+
+.sort_link.active {
+  @apply text-orange-600 font-black underline underline-offset-4;
+}
