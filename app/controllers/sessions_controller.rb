@@ -50,6 +50,6 @@ def create
       u.uid = "guest"
     end
     session[:user_id] = user.id
-    redirect_to recipes_path, notice: "ゲストとしてログインしました（閲覧専用）"
+    redirect_to recipes_path, notice: "ゲストとしてログインしました（閲覧専用）", status: :see_other
   end
 end
