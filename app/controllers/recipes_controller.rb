@@ -62,19 +62,15 @@ def index
     @convenience_foods = ConvenienceFood.all.order(:sort_order)
   end
 
-def show
-  @recipe = Recipe.find_by(id: params[:id])
+  def show
+    @recipe = Recipe.find_by(id: params[:id])
 
-  if @recipe.nil?
-    redirect_to recipes_path, alert: "レシピが見つかりませんでした。"
-    return
-  end
+    return redirect_to recipes_path, alert: "レシピが見つかりませんでした。" if @recipe.nil?
 
-  if !@recipe.is_public? && @recipe.user != current_user
-    redirect_to recipes_path, alert: "このレシピは非公開です"
-    return
+    if !@recipe.is_public? && @recipe.user != current_user
+      redirect_to recipes_path, alert: "このレシピは非公開です"
+    end
   end
-end
 
   def edit
   @ingredients = Ingredient.all.order(:sort_order)
