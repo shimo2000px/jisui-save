@@ -8,6 +8,7 @@ ja:
       recipe:
         convenience_food: "コンビニ商品"
         recipe_ingredients: "材料"
+        title: "料理名"
       recipe_ingredient:
         ingredient: "食材"
         quantity: "グラム数または金額"
