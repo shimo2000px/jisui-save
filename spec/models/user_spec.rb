@@ -5,7 +5,7 @@ RSpec.describe User, type: :model do
     it '名前、provider、uidがあれば有効であること' do
       user = build(:user)
       expect(user).to be_valid
-    end  
+    end
 
     it '名前がない場合は無効であること' do
         user = build(:user, name: nil)
@@ -29,7 +29,7 @@ RSpec.describe User, type: :model do
       expect(line_user).to be_valid
     end
   end
-    
+
   describe 'バリデーションエラーのテスト' do
     it 'providerがない場合は無効であること' do
         user = build(:user, provider: nil)
@@ -60,7 +60,7 @@ RSpec.describe User, type: :model do
     end
 
     it 'ユーザーを削除すると、紐づく通知設定も削除されること' do
-      expect { user.destroy }.to change(NotificationSetting, :count).by(-1) 
+      expect { user.destroy }.to change(NotificationSetting, :count).by(-1)
     end
   end
 end

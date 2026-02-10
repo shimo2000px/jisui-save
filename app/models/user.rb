@@ -7,7 +7,7 @@ class User < ApplicationRecord
   before_create :set_share_uid
 
   validates :name, presence: true
-  
+
   validates :provider, presence: true
   validates :uid, presence: true, uniqueness: { scope: :provider }
 

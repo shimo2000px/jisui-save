@@ -2,7 +2,7 @@ FactoryBot.define do
   factory :user do
     name { "テストユーザー" }
     email { Faker::Internet.unique.email }
-    provider { "google_oauth2" } 
+    provider { "google_oauth2" }
     uid { SecureRandom.uuid }
 
     trait :guest do
