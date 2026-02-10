@@ -6,6 +6,13 @@ class User < ApplicationRecord
   has_many :goals, dependent: :destroy
   before_create :set_share_uid
 
+  validates :name, presence: true
+
+  validates :provider, presence: true
+  validates :uid, presence: true, uniqueness: { scope: :provider }
+
+  validates :share_uid, uniqueness: true, allow_nil: true
+
   def total_savings
     cooking_records.sum("convenience_cost - cooking_cost")
   end

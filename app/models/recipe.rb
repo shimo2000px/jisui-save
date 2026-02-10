@@ -7,6 +7,7 @@ class Recipe < ApplicationRecord
   has_many :cooking_records, dependent: :nullify
   accepts_nested_attributes_for :recipe_ingredients, allow_destroy: true, reject_if: :all_blank
   after_initialize :set_default_is_public, if: :new_record?
+  validates :title, presence: true
   validates :recipe_ingredients, presence: true
 
   def self.ransackable_attributes(auth_object = nil)
