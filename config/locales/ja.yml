@@ -36,6 +36,7 @@ ja:
     messages:
       blank: "を入力してください"
       required: "を入力してください"
-      
+      taken: "はすでに存在します"
+      record_invalid: "バリデーションに失敗しました: %{errors}"
   date:
     abbr_day_names: [日, 月, 火, 水, 木, 金, 土]
