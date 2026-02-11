@@ -12,7 +12,9 @@ jobs:
 
       - name: Build and run tests
         run: |
-          # CI専用の上書き設定を作成
+          # CI専用：ボリューム設定を完全に「無効化」する設定
+          # 名前付きボリューム(bundle_data等)をサービスから削除し、
+          # 下部のボリューム定義も空にします。
           cat <<EOF > docker-compose.ci.yml
           services:
             db:
@@ -23,13 +25,9 @@ jobs:
             cron:
               volumes:
                 - .:/myapp
-          volumes:
-            bundle_data:
-            postgresql_data:
-            node_modules:
+          volumes: {}
           EOF
 
-          # ビルドと起動を分離して、どこで時間がかかっているか明確にします
           echo "Building images..."
           docker compose -f compose.yml -f docker-compose.ci.yml build
           
@@ -37,7 +35,6 @@ jobs:
           docker compose -f compose.yml -f docker-compose.ci.yml up -d
 
           echo "Waiting for DB to be ready..."
-          # DBが立ち上がるまで最大30秒待機
           for i in {1..30}; do
             if docker compose exec -T db pg_isready -U postgres > /dev/null 2>&1; then
               break
@@ -45,9 +42,8 @@ jobs:
             sleep 1
           done
 
-          # データベースの作成（もし必要なら）
+          echo "Setting up database..."
           docker compose exec -T web bundle exec rails db:create db:migrate
 
-          # テスト実行
           echo "Running RSpec..."
           docker compose exec -T web bundle exec rspec
