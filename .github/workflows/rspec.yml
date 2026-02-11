@@ -12,6 +12,7 @@ jobs:
 
       - name: Build and run tests
         run: |
+          # CI専用の上書き設定を作成
           cat <<EOF > docker-compose.ci.yml
           services:
             db:
@@ -28,12 +29,25 @@ jobs:
             node_modules:
           EOF
 
-          docker compose -f compose.yml -f docker-compose.ci.yml up -d --build
+          # ビルドと起動を分離して、どこで時間がかかっているか明確にします
+          echo "Building images..."
+          docker compose -f compose.yml -f docker-compose.ci.yml build
+          
+          echo "Starting containers..."
+          docker compose -f compose.yml -f docker-compose.ci.yml up -d
 
-          echo "Waiting for containers to be ready..."
-          sleep 45
+          echo "Waiting for DB to be ready..."
+          # DBが立ち上がるまで最大30秒待機
+          for i in {1..30}; do
+            if docker compose exec -T db pg_isready -U postgres > /dev/null 2>&1; then
+              break
+            fi
+            sleep 1
+          done
 
-          docker compose ps
-          docker compose logs web | tail -n 20
+          # データベースの作成（もし必要なら）
+          docker compose exec -T web bundle exec rails db:create db:migrate
 
+          # テスト実行
+          echo "Running RSpec..."
           docker compose exec -T web bundle exec rspec
