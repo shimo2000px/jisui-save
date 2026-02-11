@@ -12,7 +12,10 @@ jobs:
 
       - name: Build and run tests
         run: |
-          docker compose build
+          docker compose down -v --remove-orphans
+
+          docker compose build --no-cache
+
           docker compose up -d
 
           echo "Waiting for containers to be ready..."
@@ -22,5 +25,4 @@ jobs:
           docker compose logs web | tail -n 20
 
           docker compose exec -T web bundle exec rails db:prepare
-
           docker compose exec -T web bundle exec rspec
