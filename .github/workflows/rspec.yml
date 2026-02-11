@@ -12,13 +12,15 @@ jobs:
 
       - name: Build and run tests
         run: |
-          docker compose config > docker-compose.ci.yml
-          docker compose up -d --build
+          docker compose build
+          docker compose up -d
 
           echo "Waiting for containers to be ready..."
-          sleep 20
+          sleep 30
 
-          docker compose exec -T web bundle exec rails db:create
-          docker compose exec -T web bundle exec rails db:schema:load
+          docker compose ps
+          docker compose logs web | tail -n 20
+
+          docker compose exec -T web bundle exec rails db:prepare
 
           docker compose exec -T web bundle exec rspec
