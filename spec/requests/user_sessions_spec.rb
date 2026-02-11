@@ -4,7 +4,7 @@ RSpec.describe "ユーザー認証", type: :request do
   describe "Googleログイン" do
     it "正常にログイン・ログアウトができること" do
       post "/auth/google_oauth2"
-      follow_redirect! 
+      follow_redirect!
       expect(response).to redirect_to(recipes_path)
       follow_redirect!
       expect(response.body).to include "ログアウト"
@@ -19,7 +19,7 @@ RSpec.describe "ユーザー認証", type: :request do
   describe "LINEログイン" do
     it "正常にログイン・ログアウトができること" do
       post "/auth/line"
-      follow_redirect! 
+      follow_redirect!
       expect(response).to redirect_to(recipes_path)
       follow_redirect!
       expect(response.body).to include "ログアウト"

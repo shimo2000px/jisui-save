@@ -5,7 +5,7 @@ FactoryBot.define do
 
     trait :enabled do
       enabled { true }
-      send_time { "08:00" } 
+      send_time { "08:00" }
     end
   end
 end
