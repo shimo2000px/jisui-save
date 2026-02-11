@@ -24,10 +24,7 @@ jobs:
                 - .:/myapp
           EOF
 
-          COMPOSE_FILE=$(ls compose.y*ml docker-compose.y*ml 2>/dev/null | head -n 1)
-          echo "Using compose file: \$COMPOSE_FILE"
-          
-          docker compose -f \$COMPOSE_FILE -f docker-compose.ci.yml up -d --build
+          docker compose -f compose.yml -f docker-compose.ci.yml up -d --build
 
           echo "Waiting for containers to be ready..."
           sleep 40
