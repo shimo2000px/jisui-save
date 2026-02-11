@@ -29,6 +29,26 @@ require 'rspec/rails'
 # If there are pending migrations it will invoke `db:test:prepare` to
 # recreate the test database by loading the schema.
 # If you are not using ActiveRecord, you can remove these lines.
+OmniAuth.config.test_mode = true
+
+OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new({
+  provider: 'google_oauth2',
+  uid: '123456',
+  info: {
+    name: 'Test User',
+    email: 'test@example.com'
+  }
+})
+
+OmniAuth.config.mock_auth[:line] = OmniAuth::AuthHash.new({
+  provider: 'line',
+  uid: 'line_uid_987654',
+  info: {
+    name: 'Test LINE User',
+    image: 'http://example.com/image.jpg' # LINEはemailが取れない設定が多いのでnameやimageが主
+  }
+})
+
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e
