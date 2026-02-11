@@ -12,17 +12,14 @@ jobs:
 
       - name: Build and run tests
         run: |
-          docker compose down -v --remove-orphans
-
-          docker compose build --no-cache
-
-          docker compose up -d
+          sed '/volumes:/,$d' docker-compose.yml > docker-compose.ci.yml
+          
+          docker compose -f docker-compose.yml up -d --build --force-recreate
 
           echo "Waiting for containers to be ready..."
           sleep 30
 
           docker compose ps
-          docker compose logs web | tail -n 20
-
+          
           docker compose exec -T web bundle exec rails db:prepare
           docker compose exec -T web bundle exec rspec
