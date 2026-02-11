@@ -7,6 +7,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Create dummy .env file
+        run: touch .env
+
       - name: Build and run tests
         run: |
           docker compose build
