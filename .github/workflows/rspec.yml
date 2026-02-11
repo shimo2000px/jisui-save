@@ -15,7 +15,10 @@ jobs:
           docker compose build
           docker compose up -d
 
+          echo "Waiting for containers to be ready..."
+          sleep 20
+
           docker compose exec -T web bundle exec rails db:create
-          docker compose exec -T web bundle exec rails db:schema:load
+          docker compose compose exec -T web bundle exec rails db:schema:load
 
           docker compose exec -T web bundle exec rspec
