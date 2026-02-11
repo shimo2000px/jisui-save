@@ -12,7 +12,9 @@ jobs:
 
       - name: Build and run tests
         run: |
-          cat <<EOF > docker-compose.ci.yml
+          sed '/^volumes:/,$d' compose.yml > compose.ci.yml
+
+          cat <<EOF > docker-compose.override.yml
           services:
             db:
               volumes: []
@@ -24,13 +26,12 @@ jobs:
                 - .:/myapp
           EOF
 
-          docker compose -f compose.yml -f docker-compose.ci.yml up -d --build
+          docker compose -f compose.ci.yml -f docker-compose.override.yml up -d --build
 
           echo "Waiting for containers to be ready..."
-          sleep 40
+          sleep 45
 
           docker compose ps
           docker compose logs web | tail -n 20
 
-          docker compose exec -T web bundle exec rails db:prepare
           docker compose exec -T web bundle exec rspec
