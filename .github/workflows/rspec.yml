@@ -12,14 +12,28 @@ jobs:
 
       - name: Build and run tests
         run: |
-          sed '/volumes:/,$d' docker-compose.yml > docker-compose.ci.yml
+          cat <<EOF > docker-compose.ci.yml
+          services:
+            db:
+              volumes: []
+            web:
+              volumes:
+                - .:/myapp
+            cron:
+              volumes:
+                - .:/myapp
+          EOF
+
+          COMPOSE_FILE=$(ls compose.y*ml docker-compose.y*ml 2>/dev/null | head -n 1)
+          echo "Using compose file: \$COMPOSE_FILE"
           
-          docker compose -f docker-compose.yml up -d --build --force-recreate
+          docker compose -f \$COMPOSE_FILE -f docker-compose.ci.yml up -d --build
 
           echo "Waiting for containers to be ready..."
-          sleep 30
+          sleep 40
 
           docker compose ps
-          
+          docker compose logs web | tail -n 20
+
           docker compose exec -T web bundle exec rails db:prepare
           docker compose exec -T web bundle exec rspec
