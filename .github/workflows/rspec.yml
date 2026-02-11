@@ -1,0 +1,18 @@
+name: Run RSpec
+on: [push, pull_request]
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and run tests
+        run: |
+          docker compose build
+          docker compose up -d
+
+          docker compose exec -T web bundle exec rails db:create
+          docker compose exec -T web bundle exec rails db:schema:load
+
+          docker compose exec -T web bundle exec rspec
