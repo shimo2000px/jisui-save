@@ -12,9 +12,7 @@ jobs:
 
       - name: Build and run tests
         run: |
-          sed '/^volumes:/,$d' compose.yml > compose.ci.yml
-
-          cat <<EOF > docker-compose.override.yml
+          cat <<EOF > docker-compose.ci.yml
           services:
             db:
               volumes: []
@@ -24,9 +22,13 @@ jobs:
             cron:
               volumes:
                 - .:/myapp
+          volumes:
+            bundle_data:
+            postgresql_data:
+            node_modules:
           EOF
 
-          docker compose -f compose.ci.yml -f docker-compose.override.yml up -d --build
+          docker compose -f compose.yml -f docker-compose.ci.yml up -d --build
 
           echo "Waiting for containers to be ready..."
           sleep 45
