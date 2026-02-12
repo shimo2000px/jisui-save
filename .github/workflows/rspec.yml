@@ -12,7 +12,6 @@ jobs:
 
       - name: Build and run tests
         run: |
-          # CI専用の compose.yml を作成
           cat <<EOF > compose.ci.yml
           services:
             db:
@@ -48,8 +47,10 @@ jobs:
           sleep 15
 
           echo "Setting up database..."
-          # 実行場所を /rails に合わせてコマンドを叩く
           docker compose -f compose.ci.yml exec -T -w /rails web bash -c "bundle install && bundle exec rails db:prepare"
+
+          echo "Precompiling assets..."
+          docker compose -f compose.ci.yml exec -T -w /rails web bash -c "bundle exec rails assets:precompile"
 
           echo "Running RSpec..."
           docker compose -f compose.ci.yml exec -T -w /rails web bundle exec rspec
