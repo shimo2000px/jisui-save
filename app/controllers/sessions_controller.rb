@@ -15,7 +15,7 @@ def create
 
       elsif auth.provider == "line"
         current_user.update!(line_user_id: auth.uid)
-        redirect_to edit_notification_path, notice: "LINEと連携しました！通知設定が可能です。"
+        redirect_to edit_notification_setting_path, notice: "LINEと連携しました！通知設定が可能です。"
         return
 
       else
