@@ -12,41 +12,53 @@ jobs:
 
       - name: Build and run tests
         run: |
-          # 1. すべての "volumes:" 行とその関連ワードを完全に削除
-          # これで db: の下に残った空の volumes: も消えます
-          sed -i '/volumes:/d' compose.yml
-          sed -i '/bundle_data:/d' compose.yml
-          sed -i '/postgresql_data:/d' compose.yml
-          sed -i '/node_modules:/d' compose.yml
-          
-          # 2. web と cron に必要な「カレントディレクトリのマウント」だけを復活させる
-          # サービス定義の直後に、CIに必要な最小限のマウント設定を差し込みます
-          sed -i '/web:/a \    volumes: [".:/myapp"]' compose.yml
-          sed -i '/cron:/a \    volumes: [".:/myapp"]' compose.yml
-
-          # 3. ファイル末尾の volumes 定義ブロックを削除
-          sed -i '/^volumes:/,$d' compose.yml
-
-          echo "--- Final Modified compose.yml ---"
-          cat compose.yml
-          echo "----------------------------"
+          # CI専用の compose.yml をゼロから作成します
+          # ボリューム設定を完全に排除し、エラーの余地をなくします
+          cat <<EOF > compose.ci.yml
+          services:
+            db:
+              image: postgres
+              restart: always
+              environment:
+                TZ: Asia/Tokyo
+                POSTGRES_PASSWORD: password
+              ports:
+                - 5433:5433
+            web:
+              build:
+                context: .
+                dockerfile: Dockerfile.dev
+              volumes:
+                - .:/myapp
+              environment:
+                TZ: Asia/Tokyo
+              depends_on:
+                db:
+                  condition: service_started
+            cron:
+              build:
+                context: .
+                dockerfile: Dockerfile.dev
+              volumes:
+                - .:/myapp
+              environment:
+                RAILS_ENV: development
+                TZ: Asia/Tokyo
+          EOF
 
           echo "Building images..."
-          docker compose build
+          docker compose -f compose.ci.yml build
           
           echo "Starting containers..."
-          docker compose up -d
+          docker compose -f compose.ci.yml up -d
 
           echo "Waiting for DB to be ready..."
-          for i in {1..30}; do
-            if docker compose exec -T db pg_isready -U postgres > /dev/null 2>&1; then
-              break
-            fi
-            sleep 1
-          done
+          # DBが起動するまで少し待機
+          sleep 20
 
           echo "Setting up database..."
-          docker compose exec -T web bundle exec rails db:create db:migrate
+          # bundle install も含めて実行します
+          docker compose -f compose.ci.yml exec -T web bash -c "bundle install && bundle exec rails db:create db:migrate"
 
           echo "Running RSpec..."
-          docker compose exec -T web bundle exec rspec
+          docker compose -f compose.ci.yml exec -T web bundle exec rspec
