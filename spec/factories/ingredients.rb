@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :ingredient do
-    name { "鶏もも肉" }
-    price_per_gram { "0" }
+    sequence(:name) { |n| "材料#{n}" }
+    price_per_gram { 0 }
   end
 end
