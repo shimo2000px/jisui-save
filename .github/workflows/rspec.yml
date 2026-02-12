@@ -12,53 +12,44 @@ jobs:
 
       - name: Build and run tests
         run: |
-          # CI専用の compose.yml をゼロから作成します
-          # ボリューム設定を完全に排除し、エラーの余地をなくします
+          # CI専用の compose.yml を作成
           cat <<EOF > compose.ci.yml
           services:
             db:
-              image: postgres
+              image: postgres:15
               restart: always
               environment:
-                TZ: Asia/Tokyo
                 POSTGRES_PASSWORD: password
               ports:
-                - 5433:5433
+                - 5432:5432
             web:
               build:
                 context: .
-                dockerfile: Dockerfile.dev
+                dockerfile: Dockerfile
+              user: root
+              entrypoint: []
+              command: sleep infinity
               volumes:
-                - .:/myapp
+                - .:/rails
               environment:
-                TZ: Asia/Tokyo
+                RAILS_ENV: test
+                DATABASE_URL: postgresql://postgres:password@db:5432/postgres
               depends_on:
-                db:
-                  condition: service_started
-            cron:
-              build:
-                context: .
-                dockerfile: Dockerfile.dev
-              volumes:
-                - .:/myapp
-              environment:
-                RAILS_ENV: development
-                TZ: Asia/Tokyo
+                - db
           EOF
 
           echo "Building images..."
           docker compose -f compose.ci.yml build
-          
+
           echo "Starting containers..."
           docker compose -f compose.ci.yml up -d
 
-          echo "Waiting for DB to be ready..."
-          # DBが起動するまで少し待機
-          sleep 20
+          echo "Waiting for DB..."
+          sleep 15
 
           echo "Setting up database..."
-          # bundle install も含めて実行します
-          docker compose -f compose.ci.yml exec -T web bash -c "bundle install && bundle exec rails db:create db:migrate"
+          # 実行場所を /rails に合わせてコマンドを叩く
+          docker compose -f compose.ci.yml exec -T -w /rails web bash -c "bundle install && bundle exec rails db:prepare"
 
           echo "Running RSpec..."
-          docker compose -f compose.ci.yml exec -T web bundle exec rspec
+          docker compose -f compose.ci.yml exec -T -w /rails web bundle exec rspec
