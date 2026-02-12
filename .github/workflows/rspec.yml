@@ -12,17 +12,22 @@ jobs:
 
       - name: Build and run tests
         run: |
-          # 1. 物理破壊：compose.yml から volumes 定義とその中身を完全に削除します
-          # サービス内の bundle_data: や postgresql_data: という単語を含む行をすべて消します
+          # 1. すべての "volumes:" 行とその関連ワードを完全に削除
+          # これで db: の下に残った空の volumes: も消えます
+          sed -i '/volumes:/d' compose.yml
           sed -i '/bundle_data:/d' compose.yml
           sed -i '/postgresql_data:/d' compose.yml
           sed -i '/node_modules:/d' compose.yml
           
-          # 2. ファイル末尾にある volumes: 定義ブロックを根こそぎ削除します
+          # 2. web と cron に必要な「カレントディレクトリのマウント」だけを復活させる
+          # サービス定義の直後に、CIに必要な最小限のマウント設定を差し込みます
+          sed -i '/web:/a \    volumes: [".:/myapp"]' compose.yml
+          sed -i '/cron:/a \    volumes: [".:/myapp"]' compose.yml
+
+          # 3. ファイル末尾の volumes 定義ブロックを削除
           sed -i '/^volumes:/,$d' compose.yml
 
-          # 念のため書き換わった中身を確認（ログに出ます）
-          echo "--- Modified compose.yml ---"
+          echo "--- Final Modified compose.yml ---"
           cat compose.yml
           echo "----------------------------"
 
