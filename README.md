@@ -1,6 +1,6 @@
 # 自炊save
 ![サムネ](jisui-OGP.png)
-[自炊save](https://jisui-save.onrender.com)
+[自炊save](https://jisui-save.com)
 
 ## サービス概要
 「自炊って本当にお得なの？」の答えを数字で教えてくれるアプリです。

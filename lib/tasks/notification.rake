@@ -40,7 +40,7 @@ namespace :notification do
       line_user_id = setting.user&.line_user_id
       next if line_user_id.blank?
 
-      action = Line::Bot::V2::MessagingApi::URIAction.new(label: "レシピを探す", uri: "https://jisui-save.onrender.com")
+      action = Line::Bot::V2::MessagingApi::URIAction.new(label: "レシピを探す", uri: "https://jisui-save.com")
       template = Line::Bot::V2::MessagingApi::ButtonsTemplate.new(text: "自炊の時間です！🍳", actions: [ action ])
       message = Line::Bot::V2::MessagingApi::TemplateMessage.new(type: "template", alt_text: "自炊の時間になりました🍳", template: template)
       push_request = Line::Bot::V2::MessagingApi::PushMessageRequest.new(to: line_user_id, messages: [ message ])
