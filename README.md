@@ -7,6 +7,31 @@
 料理記録から外食との差額を自動計算し、節約効果を可視化します。
 成功体験の積み重ねで、自炊が楽しく続けられるようになります。
 
+## 使用イメージ
+
+### レシピ一覧
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/aa6f6a7d-99ed-446f-b12d-828509edef45" width="300" autoplay loop muted playsinline></video>
+  <p>レシピ一覧画面から「作るボタン」を押し、自炊記録ができます</p>
+</div>
+
+### レシピ投稿
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/96ec28ef-e1c3-406b-9f45-c3d8a96c5656" width="300" autoplay loop muted playsinline></video>
+  <p>投稿画面では、レシピの金額と、節約額（比較商品との差異）がリアルタイムで計算されます</p>
+</div>
+
+### プロフィール
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/a720dc6a-38c1-4805-a5af-2403b3f7b508" width="300" autoplay loop muted playsinline></video>
+  <p>グラフや目標機能で、視覚的に頑張りを実感できます</p>
+</div>
+
+### 通知機能
+<div align="center">
+  <video src="https://github.com/user-attachments/assets/e7f1004a-5c1b-415b-8cd5-a18eda837e34" width="300" autoplay loop muted playsinline></video>
+  <p>決めた時間にLINE通知を行い、習慣化をサポートします</p>
+</div>
 
 ## このサービスへの思い・作りたい理由
 世の中、節約レシピは溢れているのに、「本当に節約できてるの？」の答えは誰も教えてくれません。
@@ -93,9 +118,9 @@
 
 
 ## 使用する技術スタック
-- 使用するフレームワーク（Ruby on Rails7.2系）
+- 使用するフレームワーク（Ruby on Rails7.2.3・Ruby3.3.6）
 - フロントエンド（TailWindCSS・JavaScript）
-- データベース（PostgreSQL）
+- データベース（PostgreSQL 18）
 - デプロイ先・インフラ（Render/cloudinary）
 - 使用予定のライブラリ
 
@@ -104,11 +129,14 @@
 | chart.js | グラフ |
 | kaminari | ページネーション |
 | ransack | 検索機能 |
+| omniauth-google-oauth2 | Googleアカウントログイン認証 |
+| omniauth-line | LINEログイン認証 |
+| OmniAuth Rails CSRF Protection | OAuth連携時のセキュリティ対策 |
 | LINE Messaging API | LINEへの通知送信 |
-| omniauth-google-oauth2 | Googleアカウントでのログイン認証 |
+| Whenever | 通知機能のcron管理/テスト |
 
 ## 画面遷移図
 [Figma画面遷移図](https://www.figma.com/design/N8VHxmnIi2kBpGhmM9WKu3/%E7%84%A1%E9%A1%8C?node-id=11-844&t=pDvVecHzhVoq4lvQ-1)
 
 ## ER図
-![ER図](MVP-ER.png)
+![ER図](Fix-ER.png)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_02_02_064729) do
+ActiveRecord::Schema[7.2].define(version: 2026_02_15_140351) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -115,7 +115,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_02_064729) do
   create_table "recipes", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "convenience_food_id", null: false
-    t.string "title"
+    t.string "title", null: false
     t.text "description"
     t.text "steps"
     t.boolean "is_public"
@@ -137,6 +137,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_02_02_064729) do
     t.boolean "admin", default: false, null: false
     t.string "share_uid"
     t.string "line_user_id"
+    t.index ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true
     t.index ["share_uid"], name: "index_users_on_share_uid"
   end
 
