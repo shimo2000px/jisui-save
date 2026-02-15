@@ -81,10 +81,10 @@
         <% next_path = is_desc ? recipes_path(filter: @current_filter, q: current_q.merge(s: "cooking_records_count asc")) : recipes_path(filter: @current_filter, q: current_q.except(:s)) %>
         
         <%= link_to next_path, class: "text-orange-600 font-black underline underline-offset-4 transition-colors", data: { turbo_frame: "recipes_frame" } do %>
-          人気順 <%= is_desc ? "▼" : "▲" %>
+          作った数順 <%= is_desc ? "▼" : "▲" %>
         <% end %>
       <% else %>
-        <%= sort_link(@q, :cooking_records_count, "人気順 ▼", { default_order: :desc }, { class: "hover:text-orange-600 transition-colors" }) %>
+        <%= sort_link(@q, :cooking_records_count, "作った数順 ▼", { default_order: :desc }, { class: "hover:text-orange-600 transition-colors" }) %>
       <% end %>
     </div>
     
