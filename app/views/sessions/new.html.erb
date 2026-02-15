@@ -29,7 +29,6 @@
         Googleでログイン
       <% end %>
 
-<%# LINEボタン (修正版) %>
       <%= button_to "/auth/line", 
           method: :post, 
           data: { turbo: false }, 
@@ -37,6 +36,11 @@
         <%= image_tag "btn_base.png", class: "w-6 h-6" %>
         LINEでログイン
       <% end %>
+
+      <p class="mt-4 text-[10px] text-stone-400 text-center font-bold">
+        ※ LINEログインについて<br>
+        初回や通知連携時は、メールアドレス入力またはQRコード認証が必要になる場合があります。
+      </p>
 
       <div class="relative py-2">
         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-stone-100"></div></div>
@@ -66,6 +70,14 @@
           </div>
         <% end %>
       </div>
+    </div>
+
+    <div class="mt-6 p-4 bg-orange-50 rounded-2xl border border-orange-100">
+      <p class="text-[11px] font-bold text-orange-800 leading-relaxed text-center">
+        【ホーム画面に追加してご利用の方へ】<br>
+        ログインできない場合は、SafariやChromeなどの<br class="sm:hidden">
+        <span class="underline">ブラウザからログイン</span>を済ませてから追加してください。
+      </p>
     </div>
 
     <p class="mt-8 text-center text-[10px] font-bold text-stone-400 px-6 leading-relaxed">
