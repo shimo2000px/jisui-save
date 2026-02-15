@@ -120,6 +120,56 @@
     </div>
   </div>
 
+  <hr class="border-t-2 border-dashed border-stone-300 mt-20">
+
+  <div class="max-w-md mx-auto mt-20 px-6 space-y-12">
+    <h2 class="text-2xl font-black text-stone-800 mb-6 flex items-center gap-2">
+      快適に使うための設定
+    </h2>
+
+    <div class="space-y-8 relative before:absolute before:left-4 before:top-2 before:bottom-2 before:w-0.5 before:bg-stone-100">
+      
+      <div class="relative pl-10">
+        <div class="absolute left-0 w-8 h-8 bg-white border-2 border-orange-500 rounded-full flex items-center justify-center z-10">
+          <span class="text-orange-500 font-black text-sm">1</span>
+        </div>
+        <h3 class="font-black text-stone-800">ブラウザでログイン</h3>
+        <p class="text-sm text-stone-500 mt-1">
+          SafariやChromeで <code class="bg-stone-100 px-1 rounded">jisui-save.com</code> を開き、まずはログインを完了させます。
+        </p>
+      </div>
+
+      <div class="relative pl-10">
+        <div class="absolute left-0 w-8 h-8 bg-white border-2 border-orange-500 rounded-full flex items-center justify-center z-10">
+          <span class="text-orange-500 font-black text-sm">2</span>
+        </div>
+        <h3 class="font-black text-stone-800">ホーム画面に追加</h3>
+        <p class="text-sm text-stone-500 mt-1">
+          ログインした状態のまま、ブラウザのメニューから「ホーム画面に追加」を選択します。
+        </p>
+        
+      </div>
+
+      <div class="relative pl-10">
+        <div class="absolute left-0 w-8 h-8 bg-white border-2 border-orange-500 rounded-full flex items-center justify-center z-10">
+          <span class="text-orange-500 font-black text-sm">3</span>
+        </div>
+        <h3 class="font-black text-stone-800">準備完了！</h3>
+        <p class="text-sm text-stone-500 mt-1">
+          次からはアイコンをタップするだけで、すぐに自炊記録を始められます。
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-10 p-5 bg-stone-50 rounded-3xl border border-stone-200">
+      <h4 class="text-xs font-black text-stone-400 uppercase tracking-widest mb-2">⚠️ 注意事項</h4>
+      <ul class="text-xs text-stone-500 space-y-2 font-bold leading-relaxed">
+        <li>・LINEログイン時、初回のみメアドやQR認証が必要になる場合があります。</li>
+        <li>・うまく動かない場合は、再度「通常のブラウザ」からお試しください。</li>
+      </ul>
+    </div>
+  </div>
+
   <div class="animate-fade-in-up mt-24 text-center" style="animation-delay: 1.5s; opacity: 0; animation-fill-mode: forwards;">
     <%= link_to "さっそく作ってみる", new_recipe_path, class: "inline-block bg-orange-500 hover:bg-orange-600 text-white font-black px-12 py-5 rounded-[2rem] shadow-xl shadow-orange-200 transition-all active:scale-95 text-xl" %>
   </div>
