@@ -15,7 +15,7 @@ jobs:
           cat <<EOF > compose.ci.yml
           services:
             db:
-              image: postgres:15
+              image: postgres:18
               restart: always
               environment:
                 POSTGRES_PASSWORD: password
