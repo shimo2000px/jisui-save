@@ -89,6 +89,17 @@ https://jisui-save.com
 | テスト | RuboCop / RSpec |
 | 認証・API連携 | OmniAuth-google-oauth2 / OmniAuth-line / Message API |
 
+### 技術選定の理由
+### 技術選定の理由
+- **フロントエンド**: Hotwire（Turbo / Stimulus）を採用し、Rails標準の仕組みでSPA（シングルページアプリケーション）のような滑らかな操作感を実現。
+- **バックエンド**: 安定性が高く、豊富な知見やGemが揃っているRuby on Rails 7.2系を採用。
+- **データベース**: デプロイ先であるRenderとの親和性が高く、スケーラビリティに優れたPostgreSQL 18を選択。
+- **インフラ**: Dockerによる環境構築の共通化に加え、GitHub Actionsを用いたCI/CDパイプラインを構築。プルリクエスト時に自動テストと自動デプロイが走る仕組みを導入。
+- **ストレージ**: Cloudinaryを採用。無料枠が充実しており、画像の自動リサイズや配信最適化が容易なため。
+- **テスト・品質管理**: RuboCopによる静的解析でコード品質を維持し、RSpecによる自動テストをGitHub Actionsで実行。
+- **認証・API連携**: Google/LINEログインとLINE Messaging APIを組み合わせ、パスワード入力の手間を省いたシームレスなユーザー体験を提供。
+
+
 ## 画面遷移図
 [Figma画面遷移図](https://www.figma.com/design/N8VHxmnIi2kBpGhmM9WKu3/%E7%84%A1%E9%A1%8C?node-id=11-844&t=pDvVecHzhVoq4lvQ-1)
 
