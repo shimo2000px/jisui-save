@@ -7,5 +7,9 @@ Rails.application.config.middleware.use OmniAuth::Builder do
   # LINEの設定
   provider :line,
     Rails.application.credentials.dig(:line, :channel_id),
-    Rails.application.credentials.dig(:line, :channel_secret)
+    Rails.application.credentials.dig(:line, :channel_secret),
+    {
+    scope: "profile openid",
+    bot_prompt: "normal"
+    }
 end
