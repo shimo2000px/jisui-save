@@ -22,7 +22,7 @@ Rails.application.configure do
 
   # Disable serving static files from `public/`, relying on NGINX/Apache to do so instead.
   # config.public_file_server.enabled = false
-
+  config.public_file_server.enabled = true
   # Compress CSS using a preprocessor.
   # config.assets.css_compressor = :sass
 
@@ -94,6 +94,11 @@ Rails.application.configure do
 
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
+
+  config.active_storage.service = :cloudinary
+
+  config.action_controller.default_url_options = { host: "jisui-save.com", protocol: "https" }
+  config.asset_host = "https://jisui-save.com"
 
   # Enable DNS rebinding protection and other `Host` header attacks.
   # config.hosts = [

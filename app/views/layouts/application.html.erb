@@ -1,23 +1,62 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for(:title) || "Myapp" %></title>
+    <title><%= content_for?(:title) ? yield(:title) : "自炊save" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="自炊save">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <link rel="apple-touch-icon" href="/jisui-favicon.png">
+    <link rel="icon" sizes="192x192" href="/jisui-favicon.png">
+    
+    <meta property="og:title" content="<%= content_for?(:og_title) ? yield(:og_title) : "自炊save" %>">
+    <meta property="og:description" content="<%= content_for?(:og_description) ? yield(:og_description) : "「お得」を実感して、自炊がもっと好きになる。" %>">
+    <meta property="og:image" content="<%= content_for?(:og_image) ? yield(:og_image) : "https://jisui-save.com/jisui_ogp.png" %>">    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:url" content="<%= request.original_url %>">
+    <meta name="twitter:image" content="<%= content_for?(:og_image) ? yield(:og_image) : "[https://jisui-save.com/jisui_ogp.png](https://jisui-save.com/jisui_ogp.png)" %>">
+
+    <%= favicon_link_tag '/jisui-favicon.png', rel: 'icon', type: 'image/png' %>
     <%= yield :head %>
 
+
     <link rel="manifest" href="/manifest.json">
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2.1.0/dist/chartjs-plugin-annotation.min.js"></script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XSTZHPR7QW"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-XSTZHPR7QW');
+    </script>
+
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="bg-orange-100/30 text-gray-800 antialiased font-sans">
+    <% unless controller_name == 'sessions' && action_name == 'new' %>
+      <%= render 'layouts/header' %>
+      <%= render 'shared/achievement_flash' %>
+    <% end %>
+
+    <main>
+      <% flash.each do |message_type, message| %>
+        <div data-controller="flash" class="max-w-md mx-auto mt-4 px-4 py-3 rounded-xl shadow-sm text-center font-bold <%= message_type == 'notice' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' %>">
+          <%= message %>
+        </div>
+      <% end %>
+      
+      <%= yield %>
+      <%= render 'layouts/footer' %>
+    </main>
+    <%= render 'layouts/footer_nav' %>
   </body>
 </html>

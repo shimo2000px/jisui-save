@@ -1,0 +1,21 @@
+<% if flash[:achievement] %>
+  <div id="achievement-toast" 
+      class="fixed top-20 left-1/2 -translate-x-1/2 z-[100] w-[90%] max-w-sm animate-fade-in-up"
+      data-controller="achievement">
+    <div class="bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 p-1 rounded-[2rem] shadow-[0_20px_50px_rgba(234,179,8,0.3)]">
+      <div class="bg-white px-6 py-5 rounded-[1.8rem] text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-5 pointer-events-none select-none text-xs flex flex-wrap gap-2 p-2">
+          <% 10.times do %><span>✨</span><span>🍳</span><% end %>
+        </div>
+
+        <div class="relative z-10">
+          <div class="text-3xl mb-2 drop-shadow-sm">👑</div>
+          <p class="font-black text-stone-800 text-base leading-tight mb-1">
+            <%= flash[:achievement] %>
+          </p>
+          <p class="text-[10px] font-black text-orange-500 uppercase tracking-[0.2em]">Goal Accomplished!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,80 @@
+<div class="max-w-md mx-auto p-6">
+  <%# LINE連携ができているかの分岐 %>
+  <% if current_user.line_user_id.present? %>
+    
+    <h2 class="text-xl font-black mb-6 flex items-center gap-2">
+      <span class="w-2 h-6 bg-[#06C755] rounded-full"></span>
+      LINE通知設定
+    </h2>
+    
+    <%= form_with model: @setting, 
+                  url: notification_setting_path, 
+                  method: @setting.persisted? ? :patch : :post, 
+                  data: { turbo: false } do |f| %>
+                    
+      <div class="mb-6 p-4 bg-stone-50 rounded-2xl flex justify-between items-center border border-stone-100">
+        <span class="font-bold text-stone-700">通知を有効にする</span>
+        <%= f.check_box :enabled, class: "w-6 h-6 rounded border-stone-300 text-[#06C755] focus:ring-[#06C755]" %>
+      </div>
+
+      <div class="mb-6">
+        <p class="text-sm font-bold text-stone-400 mb-3 uppercase tracking-wider">通知日時</p>
+        <div class="grid grid-cols-7 gap-2">
+          <% [:mon, :tue, :wed, :thu, :fri, :sat, :sun].each do |day| %>
+            <label class="cursor-pointer">
+              <%= f.check_box day, class: "hidden peer" %>
+              <div class="py-3 text-center border-2 border-stone-100 rounded-xl font-bold text-stone-400 transition-all peer-checked:border-[#06C755] peer-checked:bg-[#06C755]/5 peer-checked:text-[#06C755]">
+                <%= t("date.abbr_day_names")[[:sun, :mon, :tue, :wed, :thu, :fri, :sat].index(day)] %>
+              </div>
+            </label>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="mb-8">
+        <p class="text-sm font-bold text-stone-400 mb-3 uppercase tracking-wider">配信時間</p>
+        <%= f.time_field :send_time, class: "w-full p-4 bg-stone-50 border-2 border-stone-100 rounded-2xl font-bold text-stone-700 focus:border-orange-200 outline-none transition-all" %>
+      </div>
+
+      <%= f.submit "設定を保存する", class: "w-full py-4 bg-gradient-to-r from-orange-400 to-orange-500 text-white font-black rounded-2xl shadow-lg shadow-orange-100 hover:scale-[1.02] transition-all active:scale-[0.98] cursor-pointer" %>
+    <% end %>
+
+    <%# 友達追加忘れた人用に表示しておく %>
+    
+    <div class="p-4 mt-10 bg-orange-50 rounded-2xl border border-orange-100 flex items-center gap-3">
+      <span class="text-2xl">⚠️</span>
+      <div>
+        <p class="text-orange-800 font-bold">通知が届かない場合</p>
+        <p class="text-orange-600 text-xs text-pretty">通知機能は、LINE連携と「自炊save」アカウントの友だち追加されないと通知が届きません。<br>
+        下記ボタンから「友達追加」をしてください。</p>
+      </div>
+    </div>
+      <div class="flex justify-center mt-4">
+        <a href="https://lin.ee/7pHOPNl" >
+          <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="友だち追加" height="36" border="0"></a>
+      </div>
+
+  <%# LINE未連携の場合 %>
+  <% else %>
+    <div class="text-center py-10 bg-white border-2 border-dashed border-stone-200 rounded-[2.5rem] px-6">
+      <div class="bg-[#06C755]/10 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+        <svg class="w-10 h-10 text-[#06C755]" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 4.269 8.846 10.036 9.608.391.084.922.258 1.057.592.121.303.079.778.039 1.085l-.171 1.027c-.053.303-.242 1.185 1.039.646 1.281-.54 6.913-4.073 9.448-6.972 1.747-2.008 2.551-3.654 2.551-5.286z"/>
+        </svg>
+      </div>
+      <h2 class="text-xl font-black text-stone-800 mb-3">LINE通知を使いませんか？</h2>
+      <p class="text-sm text-stone-500 mb-8 leading-relaxed">
+        LINEと連携（友達追加）すると、設定した時間に<br>
+        <span class="font-bold text-stone-700">「今日の献立どうする？」</span><br>
+        とお知らせが届くようになります。
+      </p>
+      
+      <%= button_to "/auth/line", 
+          method: :post, 
+          data: { turbo: false },
+          class: "w-full py-4 bg-[#06C755] text-white font-black rounded-2xl shadow-lg shadow-green-100 hover:scale-[1.02] transition-all active:scale-[0.98] flex items-center justify-center gap-2" do %>
+        <span>LINEと連携して通知を受け取る</span>
+      <% end %>
+    </div>
+  <% end %>
+</div>

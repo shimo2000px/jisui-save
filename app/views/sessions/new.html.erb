@@ -1,0 +1,89 @@
+<div class="min-h-screen flex flex-col justify-center py-12 px-6 relative overflow-hidden">
+  
+  <div class="absolute top-10 left-10 text-orange-200/40 -rotate-12 hidden md:block">
+    <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M11 9H9V2H7V9H5V2H3V9C3 11.12 4.66 12.84 6.75 12.97V22H9.25V12.97C11.34 12.84 13 11.12 13 9V2H11V9ZM15.5 2V8H18V22H21V2C21 2 15.5 2 15.5 2Z"/></svg>
+  </div>
+  <div class="absolute bottom-10 right-10 text-orange-200/40 rotate-12 hidden md:block">
+    <svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M11 9H9V2H7V9H5V2H3V9C3 11.12 4.66 12.84 6.75 12.97V22H9.25V12.97C11.34 12.84 13 11.12 13 9V2H11V9ZM15.5 2V8H18V22H21V2C21 2 15.5 2 15.5 2Z"/></svg>
+  </div>
+
+  <div class="sm:mx-auto sm:w-full sm:max-w-md text-center relative z-10">
+    <h1 class="text-4xl font-black text-stone-800 tracking-tight">自炊save</h1>
+    
+    <div class="mt-4 flex flex-col items-center gap-2">
+      <span class="h-1 w-12 bg-orange-500 rounded-full"></span>
+      <p class="text-stone-500 font-bold tracking-tighter">
+        「あなたの自炊を、もっと賢く、もっと楽しく。」
+      </p>
+    </div>
+  </div>
+
+  <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+    <div class="bg-white/80 backdrop-blur-md py-10 px-8 shadow-[0_20px_50px_rgba(255,140,0,0.1)] rounded-[3rem] border border-white space-y-6">
+      
+      <%= button_to '/auth/google_oauth2', 
+          method: :post, 
+          data: { turbo: false }, 
+          class: "group relative flex items-center justify-center gap-3 w-full py-4 px-4 bg-white border-2 border-stone-100 rounded-2xl hover:border-orange-200 text-stone-700 font-black shadow-sm transition-all hover:shadow-md active:scale-[0.98]" do %>
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6" alt="Google">
+        Googleでログイン
+      <% end %>
+
+      <%= button_to "/auth/line",
+          method: :post, 
+          data: { turbo: false }, 
+          class: "group relative flex items-center justify-center gap-3 w-full py-4 px-4 bg-[#06C755] border-2 border-[#06C755] rounded-2xl hover:bg-[#05b34c] hover:border-[#05b34c] text-white font-black shadow-sm transition-all hover:shadow-md active:scale-[0.98]" do %>
+        <%= image_tag "btn_base.png", class: "w-6 h-6" %>
+        LINEでログイン
+      <% end %>
+
+      <p class="mt-4 text-[10px] text-stone-400 text-center font-bold">
+        ※ LINEログインについて<br>
+        初回や通知連携時は、メールアドレス入力またはQRコード認証が必要になる場合があります。
+      </p>
+
+      <div class="relative py-2">
+        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-stone-100"></div></div>
+        <div class="relative flex justify-center text-[10px] uppercase font-black tracking-widest text-stone-300"><span class="bg-white px-4">OR</span></div>
+      </div>
+
+      <%= button_to guest_login_path, method: :post, data: { turbo: false }, class: "flex items-center justify-center gap-3 w-full py-4 px-4 rounded-2xl bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white font-black shadow-lg shadow-orange-200 transition-all active:scale-[0.98]" do %>
+        <span class="text-xl">🍳</span>
+        ゲストログインでお試し
+        <span class="text-[10px] font-bold opacity-80 tracking-tight">
+          ※レシピの閲覧のみ可能です
+        </span>
+      <% end %>
+
+      <div class="pt-8 border-t border-dashed border-orange-100">
+        <%= link_to guide_path, class: "group flex flex-col items-center gap-3 no-underline" do %>
+          <div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center group-hover:bg-orange-100 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <div class="text-center">
+            <p class="text-[10px] font-black text-stone-300 uppercase tracking-widest mb-1">初めての方</p>
+            <span class="text-sm font-black text-orange-500 border-b-2 border-orange-100 group-hover:border-orange-500 transition-all">
+              自炊saveの使い方を見る→
+            </span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="mt-6 p-4 bg-orange-50 rounded-2xl border border-orange-100">
+      <p class="text-[11px] font-bold text-orange-800 leading-relaxed text-center">
+        【ホーム画面に追加してご利用の方へ】<br>
+        ログインできない場合は、SafariやChromeなどの<br class="sm:hidden">
+        <span class="underline">ブラウザからログイン</span>を済ませてから追加してください。
+      </p>
+    </div>
+
+    <p class="mt-8 text-center text-[10px] font-bold text-stone-400 px-6 leading-relaxed">
+      ログインすることで、<br class="md:hidden">
+      <%= link_to "利用規約", terms_path, class: "underline decoration-orange-200 hover:text-orange-500" %> と 
+      <%= link_to "プライバシーポリシー", privacy_path, class: "underline decoration-orange-200 hover:text-orange-500" %> に同意したことになります。
+    </p>
+  </div>
+</div>

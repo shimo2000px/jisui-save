@@ -1,0 +1,48 @@
+name: Run RSpec
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create dummy .env file
+        run: touch .env
+
+      - name: Build and Run Tests
+        run: |
+          cat <<EOF > compose.ci.yml
+          services:
+            db:
+              image: postgres:18
+              environment:
+                POSTGRES_PASSWORD: password
+              healthcheck:
+                test: ["CMD-SHELL", "pg_isready -U postgres"]
+                interval: 5s
+                timeout: 5s
+                retries: 5
+            web:
+              build: .
+              environment:
+                RAILS_ENV: test
+                DATABASE_URL: postgresql://postgres:password@db:5432/postgres
+              depends_on:
+                db:
+                  condition: service_healthy
+          EOF
+
+          docker compose -f compose.ci.yml run --rm web bash -c "
+            bundle install &&
+            bin/rails db:prepare &&
+            bundle exec rspec
+          "
+
+      - name: Cleanup
+        if: always()
+        run: docker compose -f compose.ci.yml down

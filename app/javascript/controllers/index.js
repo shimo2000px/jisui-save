@@ -4,5 +4,26 @@
 
 import { application } from "./application"
 
+import FlashController from "./flash_controller"
+application.register("flash", FlashController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import MenuController from "./menu_controller"
+application.register("menu", MenuController)
+
+import ModalController from "./modal_controller"
+application.register("modal", ModalController)
+
+import RecipeCalculationController from "./recipe_calculation_controller"
+application.register("recipe-calculation", RecipeCalculationController)
+
+import RecipePreviewController from "./recipe_preview_controller"
+application.register("recipe-preview", RecipePreviewController)
+
+import RecipeStepController from "./recipe_step_controller"
+application.register("recipe-step", RecipeStepController)
+
+import SearchController from "./search_controller"
+application.register("search", SearchController)
