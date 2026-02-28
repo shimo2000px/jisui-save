@@ -48,10 +48,11 @@ class User < ApplicationRecord
     cooking_records.where(cooked_at: date.all_month).count
   end
 
+  # 日本時間にし、月の切り替えをスムーズに
   def monthly_cooking_stats
     cooking_records
       .select(
-        "DATE_TRUNC('month', cooked_at) AS month",
+        "DATE_TRUNC('month', cooked_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Tokyo') AS month",
         "COUNT(*) AS count",
         "SUM(convenience_cost - cooking_cost) AS savings"
       )
