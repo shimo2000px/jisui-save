@@ -123,7 +123,7 @@
 
       <div class="animate-fade-in-up bg-white rounded-[2rem] p-6 md:p-8 shadow-sm border border-stone-100 mb-10" 
           style="animation-delay: 0.7s; opacity: 0; animation-fill-mode: forwards;">
-        
+        <%# 目標設定があるかで分岐 %>
         <% if @current_goal %>
           <div class="flex justify-between items-center mb-6">
             <h3 class="text-lg font-black text-stone-800 flex items-center gap-2">
@@ -171,6 +171,7 @@
             </div>
           </div>
 
+        <%# 目標設定がない場合 %>
         <% else %>
           <div class="text-center py-4">
             <div class="inline-flex items-center justify-center w-16 h-16 bg-orange-50 rounded-3xl text-3 mb-4">
@@ -193,7 +194,8 @@
           <% end %>
         </div>
       </div>
-
+      
+      <%# グラフ表示 %>
       <div class="animate-fade-in-up bg-stone-50/50 p-4 md:p-8 rounded-[2rem] border border-stone-100"
           style="animation-delay: 0.8s; opacity: 0; animation-fill-mode: forwards;">
         <h3 class="text-lg font-black text-stone-800 mb-6 flex items-center gap-2">

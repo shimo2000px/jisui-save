@@ -14,7 +14,7 @@ namespace :notification do
 
     targets = all_configs.select do |setting|
       next unless setting.send(day_of_week) == true
-
+      # 時間設定を日本時間に設定
       config_time = setting.send_time.in_time_zone("Asia/Tokyo").strftime("%H:%M")
       current_time = now.strftime("%H:%M")
 

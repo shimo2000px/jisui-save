@@ -56,6 +56,7 @@
     <% end %>
   </div>
 
+  <%# Turboを使用し、非同期通信で表示切り替え %>
   <%= turbo_frame_tag "recipes_frame" do %>
     <div class="flex flex-wrap items-center gap-4 text-xs md:text-sm font-bold text-stone-500 px-2 mb-6">
       <span class="text-stone-300">並び替え：</span>

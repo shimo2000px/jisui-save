@@ -15,13 +15,13 @@ class ProfilesController < ApplicationController
 
     start_of_month = Time.current.beginning_of_month
     today = Date.current
-
+    # 1日あたりの節約額をActiveRecordで取得
     daily_data = @user.cooking_records
                     .where(cooked_at: start_of_month..Time.current.end_of_day)
                     .group("DATE(cooked_at)")
                     .sum("convenience_cost - cooking_cost")
                     .transform_keys(&:to_s)
-
+    # mapで1日~今日までの金額を反映
     @chart_labels = (start_of_month.to_date..today).map(&:to_s)
 
     cumulative_sum = 0
