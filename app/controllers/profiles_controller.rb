@@ -7,18 +7,16 @@ class ProfilesController < ApplicationController
 
     @user = current_user
     @recipe = Recipe.new
-
     @goal = @user.goals.find_by(target_month: Time.current.beginning_of_month)
     @current_goal = @goal
-
     @monthly_stats = @user.monthly_cooking_stats
 
     start_of_month = Time.current.beginning_of_month
     today = Date.current
-    # 1日あたりの節約額をActiveRecordで取得
+    # 1日あたりの節約額をActiveRecordで取得(日本時間にして時差をなくす)
     daily_data = @user.cooking_records
                     .where(cooked_at: start_of_month..Time.current.end_of_day)
-                    .group("DATE(cooked_at)")
+                    .group("DATE(cooked_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Tokyo')")
                     .sum("convenience_cost - cooking_cost")
                     .transform_keys(&:to_s)
     # mapで1日~今日までの金額を反映

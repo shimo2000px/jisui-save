@@ -14,7 +14,7 @@ class SharesController < ApplicationController
 
     daily_data = @user.cooking_records
                         .where(cooked_at: start_of_month..Time.current.end_of_day)
-                        .group("DATE(cooked_at)")
+                        .group("DATE(cooked_at AT TIME ZONE 'UTC' AT TIME ZONE 'Asia/Tokyo')")
                         .sum("convenience_cost - cooking_cost")
                         .transform_keys(&:to_s)
 
