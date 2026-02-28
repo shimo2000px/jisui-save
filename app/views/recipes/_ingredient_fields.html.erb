@@ -8,6 +8,7 @@
         [display_cat, ingredients_in_cat.map { |i| [i.name, i.id, { data: { price_per_gram: i.price_per_gram || 0 } }] }]
       end
     %>
+    <%# セレクトボックスのカテゴリー %>
     <%= f.select :ingredient_id, grouped_options_for_select(grouped_options, f.object.ingredient_id), { include_blank: "選択..." }, 
         { class: "w-full border-none focus:ring-0 text-sm", data: { action: "change->recipe-calculation#calculate" } } %>
   </div>

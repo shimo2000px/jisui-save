@@ -24,6 +24,7 @@ class CookingRecordsController < ApplicationController
                                     .where(cooked_at: Time.current.all_month)
                                     .sum("convenience_cost - cooking_cost")
 
+        # 目標額を超えたらフラッシュメッセージ
         if monthly_savings >= goal.target_amount
           goal.update(achieved_at: Time.current)
           flash[:achievement] = "🎉 おめでとうございます！今月の目標を達成しました！"

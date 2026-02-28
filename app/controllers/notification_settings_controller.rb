@@ -10,7 +10,7 @@ class NotificationSettingsController < ApplicationController
     @setting = current_user.notification_setting || current_user.build_notification_setting
 
     p_hash = notification_params
-
+    # 時刻データを取得
     if p_hash[:send_time].present?
       hour, min = p_hash[:send_time].split(":")
       @setting.send_time = Time.zone.now.change(hour: hour.to_i, min: min.to_i)

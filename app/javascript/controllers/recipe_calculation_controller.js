@@ -9,11 +9,13 @@ export default class extends Controller {
 
   add(event) {
     event.preventDefault()
+    // ID重複なし
     const content = this.templateTarget.innerHTML.replace(/NEW_RECORD/g, new Date().getTime())
     this.containerTarget.insertAdjacentHTML('beforeend', content)
     this.calculate()
   }
 
+  //既存レコードの削除
   remove(event) {
     event.preventDefault()
     const row = event.target.closest(".ingredient-row")
@@ -28,6 +30,7 @@ export default class extends Controller {
     this.calculate()
   }
 
+  // 合計金額の算出
   calculate() {
     let total = 0
     const activeRows = this.containerTarget.querySelectorAll(".ingredient-row")
@@ -40,9 +43,12 @@ export default class extends Controller {
       const amount = parseFloat(amountInput?.value) || 0
       const customPrice = customPriceInput?.value.trim()
 
+      // 手動価格があればそちらを優先
       if (customPrice !== "" && !isNaN(customPrice)) {
         total += parseFloat(customPrice)
-      } else if (select && select.selectedIndex > 0) {
+      } 
+      // 材料計算の場合（手動金額がある場合）
+      else if (select && select.selectedIndex > 0) {
         const selectedOption = select.options[select.selectedIndex]
         const pricePerGram = parseFloat(selectedOption.dataset.pricePerGram) || 0
         total += pricePerGram * amount
@@ -56,6 +62,7 @@ export default class extends Controller {
     this.updateSavings(total)
   }
 
+  // 節約額（比較コンビニ額 - レシピ額）
   updateSavings(total) {
     if (this.hasConvenienceSelectTarget && this.hasSavingsDisplayTarget) {
       const cvsSelect = this.convenienceSelectTarget
@@ -66,6 +73,7 @@ export default class extends Controller {
       const savings = cvsPrice - total
       this.savingsDisplayTarget.textContent = Math.round(savings).toLocaleString()
       
+  // 節約できているかで色を切り替える
       const displayElement = this.savingsDisplayTarget.parentElement
       if (savings < 0) {
         displayElement.classList.add('text-gray-400')
@@ -77,6 +85,7 @@ export default class extends Controller {
     }
   }
 
+  // 比較商品が変更された場合の切り替え
   updateComparison() {
     const select = this.convenienceSelectTarget
     let price = 0
