@@ -18,8 +18,10 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Scan for common Rails security vulnerabilities using static analysis
-        run: bin/brakeman --no-pager
+      - name: Install and Run Brakeman (Latest)
+        run: |
+          gem install brakeman --no-document
+          brakeman --no-pager
 
   lint:
     runs-on: ubuntu-latest
