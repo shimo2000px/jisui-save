@@ -67,7 +67,8 @@ https://jisui-save.com
 ### プロフィール
 <div align="center">
   <video src="https://github.com/user-attachments/assets/a720dc6a-38c1-4805-a5af-2403b3f7b508" width="300" autoplay loop muted playsinline></video>
-  <p>グラフや目標機能で、視覚的に頑張りを実感できます</p>
+  <p>グラフで視覚的に頑張りを実感できます<br>
+  目標節約金額設定をすると、グラフに目標節約金額のボーダーが表示されます</p>
 </div>
 
 ### 通知機能
@@ -90,7 +91,6 @@ https://jisui-save.com
 | 認証・API連携 | OmniAuth-google-oauth2 / OmniAuth-line / Message API |
 
 ### 技術選定の理由
-### 技術選定の理由
 - **フロントエンド**: Hotwire（Turbo / Stimulus）を採用し、Rails標準の仕組みでSPA（シングルページアプリケーション）のような滑らかな操作感を実現。
 - **バックエンド**: 安定性が高く、豊富な知見やGemが揃っているRuby on Rails 7.2系を採用。
 - **データベース**: デプロイ先であるRenderとの親和性が高く、スケーラビリティに優れたPostgreSQL 18を選択。
@@ -104,4 +104,4 @@ https://jisui-save.com
 [Figma画面遷移図](https://www.figma.com/design/N8VHxmnIi2kBpGhmM9WKu3/%E7%84%A1%E9%A1%8C?node-id=11-844&t=pDvVecHzhVoq4lvQ-1)
 
 ## ER図
-![ER図](Fix-ER.png)# ruby​​_study
+![ER図](Fix-ER.png)
