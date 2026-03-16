@@ -6,9 +6,9 @@ class CookingRecordsController < ApplicationController
     @cooking_records = current_user.cooking_records
                                   .includes(:recipe)
                                   .select(
-                                    "MAX(id) as id", 
-                                    "recipe_id", 
-                                    "COUNT(*) as count", 
+                                    "MAX(id) as id",
+                                    "recipe_id",
+                                    "COUNT(*) as count",
                                     "MAX(cooked_at) as latest_cooked_at",
                                     "SUM(convenience_cost) as total_convenience_cost", # 合計比較額
                                     "SUM(cooking_cost) as total_cooking_cost"          # 合計自炊費

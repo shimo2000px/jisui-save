@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     end
     resources :cooking_records, only: [ :create ]
   end
-  
+
   resources :cooking_records, only: [ :index ]
 
 
