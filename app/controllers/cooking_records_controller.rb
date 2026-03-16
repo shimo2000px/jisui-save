@@ -1,6 +1,23 @@
 class CookingRecordsController < ApplicationController
   before_action :require_login
 
+  def index
+    # ユーザーの料理記録をレシピごとに集計して取得。これでDBからの取得は1回で済む。
+    @cooking_records = current_user.cooking_records
+                                  .includes(:recipe)
+                                  .select(
+                                    "MAX(id) as id",
+                                    "recipe_id",
+                                    "COUNT(*) as count",
+                                    "MAX(cooked_at) as latest_cooked_at",
+                                    "SUM(convenience_cost) as total_convenience_cost", # 合計比較額
+                                    "SUM(cooking_cost) as total_cooking_cost"          # 合計自炊費
+                                  )
+                                  .group(:recipe_id)
+                                  .order("latest_cooked_at DESC")
+                                  .page(params[:page])
+  end
+
   def create
     if guest_user?
       redirect_to recipe_path(params[:recipe_id]), alert: "自炊を記録するにはアカウント登録が必要です"

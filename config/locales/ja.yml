@@ -31,6 +31,14 @@ ja:
           attributes:
             ingredient:
               required: "を選択してください"
+  time:
+    formats:
+      short: "%m/%d %H:%M"
+      default: "%Y/%m/%d %H:%M:%S"
+  date:
+    formats:
+      short: "%m/%d"
+      default: "%Y/%m/%d"
 
   errors:
     format: "%{attribute}%{message}"

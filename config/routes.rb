@@ -7,6 +7,9 @@ Rails.application.routes.draw do
     resources :cooking_records, only: [ :create ]
   end
 
+  resources :cooking_records, only: [ :index ]
+
+
   get    "login",   to: "sessions#new"
   post   "login",   to: "sessions#create"
   delete "logout",  to: "sessions#destroy"
