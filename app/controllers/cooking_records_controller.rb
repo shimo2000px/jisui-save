@@ -1,6 +1,15 @@
 class CookingRecordsController < ApplicationController
   before_action :require_login
 
+
+  def index
+    # ログインユーザーの記録を、最新順で取得。レシピが削除されていても表示できるようincludesを使用
+    @cooking_records = current_user.cooking_records
+                                  .includes(:recipe)
+                                  .order(cooked_at: :desc)
+                                  .page(params[:page]).per(10)
+  end
+
   def create
     if guest_user?
       redirect_to recipe_path(params[:recipe_id]), alert: "自炊を記録するにはアカウント登録が必要です"
